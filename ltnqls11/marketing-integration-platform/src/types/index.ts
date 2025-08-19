@@ -16,16 +16,30 @@ export interface Campaign {
   budget: number;
   startAt: Date;
   endAt: Date;
-  channels: Channel[];
+  channels: string[];
   keywords: string[];
   referenceUrls: string[];
   status: 'draft' | 'active' | 'paused' | 'completed';
-  targetCategory: BlogCategory;
+  targetCategory: string;
   crawlingKeywords: string[];
 }
 
-// 채널 타입 (네이버 블로그 중심)
-export type Channel = 'naver_blog' | 'blogspot' | 'tistory' | 'instagram_feed';
+// 채널 정보
+export interface Channel {
+  id: string;
+  name: string;
+  platform: 'instagram' | 'youtube' | 'tiktok' | 'naver' | 'facebook' | 'twitter';
+  description: string;
+  audience: number;
+  engagement: number;
+  costPerPost: number;
+  demographics: {
+    age: string;
+    gender: string;
+  };
+  categories: string[];
+  icon: string;
+}
 
 // 블로그 카테고리
 export type BlogCategory = 
@@ -33,25 +47,29 @@ export type BlogCategory =
   | 'tech' | 'health' | 'parenting' | 'home' | 'pet' 
   | 'book' | 'movie' | 'game' | 'finance' | 'education';
 
-// 파워블로거 정보
-export interface PowerBlogger {
+// 인플루언서 정보
+export interface Influencer {
   id: string;
-  blogUrl: string;
-  blogTitle: string;
-  bloggerName: string;
-  category: BlogCategory;
-  subscriberCount: number;
-  avgViews: number;
+  name: string;
+  username: string;
+  platform: 'instagram' | 'youtube' | 'tiktok' | 'naver' | 'facebook' | 'twitter';
+  followers: number;
+  engagement: number;
+  category: string;
+  bio: string;
+  avatar: string;
+  verified: boolean;
+  costPerPost: number;
+  recentPosts: number;
   avgLikes: number;
   avgComments: number;
-  engagementRate: number;
-  recentPosts: BlogPost[];
-  contactEmail?: string;
-  contactPhone?: string;
-  collaborationRate?: number; // 협업 단가
-  lastActive: Date;
-  isVerified: boolean;
+  demographics: {
+    age: string;
+    gender: string;
+  };
   tags: string[];
+  contactEmail?: string;
+  lastActive?: Date;
 }
 
 // 블로그 포스트
@@ -91,13 +109,13 @@ export interface ReviewData {
 export interface GeneratedContent {
   id: string;
   campaignId: string;
-  contentType: 'blog_post' | 'sns_post' | 'email_template';
+  influencerId?: string;
+  contentType: 'instagram_post' | 'youtube_script' | 'tiktok_video' | 'blog_post';
   title: string;
   content: string;
-  hashtags: string[];
+  hashtags?: string[];
   targetAudience: string;
   tone: 'professional' | 'casual' | 'friendly' | 'trendy';
-  basedOnReviews: string[]; // 참고한 리뷰 ID들
   generatedAt: Date;
   status: 'draft' | 'approved' | 'published';
 }

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { PowerBlogger, BloggerOutreach as BloggerOutreachType } from '../types';
+import { Influencer, BloggerOutreach as BloggerOutreachType } from '../types';
 import { createBloggerOutreach, getBloggerOutreach, sendBulkEmails } from '../services/api';
 
 interface BloggerOutreachProps {
   campaignId: string;
-  selectedBloggers: PowerBlogger[];
+  selectedInfluencers: Influencer[];
 }
 
-const BloggerOutreach: React.FC<BloggerOutreachProps> = ({ campaignId, selectedBloggers }) => {
+const BloggerOutreach: React.FC<BloggerOutreachProps> = ({ campaignId, selectedInfluencers }) => {
   const [outreachList, setOutreachList] = useState<BloggerOutreachType[]>([]);
   const [emailTemplate, setEmailTemplate] = useState({
     subject: '[협업 제안] 브랜드 체험단 모집',
@@ -49,10 +49,10 @@ const BloggerOutreach: React.FC<BloggerOutreachProps> = ({ campaignId, selectedB
   };
 
   const handleSendBulkEmails = async () => {
-    const bloggersWithEmail = selectedBloggers.filter(blogger => blogger.contactEmail);
+    const influencersWithEmail = selectedInfluencers.filter(influencer => influencer.contactEmail);
     
-    if (bloggersWithEmail.length === 0) {
-      alert('이메일 주소가 있는 블로거가 없습니다.');
+    if (influencersWithEmail.length === 0) {
+      alert('이메일 주소가 있는 인플루언서가 없습니다.');
       return;
     }
 
@@ -65,7 +65,7 @@ const BloggerOutreach: React.FC<BloggerOutreachProps> = ({ campaignId, selectedB
     try {
       const result = await sendBulkEmails(
         campaignId,
-        bloggersWithEmail.map(b => b.id),
+        influencersWithEmail.map(i => i.id),
         JSON.stringify(emailTemplate)
       );
       
@@ -79,25 +79,25 @@ const BloggerOutreach: React.FC<BloggerOutreachProps> = ({ campaignId, selectedB
     }
   };
 
-  const handleIndividualOutreach = async (blogger: PowerBlogger) => {
+  const handleIndividualOutreach = async (influencer: Influencer) => {
     try {
       const personalizedMessage = emailTemplate.message
-        .replace(/{blogger_name}/g, blogger.bloggerName)
-        .replace(/{category}/g, blogger.category)
-        .replace(/{subscriber_count}/g, blogger.subscriberCount.toLocaleString())
-        .replace(/{collaboration_rate}/g, blogger.collaborationRate?.toLocaleString() || '협의');
+        .replace(/{blogger_name}/g, influencer.name)
+        .replace(/{category}/g, influencer.category)
+        .replace(/{subscriber_count}/g, influencer.followers.toLocaleString())
+        .replace(/{collaboration_rate}/g, influencer.costPerPost?.toLocaleString() || '협의');
 
       await createBloggerOutreach({
         campaignId,
-        bloggerId: blogger.id,
+        bloggerId: influencer.id,
         contactMethod: 'email',
         subject: emailTemplate.subject,
         message: personalizedMessage,
-        proposedRate: blogger.collaborationRate || 0,
+        proposedRate: influencer.costPerPost || 0,
         status: 'sent'
       });
 
-      alert(`${blogger.bloggerName}님에게 개별 연락이 발송되었습니다.`);
+      alert(`${influencer.name}님에게 개별 연락이 발송되었습니다.`);
       fetchOutreachList();
     } catch (error) {
       console.error('개별 아웃리치 실패:', error);
@@ -127,8 +127,8 @@ const BloggerOutreach: React.FC<BloggerOutreachProps> = ({ campaignId, selectedB
     }
   };
 
-  const bloggersWithEmail = selectedBloggers.filter(blogger => blogger.contactEmail);
-  const bloggersWithoutEmail = selectedBloggers.filter(blogger => !blogger.contactEmail);
+  const influencersWithEmail = selectedInfluencers.filter(influencer => influencer.contactEmail);
+  const influencersWithoutEmail = selectedInfluencers.filter(influencer => !influencer.contactEmail);
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200">
@@ -138,12 +138,12 @@ const BloggerOutreach: React.FC<BloggerOutreachProps> = ({ campaignId, selectedB
         {/* 통계 */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
           <div className="bg-blue-50 rounded-lg p-4">
-            <h3 className="text-sm font-medium text-blue-700">선택된 블로거</h3>
-            <p className="text-2xl font-bold text-blue-900">{selectedBloggers.length}</p>
+            <h3 className="text-sm font-medium text-blue-700">선택된 인플루언서</h3>
+            <p className="text-2xl font-bold text-blue-900">{selectedInfluencers.length}</p>
           </div>
           <div className="bg-green-50 rounded-lg p-4">
             <h3 className="text-sm font-medium text-green-700">이메일 보유</h3>
-            <p className="text-2xl font-bold text-green-900">{bloggersWithEmail.length}</p>
+            <p className="text-2xl font-bold text-green-900">{influencersWithEmail.length}</p>
           </div>
           <div className="bg-yellow-50 rounded-lg p-4">
             <h3 className="text-sm font-medium text-yellow-700">발송 완료</h3>
@@ -193,18 +193,18 @@ const BloggerOutreach: React.FC<BloggerOutreachProps> = ({ campaignId, selectedB
         <div className="flex gap-4 mt-6">
           <button
             onClick={handleSendBulkEmails}
-            disabled={sending || bloggersWithEmail.length === 0}
+            disabled={sending || influencersWithEmail.length === 0}
             className="flex-1 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 font-medium"
           >
-            {sending ? '발송 중...' : `${bloggersWithEmail.length}명에게 일괄 발송`}
+            {sending ? '발송 중...' : `${influencersWithEmail.length}명에게 일괄 발송`}
           </button>
         </div>
 
-        {bloggersWithoutEmail.length > 0 && (
+        {influencersWithoutEmail.length > 0 && (
           <div className="mt-4 p-4 bg-yellow-50 rounded-lg">
             <p className="text-sm text-yellow-800">
-              ⚠️ {bloggersWithoutEmail.length}명의 블로거는 이메일 주소가 없어 발송할 수 없습니다.
-              개별적으로 블로그 메시지나 SNS DM을 통해 연락해보세요.
+              ⚠️ {influencersWithoutEmail.length}명의 인플루언서는 이메일 주소가 없어 발송할 수 없습니다.
+              개별적으로 SNS DM을 통해 연락해보세요.
             </p>
           </div>
         )}
@@ -212,22 +212,22 @@ const BloggerOutreach: React.FC<BloggerOutreachProps> = ({ campaignId, selectedB
 
       {/* 선택된 블로거 목록 */}
       <div className="p-6 border-b border-gray-200">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">선택된 블로거 목록</h3>
+        <h3 className="text-lg font-medium text-gray-900 mb-4">선택된 인플루언서 목록</h3>
         
         <div className="space-y-3">
-          {selectedBloggers.map(blogger => {
-            const outreach = outreachList.find(o => o.bloggerId === blogger.id);
+          {selectedInfluencers.map(influencer => {
+            const outreach = outreachList.find(o => o.bloggerId === influencer.id);
             
             return (
-              <div key={blogger.id} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+              <div key={influencer.id} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
                 <div className="flex-1">
-                  <h4 className="font-medium text-gray-900">{blogger.bloggerName}</h4>
+                  <h4 className="font-medium text-gray-900">{influencer.name}</h4>
                   <p className="text-sm text-gray-600">
-                    {blogger.blogTitle} | {blogger.subscriberCount.toLocaleString()}명 구독
+                    {influencer.username} | {influencer.followers.toLocaleString()}명 팔로워
                   </p>
                   <p className="text-xs text-gray-500">
-                    {blogger.contactEmail || '이메일 없음'} | 
-                    참여율: {(blogger.engagementRate * 100).toFixed(1)}%
+                    {influencer.contactEmail || '이메일 없음'} | 
+                    참여율: {influencer.engagement}%
                   </p>
                 </div>
                 
@@ -236,9 +236,9 @@ const BloggerOutreach: React.FC<BloggerOutreachProps> = ({ campaignId, selectedB
                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(outreach.status)}`}>
                       {getStatusText(outreach.status)}
                     </span>
-                  ) : blogger.contactEmail ? (
+                  ) : influencer.contactEmail ? (
                     <button
-                      onClick={() => handleIndividualOutreach(blogger)}
+                      onClick={() => handleIndividualOutreach(influencer)}
                       className="px-3 py-1 bg-green-600 text-white rounded text-sm hover:bg-green-700"
                     >
                       개별 발송
@@ -266,14 +266,14 @@ const BloggerOutreach: React.FC<BloggerOutreachProps> = ({ campaignId, selectedB
         ) : (
           <div className="space-y-3">
             {outreachList.map(outreach => {
-              const blogger = selectedBloggers.find(b => b.id === outreach.bloggerId);
+              const influencer = selectedInfluencers.find(i => i.id === outreach.bloggerId);
               
               return (
                 <div key={outreach.id} className="border border-gray-200 rounded-lg p-4">
                   <div className="flex items-start justify-between mb-2">
                     <div>
                       <h4 className="font-medium text-gray-900">
-                        {blogger?.bloggerName || '알 수 없는 블로거'}
+                        {influencer?.name || '알 수 없는 인플루언서'}
                       </h4>
                       <p className="text-sm text-gray-600">{outreach.subject}</p>
                       <p className="text-xs text-gray-500">

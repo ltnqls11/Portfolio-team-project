@@ -1,11 +1,10 @@
 import axios from 'axios';
 import { 
   Campaign, 
-  PowerBlogger,
+  Influencer,
   ReviewData,
   GeneratedContent,
   BloggerOutreach,
-  BlogCategory,
   Client 
 } from '../types';
 
@@ -32,29 +31,30 @@ export const getCampaign = async (campaignId: string): Promise<Campaign> => {
   return response.data;
 };
 
-// 파워블로거 관련 API
-export const getPowerBloggers = async (filters?: {
-  category?: BlogCategory;
-  minSubscribers?: number;
-  maxSubscribers?: number;
+// 인플루언서 관련 API
+export const getInfluencers = async (filters?: {
+  category?: string;
+  platform?: string;
+  minFollowers?: number;
+  maxFollowers?: number;
   minEngagementRate?: number;
-}): Promise<PowerBlogger[]> => {
-  const response = await axios.get(`${API_BASE_URL}/power-bloggers`, { params: filters });
+}): Promise<Influencer[]> => {
+  const response = await axios.get(`${API_BASE_URL}/influencers`, { params: filters });
   return response.data;
 };
 
-export const getPowerBlogger = async (bloggerId: string): Promise<PowerBlogger> => {
-  const response = await axios.get(`${API_BASE_URL}/power-bloggers/${bloggerId}`);
+export const getInfluencer = async (influencerId: string): Promise<Influencer> => {
+  const response = await axios.get(`${API_BASE_URL}/influencers/${influencerId}`);
   return response.data;
 };
 
-export const crawlBloggerData = async (blogUrl: string): Promise<PowerBlogger> => {
-  const response = await axios.post(`${API_BASE_URL}/crawl/blogger`, { blogUrl });
+export const crawlInfluencerData = async (profileUrl: string): Promise<Influencer> => {
+  const response = await axios.post(`${API_BASE_URL}/crawl/influencer`, { profileUrl });
   return response.data;
 };
 
 // 체험단 후기 크롤링 API
-export const crawlReviews = async (keywords: string[], category: BlogCategory): Promise<ReviewData[]> => {
+export const crawlReviews = async (keywords: string[], category: string): Promise<ReviewData[]> => {
   const response = await axios.post(`${API_BASE_URL}/crawl/reviews`, { keywords, category });
   return response.data;
 };
@@ -67,10 +67,15 @@ export const getReviews = async (campaignId: string): Promise<ReviewData[]> => {
 // 콘텐츠 자동 생성 API
 export const generateContent = async (request: {
   campaignId: string;
-  contentType: 'blog_post' | 'sns_post' | 'email_template';
-  basedOnReviews: string[];
+  contentType: 'instagram_post' | 'youtube_script' | 'tiktok_video' | 'blog_post';
   tone: string;
   targetAudience: string;
+  productName: string;
+  keyMessage: string;
+  callToAction: string;
+  influencerId?: string;
+  influencerStyle?: string[];
+  platform?: string;
 }): Promise<GeneratedContent> => {
   const response = await axios.post(`${API_BASE_URL}/content/generate`, request);
   return response.data;
@@ -114,16 +119,11 @@ export const updateOutreachStatus = async (outreachId: string, status: BloggerOu
   return response_data.data;
 };
 
-// 결과물 관련 API
-export const getDeliverables = async (campaignId: string): Promise<Deliverable[]> => {
-  const response = await axios.get(`${API_BASE_URL}/campaigns/${campaignId}/deliverables`);
-  return response.data;
-};
-
-export const createDeliverable = async (deliverableData: Omit<Deliverable, 'id'>): Promise<Deliverable> => {
-  const response = await axios.post(`${API_BASE_URL}/deliverables`, deliverableData);
-  return response.data;
-};
+// 결과물 관련 API (추후 구현)
+// export const getDeliverables = async (campaignId: string) => {
+//   const response = await axios.get(`${API_BASE_URL}/campaigns/${campaignId}/deliverables`);
+//   return response.data;
+// };
 
 // 클라이언트 관련 API
 export const getClients = async (): Promise<Client[]> => {
