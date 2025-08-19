@@ -1,0 +1,21 @@
+{
+  "name": "marketing-automation-n8n",
+  "version": "1.0.0",
+  "description": "n8n workflows for marketing automation",
+  "scripts": {
+    "start": "n8n start",
+    "dev": "n8n start --tunnel",
+    "export": "n8n export:workflow --all --output=./workflows/",
+    "import": "n8n import:workflow --input=./workflows/"
+  },
+  "dependencies": {
+    "n8n": "^1.15.0"
+  },
+  "devDependencies": {},
+  "keywords": [
+    "n8n",
+    "automation",
+    "marketing",
+    "workflow"
+  ]
+}
