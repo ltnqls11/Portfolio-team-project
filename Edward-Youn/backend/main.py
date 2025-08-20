@@ -85,17 +85,19 @@ async def health_check():
 
 # API 라우터 등록
 from api.campaigns import router as campaigns_router
-from api.creators import router as creators_router
+from api.bloggers import router as bloggers_router
 from api.copy_generation import router as copy_router
 from api.clients import router as clients_router
 from api.crawling import router as crawling_router
+from api.outreach import router as outreach_router
 from database.database import create_db_and_tables
 
 app.include_router(campaigns_router, prefix="/api/campaigns", tags=["Campaigns"])
-app.include_router(creators_router, prefix="/api/creators", tags=["Creators"])
+app.include_router(bloggers_router, prefix="/api/bloggers", tags=["Bloggers"])
 app.include_router(copy_router, prefix="/api/copy", tags=["Copy Generation"])
 app.include_router(clients_router, prefix="/api/clients", tags=["Clients"])
 app.include_router(crawling_router, prefix="/api/crawling", tags=["Crawling"])
+app.include_router(outreach_router, prefix="/api/outreach", tags=["Outreach"])
 
 # 에러 핸들러
 @app.exception_handler(HTTPException)

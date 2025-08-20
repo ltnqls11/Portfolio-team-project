@@ -47,3 +47,10 @@ pytz==2023.3
 # Additional packages
 lxml==4.9.3
 html5lib==1.1
+
+# Supabase
+supabase==2.3.0
+gotrue==2.1.0
+postgrest==0.13.0
+realtime==1.0.0
+storage3==0.6.1

@@ -31,9 +31,7 @@ class OutreachStatus(str, Enum):
 class Platform(str, Enum):
     """플랫폼 타입"""
     NAVER_BLOG = "naver_blog"
-    INSTAGRAM = "instagram"
     TISTORY = "tistory"
-    KAKAO_CHANNEL = "kakao_channel"
 
 
 # 기본 모델
@@ -160,36 +158,39 @@ class CopyVariantRead(CopyVariantBase):
     created_at: datetime
 
 
-# 크리에이터 (인플루언서)
-class CreatorBase(SQLModel):
-    """크리에이터 기본 모델"""
-    platform: Platform
-    handle: str = Field(max_length=100)  # 계정명
+# 블로거 (네이버 블로그 중심)
+class BloggerBase(SQLModel):
+    """블로거 기본 모델"""
+    platform: Platform = Field(default=Platform.NAVER_BLOG)
+    blog_name: str = Field(max_length=100)  # 블로그명
+    blogger_name: str = Field(max_length=100)  # 블로거명
+    blog_url: str = Field(max_length=500)  # 블로그 URL
     category: str = Field(max_length=50)  # 카테고리
-    followers: Optional[int] = Field(default=None, ge=0)  # 팔로워 수
-    engagement_rate: Optional[float] = Field(default=None, ge=0, le=1)  # 참여율
-    email: Optional[str] = Field(default=None, max_length=100)
-    dm_url: Optional[str] = Field(default=None, max_length=200)  # DM 링크
-    active_at: Optional[datetime] = Field(default=None)  # 마지막 활동일
+    post_count: Optional[int] = Field(default=None, ge=0)  # 포스팅 수
+    email: Optional[str] = Field(default=None, max_length=100)  # 이메일
+    contact_info: Optional[str] = Field(default=None, max_length=200)  # 연락처 정보
+    last_post_date: Optional[datetime] = Field(default=None)  # 마지막 포스팅 날짜
+    price_range: Optional[str] = Field(default=None, max_length=50)  # 협찬 단가 범위
     notes: Optional[str] = Field(default=None, max_length=500)  # 메모
+    is_active: bool = Field(default=True)  # 활성 상태
 
 
-class Creator(CreatorBase, TimestampMixin, table=True):
-    """크리에이터 테이블"""
+class Blogger(BloggerBase, TimestampMixin, table=True):
+    """블로거 테이블"""
     id: Optional[int] = Field(default=None, primary_key=True)
     
     # 관계
-    outreach: List["Outreach"] = Relationship(back_populates="creator")
-    deliverables: List["Deliverable"] = Relationship(back_populates="creator")
+    outreach: List["Outreach"] = Relationship(back_populates="blogger")
+    deliverables: List["Deliverable"] = Relationship(back_populates="blogger")
 
 
-class CreatorCreate(CreatorBase):
-    """크리에이터 생성 모델"""
+class BloggerCreate(BloggerBase):
+    """블로거 생성 모델"""
     pass
 
 
-class CreatorRead(CreatorBase):
-    """크리에이터 조회 모델"""
+class BloggerRead(BloggerBase):
+    """블로거 조회 모델"""
     id: int
     created_at: datetime
     updated_at: Optional[datetime]
@@ -210,24 +211,24 @@ class Outreach(OutreachBase, TimestampMixin, table=True):
     """연락 이력 테이블"""
     id: Optional[int] = Field(default=None, primary_key=True)
     campaign_id: int = Field(foreign_key="campaign.id")
-    creator_id: int = Field(foreign_key="creator.id")
+    blogger_id: int = Field(foreign_key="blogger.id")
     
     # 관계
     campaign: Campaign = Relationship(back_populates="outreach")
-    creator: Creator = Relationship(back_populates="outreach")
+    blogger: Blogger = Relationship(back_populates="outreach")
 
 
 class OutreachCreate(OutreachBase):
     """연락 이력 생성 모델"""
     campaign_id: int
-    creator_id: int
+    blogger_id: int
 
 
 class OutreachRead(OutreachBase):
     """연락 이력 조회 모델"""
     id: int
     campaign_id: int
-    creator_id: int
+    blogger_id: int
     created_at: datetime
 
 
@@ -243,11 +244,11 @@ class Deliverable(DeliverableBase, TimestampMixin, table=True):
     """게시물 테이블"""
     id: Optional[int] = Field(default=None, primary_key=True)
     campaign_id: int = Field(foreign_key="campaign.id")
-    creator_id: int = Field(foreign_key="creator.id")
+    blogger_id: int = Field(foreign_key="blogger.id")
     
     # 관계
     campaign: Campaign = Relationship(back_populates="deliverables")
-    creator: Creator = Relationship(back_populates="deliverables")
+    blogger: Blogger = Relationship(back_populates="deliverables")
     
     @property
     def metrics(self) -> Dict[str, Any]:
@@ -258,14 +259,14 @@ class Deliverable(DeliverableBase, TimestampMixin, table=True):
 class DeliverableCreate(DeliverableBase):
     """게시물 생성 모델"""
     campaign_id: int
-    creator_id: int
+    blogger_id: int
 
 
 class DeliverableRead(DeliverableBase):
     """게시물 조회 모델"""
     id: int
     campaign_id: int
-    creator_id: int
+    blogger_id: int
     created_at: datetime
 
 

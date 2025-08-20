@@ -9,10 +9,9 @@ from datetime import datetime, timedelta
 
 from database.database import get_session
 from database.models import (
-    Creator, CreatorCreate, Platform, Event, EventCreate
+    Blogger, BloggerCreate, Platform, Event, EventCreate
 )
 from crawlers.naver_crawler import NaverBlogCrawler
-from crawlers.instagram_crawler import InstagramCrawler
 
 router = APIRouter()
 
@@ -65,29 +64,33 @@ async def _crawl_naver_blogs_task(
         updated_count = 0
         
         for blog_data in blogs:
-            # 기존 크리에이터 확인
-            existing = session.query(Creator).filter(
-                Creator.platform == Platform.NAVER_BLOG,
-                Creator.handle == blog_data['handle']
+            # 기존 블로거 확인
+            existing = session.query(Blogger).filter(
+                Blogger.platform == Platform.NAVER_BLOG,
+                Blogger.blog_url == blog_data['blog_url']
             ).first()
             
             if existing:
-                # 기존 크리에이터 업데이트
-                existing.active_at = blog_data.get('post_date')
+                # 기존 블로거 업데이트
+                existing.last_post_date = blog_data.get('post_date')
+                existing.post_count = blog_data.get('post_count')
                 existing.updated_at = datetime.utcnow()
                 updated_count += 1
             else:
-                # 새 크리에이터 생성
-                creator_data = CreatorCreate(
+                # 새 블로거 생성
+                blogger_data = BloggerCreate(
                     platform=Platform.NAVER_BLOG,
-                    handle=blog_data['handle'],
+                    blog_name=blog_data.get('blog_name', ''),
+                    blogger_name=blog_data.get('blogger_name', ''),
+                    blog_url=blog_data['blog_url'],
                     category=blog_data['category'],
-                    active_at=blog_data.get('post_date'),
+                    post_count=blog_data.get('post_count'),
+                    last_post_date=blog_data.get('post_date'),
                     notes=f"키워드: {keyword}"
                 )
                 
-                creator = Creator.model_validate(creator_data)
-                session.add(creator)
+                blogger = Blogger.model_validate(blogger_data)
+                session.add(blogger)
                 created_count += 1
         
         session.commit()
@@ -110,97 +113,7 @@ async def _crawl_naver_blogs_task(
         session.commit()
 
 
-@router.post("/instagram/hashtag")
-async def crawl_instagram_hashtag(
-    hashtag: str,
-    limit: int = 50,
-    background_tasks: BackgroundTasks = BackgroundTasks(),
-    session: Session = Depends(get_session)
-):
-    """인스타그램 해시태그 크롤링"""
-    
-    # 백그라운드에서 크롤링 실행
-    background_tasks.add_task(
-        _crawl_instagram_hashtag_task,
-        hashtag, limit, session
-    )
-    
-    # 이벤트 로그 생성
-    event = Event(
-        type="crawling_started",
-        payload_json=f'{{"platform": "instagram", "hashtag": "{hashtag}", "limit": {limit}}}'
-    )
-    session.add(event)
-    session.commit()
-    
-    return {
-        "message": "인스타그램 해시태그 크롤링이 시작되었습니다.",
-        "hashtag": hashtag,
-        "limit": limit,
-        "estimated_time": f"{limit // 10}분"
-    }
 
-
-async def _crawl_instagram_hashtag_task(
-    hashtag: str,
-    limit: int,
-    session: Session
-):
-    """인스타그램 해시태그 크롤링 백그라운드 작업"""
-    
-    try:
-        crawler = InstagramCrawler()
-        accounts = crawler.search_hashtag(hashtag, limit)
-        
-        created_count = 0
-        updated_count = 0
-        
-        for account_data in accounts:
-            # 기존 크리에이터 확인
-            existing = session.query(Creator).filter(
-                Creator.platform == Platform.INSTAGRAM,
-                Creator.handle == account_data['handle']
-            ).first()
-            
-            if existing:
-                # 기존 크리에이터 업데이트
-                existing.engagement_rate = account_data.get('engagement_rate')
-                existing.active_at = account_data.get('last_post_date')
-                existing.updated_at = datetime.utcnow()
-                updated_count += 1
-            else:
-                # 새 크리에이터 생성
-                creator_data = CreatorCreate(
-                    platform=Platform.INSTAGRAM,
-                    handle=account_data['handle'],
-                    category=account_data['category'],
-                    engagement_rate=account_data.get('engagement_rate'),
-                    active_at=account_data.get('last_post_date'),
-                    notes=f"해시태그: #{hashtag}"
-                )
-                
-                creator = Creator.model_validate(creator_data)
-                session.add(creator)
-                created_count += 1
-        
-        session.commit()
-        
-        # 완료 이벤트 로그
-        event = Event(
-            type="crawling_completed",
-            payload_json=f'{{"platform": "instagram", "hashtag": "{hashtag}", "created": {created_count}, "updated": {updated_count}}}'
-        )
-        session.add(event)
-        session.commit()
-        
-    except Exception as e:
-        # 오류 이벤트 로그
-        event = Event(
-            type="crawling_failed",
-            payload_json=f'{{"platform": "instagram", "hashtag": "{hashtag}", "error": "{str(e)}"}}'
-        )
-        session.add(event)
-        session.commit()
 
 
 @router.get("/status")
@@ -215,9 +128,9 @@ async def get_crawling_status(
     ).order_by(Event.created_at.desc()).limit(10).all()
     
     status_summary = {
-        'total_creators': session.query(Creator).count(),
-        'naver_creators': session.query(Creator).filter(Creator.platform == Platform.NAVER_BLOG).count(),
-        'instagram_creators': session.query(Creator).filter(Creator.platform == Platform.INSTAGRAM).count(),
+        'total_bloggers': session.query(Blogger).count(),
+        'naver_bloggers': session.query(Blogger).filter(Blogger.platform == Platform.NAVER_BLOG).count(),
+        'active_bloggers': session.query(Blogger).filter(Blogger.is_active == True).count(),
         'recent_events': [
             {
                 'type': event.type,
