@@ -1,0 +1,71 @@
+{
+  "name": "23. 블로거 회신 추적",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {"item": [{"mode": "everyMinute"}]},
+        "simple": false,
+        "filters": {"labelIds": ["INBOX"]},
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.2,
+      "position": [-480, -80],
+      "id": "gmail-trigger",
+      "name": "Gmail Trigger",
+      "credentials": {"gmailOAuth2": {"id": "Z9xqG2FmNKsPBjRq", "name": "Gmail account"}}
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {"caseSensitive": true, "typeValidation": "strict", "version": 2},
+          "conditions": [
+            {"leftValue": "={{$json.threadId}}", "rightValue": "", "operator": {"type": "string", "operation": "notEmpty"}},
+            {"leftValue": "={{$json.labelIds}}", "rightValue": "SENT", "operator": {"type": "string", "operation": "notContains"}}
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [-240, -80],
+      "id": "if-reply",
+      "name": "Is Incoming Reply"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {"__rl": true, "value": "SPREADSHEET_ID", "mode": "list", "cachedResultName": "블로거아웃리치"},
+        "sheetName": {"__rl": true, "value": "gid=0", "mode": "list", "cachedResultName": "시트1"},
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "timestamp": "={{ new Date().toISOString() }}",
+            "from": "={{ $json.from }}",
+            "subject": "={{ $json.subject }}",
+            "status": "REPLIED",
+            "snippet": "={{ $json.snippet }}"
+          },
+          "matchingColumns": [],
+          "schema": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [0, -80],
+      "id": "sheets-append",
+      "name": "Append Reply",
+      "credentials": {"googleSheetsOAuth2Api": {"id": "crQhuch7dXX3QwGD", "name": "Google Sheets account"}}
+    }
+  ],
+  "connections": {
+    "Gmail Trigger": {"main": [[{"node": "Is Incoming Reply", "type": "main", "index": 0}]]},
+    "Is Incoming Reply": {"main": [[{"node": "Append Reply", "type": "main", "index": 0}]]}
+  },
+  "active": false,
+  "settings": {"executionOrder": "v1"},
+  "id": "blogger-reply-tracking"
+}
+

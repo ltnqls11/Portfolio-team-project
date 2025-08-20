@@ -1,0 +1,89 @@
+{
+  "name": "블로거 아웃리치 자동화",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "blogger-outreach",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-640, 0],
+      "name": "Webhook",
+      "id": "webhook-1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 입력 배열 [{name, email, blog_url}] 형태를 정상화\nconst items = $input.all().map(i => i.json);\nreturn items.map(x => ({ json: x }));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-400, 0],
+      "name": "Normalize Array",
+      "id": "code-1"
+    },
+    {
+      "parameters": {
+        "functionCode": "const { exec } = require('child_process');\nconst promo = {\n  product_name: '스마트공기청정기 A100',\n  category: '가전제품',\n  usp: 'AI 기반 자동 공기질 최적화',\n  target_audience: '알레르기 민감 가정',\n  tone: '친근하고 신뢰감 있는 톤',\n  keywords: ['공기청정기','미세먼지','AI공기관리'],\n  cta: '지금 바로 체험해보세요!'\n};\n\nconst blogger = $json;\nif(blogger.email){\n  // 이메일 있는 블로거 → Python 스크립트 실행 후 Webhook 전송\n  exec(`python3 send_email.py '${JSON.stringify(blogger)}' '${JSON.stringify(promo)}'`);\n}else{\n  // 이메일 없는 블로거 → Python Selenium 댓글 실행\n  exec(`python3 post_comment.py '${JSON.stringify(blogger)}' '${JSON.stringify(promo)}'`);\n}\nreturn items;"
+      },
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 2,
+      "position": [-120, 0],
+      "name": "Run Python Scripts",
+      "id": "function-1"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": "SPREADSHEET_ID",
+        "sheetName": "gid=0",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "timestamp": "={{ new Date().toISOString() }}",
+            "blogger_name": "={{ $json.name }}",
+            "email": "={{ $json.email || 'N/A' }}",
+            "blog_url": "={{ $json.blog_url }}",
+            "status": "={{ $json.email ? 'EMAIL_SENT' : 'COMMENT_POSTED' }}"
+          },
+          "matchingColumns": [],
+          "schema": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [160, 0],
+      "name": "Append Row",
+      "id": "sheets-1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\"status\": \"ok\", \"count\": ={{$items().length}}}"
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [400, 0],
+      "name": "Respond",
+      "id": "respond-1"
+    }
+  ],
+  "connections": {
+    "Webhook": {"main": [[{"node": "Normalize Array", "type": "main", "index": 0}]]},
+    "Normalize Array": {"main": [[{"node": "Run Python Scripts", "type": "main", "index": 0}]]},
+    "Run Python Scripts": {"main": [[{"node": "Append Row", "type": "main", "index": 0}]]},
+    "Append Row": {"main": [[{"node": "Respond", "type": "main", "index": 0}]]}
+  },
+  "active": false,
+  "settings": {"executionOrder": "v1"},
+  "id": "blogger-outreach-workflow"
+}
