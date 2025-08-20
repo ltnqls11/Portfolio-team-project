@@ -20,51 +20,63 @@ const ChannelExplorer: React.FC<ChannelExplorerProps> = ({
   const mockChannels: Channel[] = [
     {
       id: '1',
-      name: 'Instagram',
-      platform: 'instagram',
-      description: '시각적 콘텐츠 중심의 소셜 미디어 플랫폼',
-      audience: 2000000000,
-      engagement: 4.2,
-      costPerPost: 500000,
-      demographics: { age: '18-34', gender: '여성 60%' },
-      categories: ['beauty', 'fashion', 'lifestyle'],
-      icon: '📸'
-    },
-    {
-      id: '2',
-      name: 'YouTube',
-      platform: 'youtube',
-      description: '동영상 콘텐츠 플랫폼',
-      audience: 2700000000,
-      engagement: 3.8,
-      costPerPost: 1200000,
-      demographics: { age: '25-44', gender: '남성 55%' },
-      categories: ['tech', 'gaming', 'education'],
-      icon: '📺'
-    },
-    {
-      id: '3',
-      name: 'TikTok',
-      platform: 'tiktok',
-      description: '숏폼 비디오 플랫폼',
-      audience: 1000000000,
-      engagement: 5.9,
-      costPerPost: 300000,
-      demographics: { age: '16-24', gender: '여성 57%' },
-      categories: ['entertainment', 'dance', 'comedy'],
-      icon: '🎵'
-    },
-    {
-      id: '4',
-      name: 'Naver Blog',
-      platform: 'naver',
-      description: '네이버 블로그 플랫폼',
+      name: '네이버 블로그',
+      platform: 'naver_blog',
+      description: '국내 최대 블로그 플랫폼',
       audience: 45000000,
       engagement: 3.2,
       costPerPost: 200000,
       demographics: { age: '30-50', gender: '여성 65%' },
-      categories: ['beauty', 'food', 'travel'],
+      categories: ['beauty', 'food', 'travel', 'lifestyle'],
       icon: '📝'
+    },
+    {
+      id: '2',
+      name: '블로그스팟',
+      platform: 'blogspot',
+      description: '구글의 무료 블로그 서비스',
+      audience: 15000000,
+      engagement: 2.8,
+      costPerPost: 150000,
+      demographics: { age: '25-45', gender: '남성 55%' },
+      categories: ['tech', 'education', 'lifestyle'],
+      icon: '📄'
+    },
+    {
+      id: '3',
+      name: '티스토리',
+      platform: 'tistory',
+      description: '카카오의 블로그 플랫폼',
+      audience: 12000000,
+      engagement: 3.5,
+      costPerPost: 180000,
+      demographics: { age: '20-40', gender: '여성 60%' },
+      categories: ['beauty', 'food', 'tech', 'lifestyle'],
+      icon: '📋'
+    },
+    {
+      id: '4',
+      name: '카카오채널',
+      platform: 'kakao_channel',
+      description: '카카오톡 기반 채널 플랫폼',
+      audience: 8000000,
+      engagement: 4.1,
+      costPerPost: 120000,
+      demographics: { age: '20-35', gender: '여성 70%' },
+      categories: ['beauty', 'fashion', 'lifestyle'],
+      icon: '💬'
+    },
+    {
+      id: '5',
+      name: '인스타그램',
+      platform: 'instagram',
+      description: '시각적 콘텐츠 중심의 소셜 미디어',
+      audience: 18000000,
+      engagement: 4.2,
+      costPerPost: 500000,
+      demographics: { age: '18-34', gender: '여성 60%' },
+      categories: ['beauty', 'fashion', 'lifestyle', 'food'],
+      icon: '📸'
     }
   ];
 
@@ -134,10 +146,11 @@ const ChannelExplorer: React.FC<ChannelExplorerProps> = ({
               className="form-select md:w-48"
             >
               <option value="all">모든 플랫폼</option>
-              <option value="instagram">Instagram</option>
-              <option value="youtube">YouTube</option>
-              <option value="tiktok">TikTok</option>
-              <option value="naver">Naver Blog</option>
+              <option value="naver_blog">네이버 블로그</option>
+              <option value="blogspot">블로그스팟</option>
+              <option value="tistory">티스토리</option>
+              <option value="kakao_channel">카카오채널</option>
+              <option value="instagram">인스타그램</option>
             </select>
           </div>
           

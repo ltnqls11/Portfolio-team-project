@@ -34,12 +34,11 @@ const MarketingWidget: React.FC<MarketingWidgetProps> = ({ campaignData, onUpdat
 
   const getChannelText = (channel: string) => {
     switch (channel) {
-      case 'instagram': return 'Instagram';
-      case 'youtube': return 'YouTube';
-      case 'tiktok': return 'TikTok';
-      case 'naver': return '네이버 블로그';
-      case 'facebook': return 'Facebook';
-      case 'twitter': return 'Twitter';
+      case 'naver_blog': return '네이버 블로그';
+      case 'blogspot': return '블로그스팟';
+      case 'tistory': return '티스토리';
+      case 'kakao_channel': return '카카오채널';
+      case 'instagram': return '인스타그램';
       default: return channel;
     }
   };

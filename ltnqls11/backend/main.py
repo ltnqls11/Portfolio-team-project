@@ -84,11 +84,13 @@ class GeneratedContent(BaseModel):
 # 메모리 저장소 (실제로는 데이터베이스 사용)
 campaigns_db = []
 power_bloggers_db = [
+    # 네이버 블로그
     {
         "id": str(uuid.uuid4()),
         "blogUrl": "https://blog.naver.com/beauty_queen",
         "blogTitle": "뷰티퀸의 화장품 리뷰",
         "bloggerName": "뷰티퀸",
+        "platform": "naver_blog",
         "category": "beauty",
         "subscriberCount": 45000,
         "avgViews": 8500,
@@ -101,11 +103,13 @@ power_bloggers_db = [
         "isVerified": True,
         "tags": ["화장품", "스킨케어", "메이크업", "뷰티팁"]
     },
+    # 티스토리
     {
         "id": str(uuid.uuid4()),
-        "blogUrl": "https://blog.naver.com/food_lover",
+        "blogUrl": "https://foodlover.tistory.com",
         "blogTitle": "맛집탐방 일기",
         "bloggerName": "푸드러버",
+        "platform": "tistory",
         "category": "food",
         "subscriberCount": 32000,
         "avgViews": 6200,
@@ -118,22 +122,62 @@ power_bloggers_db = [
         "isVerified": True,
         "tags": ["맛집", "요리", "레시피", "카페"]
     },
+    # 블로그스팟
     {
         "id": str(uuid.uuid4()),
-        "blogUrl": "https://blog.naver.com/lifestyle_mom",
+        "blogUrl": "https://lifestylemom.blogspot.com",
         "blogTitle": "워킹맘의 라이프스타일",
         "bloggerName": "라이프맘",
+        "platform": "blogspot",
         "category": "lifestyle",
         "subscriberCount": 28000,
         "avgViews": 5800,
         "avgLikes": 240,
         "avgComments": 55,
         "engagementRate": 0.052,
-        "contactEmail": "lifemom@naver.com",
+        "contactEmail": "lifemom@gmail.com",
         "collaborationRate": 200000,
         "lastActive": datetime.now(),
         "isVerified": False,
         "tags": ["육아", "살림", "인테리어", "패션"]
+    },
+    # 카카오채널
+    {
+        "id": str(uuid.uuid4()),
+        "blogUrl": "https://pf.kakao.com/_beauty_tips",
+        "blogTitle": "뷰티팁 채널",
+        "bloggerName": "뷰티팁",
+        "platform": "kakao_channel",
+        "category": "beauty",
+        "subscriberCount": 15000,
+        "avgViews": 3200,
+        "avgLikes": 180,
+        "avgComments": 25,
+        "engagementRate": 0.064,
+        "contactEmail": "beautytips@kakao.com",
+        "collaborationRate": 150000,
+        "lastActive": datetime.now(),
+        "isVerified": True,
+        "tags": ["뷰티", "팁", "화장품", "리뷰"]
+    },
+    # 인스타그램
+    {
+        "id": str(uuid.uuid4()),
+        "blogUrl": "https://instagram.com/fashion_daily",
+        "blogTitle": "데일리 패션",
+        "bloggerName": "패션데일리",
+        "platform": "instagram",
+        "category": "fashion",
+        "subscriberCount": 52000,
+        "avgViews": 12000,
+        "avgLikes": 850,
+        "avgComments": 120,
+        "engagementRate": 0.081,
+        "contactEmail": "fashiondaily@gmail.com",
+        "collaborationRate": 400000,
+        "lastActive": datetime.now(),
+        "isVerified": True,
+        "tags": ["패션", "OOTD", "스타일링", "트렌드"]
     }
 ]
 reviews_db = []
@@ -171,6 +215,15 @@ async def update_campaign(campaign_id: str, campaign_data: dict):
             return campaigns_db[i]
     raise HTTPException(status_code=404, detail="캠페인을 찾을 수 없습니다")
 
+# 지원 플랫폼 목록
+SUPPORTED_PLATFORMS = [
+    "naver_blog",      # 네이버 블로그
+    "blogspot",        # 블로그스팟
+    "tistory",         # 티스토리
+    "kakao_channel",   # 카카오채널
+    "instagram"        # 인스타그램
+]
+
 # 문구 생성 관련 API
 @app.post("/api/copy/generate")
 async def generate_copy(request: dict):
@@ -178,7 +231,8 @@ async def generate_copy(request: dict):
     channel = request.get("channel", "naver_blog")
     product = request.get("productDescription", "제품")
     
-    if channel == "naver_blog":
+    if channel in ["naver_blog", "blogspot", "tistory"]:
+        # 블로그 플랫폼용 긴 형태 콘텐츠
         variants = [
             {
                 "title": f"{product} 완벽 가이드 - 실제 사용 후기",
@@ -197,7 +251,20 @@ async def generate_copy(request: dict):
                 "score": 0.88
             }
         ]
-    else:
+    elif channel == "kakao_channel":
+        # 카카오채널용 중간 형태 콘텐츠
+        variants = [
+            {
+                "title": f"{product} 추천해요! 💕",
+                "content": f"{product} 사용해보니 정말 만족스러워요! 특히 이런 분들께 추천드려요 ✨\n\n✅ 장점\n- 사용감이 좋아요\n- 효과가 빨라요\n- 가성비 좋아요\n\n지금 특가로 만나보세요! 👇",
+                "hashtags": ["#추천", "#좋아요", "#특가"],
+                "cta": "자세히 보기",
+                "length": 180,
+                "score": 0.89
+            }
+        ]
+    elif channel == "instagram":
+        # 인스타그램용 짧은 형태 콘텐츠
         variants = [
             {
                 "content": f"{product} 정말 좋아요! 👍 사용해보니 기대 이상이네요 ✨",
@@ -205,6 +272,24 @@ async def generate_copy(request: dict):
                 "cta": "스토리에서 더 보기 👆",
                 "length": 45,
                 "score": 0.85
+            },
+            {
+                "content": f"요즘 핫한 {product} 드디어 써봤어요! 💕 진짜 대박이에요 🔥",
+                "hashtags": ["#핫템", "#대박", "#추천템"],
+                "cta": "링크는 프로필에 👆",
+                "length": 42,
+                "score": 0.87
+            }
+        ]
+    else:
+        # 기본 콘텐츠
+        variants = [
+            {
+                "content": f"{product} 추천드려요!",
+                "hashtags": ["#추천"],
+                "cta": "자세히 보기",
+                "length": 20,
+                "score": 0.75
             }
         ]
     
@@ -223,10 +308,24 @@ async def approve_copy_variant(variant_id: str):
             return variant
     raise HTTPException(status_code=404, detail="문구를 찾을 수 없습니다")
 
+# 플랫폼 목록 조회 API
+@app.get("/api/platforms")
+async def get_platforms():
+    return {
+        "platforms": [
+            {"id": "naver_blog", "name": "네이버 블로그", "type": "blog"},
+            {"id": "blogspot", "name": "블로그스팟", "type": "blog"},
+            {"id": "tistory", "name": "티스토리", "type": "blog"},
+            {"id": "kakao_channel", "name": "카카오채널", "type": "channel"},
+            {"id": "instagram", "name": "인스타그램", "type": "social"}
+        ]
+    }
+
 # 파워블로거 관련 API
 @app.get("/api/power-bloggers")
 async def get_power_bloggers(
     category: Optional[str] = None, 
+    platform: Optional[str] = None,
     minSubscribers: Optional[int] = None,
     maxSubscribers: Optional[int] = None,
     minEngagementRate: Optional[float] = None
@@ -235,6 +334,9 @@ async def get_power_bloggers(
     
     if category:
         filtered_bloggers = [b for b in filtered_bloggers if b["category"] == category]
+    
+    if platform:
+        filtered_bloggers = [b for b in filtered_bloggers if b["platform"] == platform]
     
     if minSubscribers:
         filtered_bloggers = [b for b in filtered_bloggers if b["subscriberCount"] >= minSubscribers]
@@ -260,12 +362,24 @@ async def crawl_blogger_data(request: dict):
     if not blog_url:
         raise HTTPException(status_code=400, detail="블로그 URL이 필요합니다")
     
+    # 플랫폼 자동 감지
+    platform = "naver_blog"  # 기본값
+    if "tistory.com" in blog_url:
+        platform = "tistory"
+    elif "blogspot.com" in blog_url:
+        platform = "blogspot"
+    elif "kakao.com" in blog_url:
+        platform = "kakao_channel"
+    elif "instagram.com" in blog_url:
+        platform = "instagram"
+    
     # 실제로는 크롤링 로직 구현
     new_blogger = {
         "id": str(uuid.uuid4()),
         "blogUrl": blog_url,
         "blogTitle": "새로 발견된 블로그",
         "bloggerName": "신규 블로거",
+        "platform": platform,
         "category": "lifestyle",
         "subscriberCount": 5000,
         "avgViews": 1200,
@@ -452,25 +566,11 @@ async def get_dashboard_stats():
         "awaitingReplies": 2
     }
 
-def find_free_port():
-    """사용 가능한 포트를 찾는 함수"""
-    for port in range(8000, 8010):
-        try:
-            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-                s.bind(('localhost', port))
-                return port
-        except OSError:
-            continue
-    return None
-
 if __name__ == "__main__":
     import uvicorn
     
-    # 사용 가능한 포트 찾기
-    port = find_free_port()
-    if port is None:
-        print("❌ 사용 가능한 포트를 찾을 수 없습니다 (8000-8009)")
-        sys.exit(1)
+    # 포트 5678에서 실행
+    port = 5678
     
     print(f"🚀 마케팅 플랫폼 API 서버를 포트 {port}에서 시작합니다...")
     print(f"📖 API 문서: http://localhost:{port}/docs")

@@ -1,0 +1,93 @@
+{
+    "nodes": [
+      {
+        "parameters": {},
+        "name": "Start",
+        "type": "n8n-nodes-base.start",
+        "typeVersion": 1,
+        "id": "start"
+      },
+      {
+        "parameters": {
+          "url": "https://api.example.com/blog_content_generator",
+          "jsonParameters": true,
+          "options": {},
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "topic",
+                "value": "기업이 채널/인플루언서를 고르고, 맞춤형 홍보 문구를 자동 생성·배포·관리하는 올인원 플랫폼"
+              },
+              {
+                "name": "core_values",
+                "value": [
+                  "문구 자동화: 제품/경쟁사/사례를 학습해 채널별 톤·SEO 구조로 문구 생성",
+                  "매칭·연계: 카테고리·도달·참여율에 맞춰 나노/마이크로 인플루언서를 추천 및 연락 자동화",
+                  "운영 자동화: n8n으로 수집→정제→생성→발송→로그→리포트까지 파이프라인화"
+                ]
+              }
+            ]
+          }
+        },
+        "name": "Generate Blog Post",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 1,
+        "id": "generateBlogPost",
+        "executeOnce": true,
+        "retryOnFail": true,
+        "workflow": "main"
+      },
+      {
+        "parameters": {
+          "url": "https://api.example.com/blog_post",
+          "jsonParameters": true,
+          "options": {},
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "title",
+                "value": "{{$json.title}}"
+              },
+              {
+                "name": "content",
+                "value": "{{$json.content}}"
+              },
+              {
+                "name": "tags",
+                "value": "{{$json.tags}}"
+              }
+            ]
+          }
+        },
+        "name": "Publish to Naver Blog",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 1,
+        "id": "publishToNaverBlog",
+        "executeOnce": true,
+        "retryOnFail": true,
+        "workflow": "main"
+      }
+    ],
+    "connections": {
+      "Start": {
+        "main": [
+          [
+            {
+              "node": "Generate Blog Post",
+              "type": "main"
+            }
+          ]
+        ]
+      },
+      "Generate Blog Post": {
+        "main": [
+          [
+            {
+              "node": "Publish to Naver Blog",
+              "type": "main"
+            }
+          ]
+        ]
+      }
+    }
+  }

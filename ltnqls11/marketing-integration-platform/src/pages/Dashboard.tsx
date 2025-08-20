@@ -65,7 +65,7 @@ const Dashboard: React.FC = () => {
       budget: 5000000,
       startAt: new Date(),
       endAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30일 후
-      channels: ['instagram', 'youtube', 'tiktok'],
+      channels: ['naver_blog', 'blogspot', 'tistory', 'kakao_channel', 'instagram'],
       keywords: [],
       referenceUrls: [],
       status: 'draft',

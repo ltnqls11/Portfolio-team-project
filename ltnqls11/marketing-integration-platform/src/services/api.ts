@@ -67,7 +67,7 @@ export const getReviews = async (campaignId: string): Promise<ReviewData[]> => {
 // 콘텐츠 자동 생성 API
 export const generateContent = async (request: {
   campaignId: string;
-  contentType: 'instagram_post' | 'youtube_script' | 'tiktok_video' | 'blog_post';
+  contentType: 'naver_blog_post' | 'blogspot_post' | 'tistory_post' | 'kakao_channel_post' | 'instagram_post';
   tone: string;
   targetAudience: string;
   productName: string;

@@ -17,7 +17,7 @@ const ContentGenerator: React.FC<ContentGeneratorProps> = ({
   const [generating, setGenerating] = useState(false);
   const [selectedInfluencerIds, setSelectedInfluencerIds] = useState<string[]>([]);
   const [contentSettings, setContentSettings] = useState({
-    contentType: 'instagram_post' as 'instagram_post' | 'youtube_script' | 'tiktok_video' | 'blog_post',
+    contentType: 'naver_blog_post' as 'naver_blog_post' | 'blogspot_post' | 'tistory_post' | 'kakao_channel_post' | 'instagram_post',
     tone: 'friendly' as 'professional' | 'casual' | 'friendly' | 'trendy',
     targetAudience: '20-30대 여성',
     productName: '',
@@ -91,10 +91,11 @@ const ContentGenerator: React.FC<ContentGeneratorProps> = ({
 
   const getContentTypeText = (type: GeneratedContent['contentType']) => {
     switch (type) {
-      case 'instagram_post': return 'Instagram 포스트';
-      case 'youtube_script': return 'YouTube 스크립트';
-      case 'tiktok_video': return 'TikTok 비디오';
-      case 'blog_post': return '블로그 포스트';
+      case 'naver_blog_post': return '네이버 블로그 포스트';
+      case 'blogspot_post': return '블로그스팟 포스트';
+      case 'tistory_post': return '티스토리 포스트';
+      case 'kakao_channel_post': return '카카오채널 포스트';
+      case 'instagram_post': return '인스타그램 포스트';
     }
   };
 
@@ -158,10 +159,11 @@ const ContentGenerator: React.FC<ContentGeneratorProps> = ({
                 })}
                 className="form-select"
               >
-                <option value="instagram_post">Instagram 포스트</option>
-                <option value="youtube_script">YouTube 스크립트</option>
-                <option value="tiktok_video">TikTok 비디오</option>
-                <option value="blog_post">블로그 포스트</option>
+                <option value="naver_blog_post">네이버 블로그 포스트</option>
+                <option value="blogspot_post">블로그스팟 포스트</option>
+                <option value="tistory_post">티스토리 포스트</option>
+                <option value="kakao_channel_post">카카오채널 포스트</option>
+                <option value="instagram_post">인스타그램 포스트</option>
               </select>
             </div>
             

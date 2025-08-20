@@ -28,7 +28,7 @@ export interface Campaign {
 export interface Channel {
   id: string;
   name: string;
-  platform: 'instagram' | 'youtube' | 'tiktok' | 'naver' | 'facebook' | 'twitter';
+  platform: 'naver_blog' | 'blogspot' | 'tistory' | 'kakao_channel' | 'instagram';
   description: string;
   audience: number;
   engagement: number;
@@ -52,7 +52,7 @@ export interface Influencer {
   id: string;
   name: string;
   username: string;
-  platform: 'instagram' | 'youtube' | 'tiktok' | 'naver' | 'facebook' | 'twitter';
+  platform: 'naver_blog' | 'blogspot' | 'tistory' | 'kakao_channel' | 'instagram';
   followers: number;
   engagement: number;
   category: string;
@@ -110,7 +110,7 @@ export interface GeneratedContent {
   id: string;
   campaignId: string;
   influencerId?: string;
-  contentType: 'instagram_post' | 'youtube_script' | 'tiktok_video' | 'blog_post';
+  contentType: 'naver_blog_post' | 'blogspot_post' | 'tistory_post' | 'kakao_channel_post' | 'instagram_post';
   title: string;
   content: string;
   hashtags?: string[];

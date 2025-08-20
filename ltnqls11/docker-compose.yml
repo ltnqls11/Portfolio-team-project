@@ -1,0 +1,12 @@
+version: "3"
+services:
+  n8n:
+    image: n8nio/n8n:latest
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=원하는_사용자명
+      - N8N_BASIC_AUTH_PASSWORD=원하는_비밀번호
+    volumes:
+      - ~/.n8n:/home/node/.n8n

@@ -23,75 +23,93 @@ const InfluencerFinder: React.FC<InfluencerFinderProps> = ({
   const mockInfluencers: Influencer[] = [
     {
       id: '1',
-      name: '뷰티구루 김민지',
-      username: '@beauty_minji',
-      platform: 'instagram',
-      followers: 850000,
+      name: '뷰티퀸 김민지',
+      username: 'beauty_queen',
+      platform: 'naver_blog',
+      followers: 45000,
       engagement: 4.8,
       category: 'beauty',
-      bio: '뷰티 크리에이터 | 화장품 리뷰 전문 | 협업 문의 DM',
+      bio: '뷰티 블로거 | 화장품 리뷰 전문 | 협업 문의 이메일',
       avatar: '👩‍💄',
       verified: true,
-      costPerPost: 1200000,
+      costPerPost: 300000,
       recentPosts: 45,
-      avgLikes: 35000,
-      avgComments: 1200,
+      avgLikes: 320,
+      avgComments: 85,
       demographics: { age: '20-35', gender: '여성 85%' },
       tags: ['뷰티', '화장품', '스킨케어', '메이크업']
     },
     {
       id: '2',
-      name: '테크리뷰어 박준호',
-      username: '@tech_junho',
-      platform: 'youtube',
-      followers: 1200000,
-      engagement: 3.9,
-      category: 'tech',
-      bio: '최신 기술 리뷰 | 가젯 언박싱 | 매주 화요일 업로드',
-      avatar: '👨‍💻',
+      name: '푸드러버',
+      username: 'foodlover',
+      platform: 'tistory',
+      followers: 32000,
+      engagement: 5.5,
+      category: 'food',
+      bio: '맛집 탐방 블로거 | 요리 레시피 공유 | 카페 리뷰',
+      avatar: '👨‍🍳',
       verified: true,
-      costPerPost: 2500000,
-      recentPosts: 12,
-      avgLikes: 45000,
-      avgComments: 2800,
-      demographics: { age: '25-40', gender: '남성 70%' },
-      tags: ['기술', '가젯', '리뷰', '언박싱']
+      costPerPost: 250000,
+      recentPosts: 28,
+      avgLikes: 280,
+      avgComments: 65,
+      demographics: { age: '25-40', gender: '여성 60%' },
+      tags: ['맛집', '요리', '레시피', '카페']
     },
     {
       id: '3',
-      name: '라이프스타일 이서연',
-      username: '@lifestyle_seoyeon',
-      platform: 'instagram',
-      followers: 650000,
+      name: '라이프맘',
+      username: 'lifestyle_mom',
+      platform: 'blogspot',
+      followers: 28000,
       engagement: 5.2,
       category: 'lifestyle',
-      bio: '일상 공유 | 카페 투어 | 패션 코디 | 협업 환영',
+      bio: '워킹맘의 라이프스타일 | 육아 팁 | 인테리어',
       avatar: '👩‍🎨',
       verified: false,
-      costPerPost: 800000,
-      recentPosts: 78,
-      avgLikes: 28000,
-      avgComments: 950,
-      demographics: { age: '20-30', gender: '여성 90%' },
-      tags: ['라이프스타일', '카페', '패션', '일상']
+      costPerPost: 200000,
+      recentPosts: 35,
+      avgLikes: 240,
+      avgComments: 55,
+      demographics: { age: '30-45', gender: '여성 90%' },
+      tags: ['라이프스타일', '육아', '인테리어', '살림']
     },
     {
       id: '4',
-      name: '푸드블로거 최요리',
-      username: '@food_yori',
-      platform: 'naver',
-      followers: 320000,
-      engagement: 4.1,
-      category: 'food',
-      bio: '맛집 탐방 | 레시피 공유 | 요리 클래스 운영',
-      avatar: '👩‍🍳',
+      name: '뷰티팁',
+      username: '_beauty_tips',
+      platform: 'kakao_channel',
+      followers: 15000,
+      engagement: 6.4,
+      category: 'beauty',
+      bio: '뷰티 팁 공유 | 화장품 리뷰 | 카카오채널',
+      avatar: '💄',
       verified: true,
-      costPerPost: 450000,
-      recentPosts: 156,
-      avgLikes: 12000,
-      avgComments: 680,
-      demographics: { age: '25-45', gender: '여성 75%' },
-      tags: ['음식', '맛집', '레시피', '요리']
+      costPerPost: 150000,
+      recentPosts: 42,
+      avgLikes: 180,
+      avgComments: 25,
+      demographics: { age: '20-30', gender: '여성 85%' },
+      tags: ['뷰티', '팁', '화장품', '리뷰']
+    },
+    {
+      id: '5',
+      name: '패션데일리',
+      username: 'fashion_daily',
+      platform: 'instagram',
+      followers: 52000,
+      engagement: 8.1,
+      category: 'fashion',
+      bio: '데일리 패션 | OOTD | 스타일링 팁',
+      avatar: '👗',
+      verified: true,
+      costPerPost: 400000,
+      recentPosts: 89,
+      avgLikes: 850,
+      avgComments: 120,
+      demographics: { age: '20-35', gender: '여성 80%' },
+      tags: ['패션', 'OOTD', '스타일링', '트렌드']
     }
   ];
 
@@ -143,10 +161,11 @@ const InfluencerFinder: React.FC<InfluencerFinderProps> = ({
 
   const getPlatformIcon = (platform: string) => {
     switch (platform) {
+      case 'naver_blog': return '📝';
+      case 'blogspot': return '📄';
+      case 'tistory': return '📋';
+      case 'kakao_channel': return '💬';
       case 'instagram': return '📸';
-      case 'youtube': return '📺';
-      case 'tiktok': return '🎵';
-      case 'naver': return '📝';
       default: return '📱';
     }
   };
