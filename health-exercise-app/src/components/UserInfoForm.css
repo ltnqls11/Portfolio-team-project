@@ -1,0 +1,536 @@
+.user-info-form {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* 단계 표시기 */
+.step-indicator {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.step-indicator::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #e2e8f0;
+  z-index: 1;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  background: white;
+  padding: 0 16px;
+}
+
+.step-number {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  margin-bottom: 8px;
+  transition: all 0.3s ease;
+}
+
+.step.active .step-number {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.step.completed .step-number {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+}
+
+.step-label {
+  font-size: 0.875rem;
+  color: #64748b;
+  font-weight: 500;
+  text-align: center;
+}
+
+.step.active .step-label {
+  color: #3b82f6;
+  font-weight: 600;
+}
+
+.step.completed .step-label {
+  color: #10b981;
+}
+
+/* 폼 단계 */
+.form-step {
+  background: white;
+  padding: 32px;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+  margin-bottom: 24px;
+}
+
+.form-step h2 {
+  font-size: 1.75rem;
+  color: #1e293b;
+  margin: 0 0 8px 0;
+  font-weight: 700;
+}
+
+.step-description {
+  color: #64748b;
+  margin: 0 0 32px 0;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.form-section {
+  margin-bottom: 32px;
+}
+
+.form-section h3 {
+  font-size: 1.25rem;
+  color: #1e293b;
+  margin: 0 0 16px 0;
+  font-weight: 600;
+}
+
+/* 증상 그리드 */
+.symptoms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+.symptom-card {
+  position: relative;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.symptom-card:hover {
+  border-color: #3b82f6;
+  background: #f0f9ff;
+}
+
+.symptom-card.selected {
+  border-color: #3b82f6;
+  background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
+
+.symptom-card input[type="checkbox"] {
+  margin: 0;
+  transform: scale(1.2);
+  accent-color: #3b82f6;
+}
+
+.symptom-content h4 {
+  font-size: 1.125rem;
+  color: #1e293b;
+  margin: 0 0 4px 0;
+  font-weight: 600;
+}
+
+.symptom-content p {
+  color: #64748b;
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* 통증 위치 */
+.pain-locations {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.pain-location {
+  position: relative;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pain-location:hover {
+  border-color: #3b82f6;
+  background: #f0f9ff;
+}
+
+.pain-location.selected {
+  border-color: #3b82f6;
+  background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+  color: #3b82f6;
+  font-weight: 600;
+}
+
+.pain-location input[type="checkbox"] {
+  margin: 0;
+  transform: scale(1.1);
+  accent-color: #3b82f6;
+}
+
+/* 통증 심각도 */
+.pain-severity {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.severity-labels {
+  display: flex;
+  justify-content: space-between;
+  color: #64748b;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.severity-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.severity-btn {
+  width: 50px;
+  height: 50px;
+  border: 2px solid #e2e8f0;
+  border-radius: 50%;
+  background: white;
+  color: #64748b;
+  font-size: 1.125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.severity-btn:hover {
+  border-color: #3b82f6;
+  color: #3b82f6;
+}
+
+.severity-btn.selected {
+  border-color: #3b82f6;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+/* 환경 그리드 */
+.environment-grid,
+.habits-grid,
+.mode-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.environment-card,
+.habit-card,
+.mode-card {
+  position: relative;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.environment-card:hover,
+.habit-card:hover,
+.mode-card:hover {
+  border-color: #3b82f6;
+  background: #f0f9ff;
+}
+
+.environment-card.selected,
+.habit-card.selected,
+.mode-card.selected {
+  border-color: #3b82f6;
+  background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
+
+.environment-card input[type="radio"],
+.habit-card input[type="radio"],
+.mode-card input[type="radio"] {
+  margin: 0;
+  transform: scale(1.2);
+  accent-color: #3b82f6;
+}
+
+.environment-content h4,
+.habit-content h4,
+.mode-content h4 {
+  font-size: 1.125rem;
+  color: #1e293b;
+  margin: 0 0 4px 0;
+  font-weight: 600;
+}
+
+.environment-content p,
+.habit-content p,
+.mode-content p {
+  color: #64748b;
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* 기본 정보 그리드 */
+.basic-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-group label {
+  font-size: 0.875rem;
+  color: #374151;
+  font-weight: 500;
+}
+
+.input-group input {
+  padding: 12px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.input-group input::placeholder {
+  color: #9ca3af;
+}
+
+/* 근무 시간 */
+.working-hours {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.time-input {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.time-input label {
+  font-size: 0.875rem;
+  color: #374151;
+  font-weight: 500;
+}
+
+.time-input input {
+  padding: 12px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.time-input input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* 요약 섹션 */
+.summary-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.summary-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.summary-card h3 {
+  font-size: 1.125rem;
+  color: #1e293b;
+  margin: 0 0 12px 0;
+  font-weight: 600;
+}
+
+.summary-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.summary-tag {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.summary-card p {
+  color: #64748b;
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* 제출 섹션 */
+.submit-section {
+  text-align: center;
+  margin-top: 32px;
+}
+
+.submit-btn {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+  border: none;
+  padding: 16px 32px;
+  border-radius: 12px;
+  font-size: 1.125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px -3px rgba(59, 130, 246, 0.4);
+}
+
+/* 폼 네비게이션 */
+.form-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+}
+
+.nav-btn {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.nav-btn.prev {
+  background: #f8fafc;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+}
+
+.nav-btn.prev:hover {
+  background: #e2e8f0;
+  color: #1e293b;
+}
+
+.nav-btn.next {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+}
+
+.nav-btn.next:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(59, 130, 246, 0.4);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .user-info-form {
+    padding: 16px;
+  }
+  
+  .form-step {
+    padding: 24px;
+  }
+  
+  .form-step h2 {
+    font-size: 1.5rem;
+  }
+  
+  .symptoms-grid,
+  .environment-grid,
+  .habits-grid,
+  .mode-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .basic-info-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .working-hours {
+    grid-template-columns: 1fr;
+  }
+  
+  .pain-locations {
+    flex-direction: column;
+  }
+  
+  .severity-buttons {
+    flex-wrap: wrap;
+  }
+  
+  .step-indicator {
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+  }
+  
+  .step-indicator::before {
+    display: none;
+  }
+}
