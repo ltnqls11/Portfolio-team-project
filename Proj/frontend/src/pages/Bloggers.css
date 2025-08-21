@@ -1,0 +1,106 @@
+/* 블로거 페이지 스타일 */
+.bloggers {
+  padding: 0;
+}
+
+.project-summary {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.summary-item {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.summary-item .label {
+  font-size: 14px;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.summary-item .value {
+  font-size: 14px;
+  color: #212529;
+  font-weight: 600;
+}
+
+.blogger-link {
+  color: #0d6efd;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.blogger-link:hover {
+  text-decoration: underline;
+}
+
+.email-link {
+  color: #198754;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.email-link:hover {
+  text-decoration: underline;
+}
+
+.url-link {
+  color: #0d6efd;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.url-link:hover {
+  text-decoration: underline;
+}
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+  gap: 16px;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.page-info {
+  font-size: 14px;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.empty-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.empty-state h3 {
+  color: #495057;
+  margin-bottom: 8px;
+}
+
+.empty-state p {
+  color: #6c757d;
+  margin-bottom: 24px;
+}

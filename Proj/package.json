@@ -1,0 +1,23 @@
+{
+  "name": "portfolio-team-project",
+  "version": "1.0.0",
+  "description": "네이버 블로그에서 특정 키워드로 검색하여 블로거의 정보(블로그명, URL, 이메일)를 자동으로 수집하고 Google Sheets에 저장하는 RPA 스크립트입니다.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ltnqls11/Portfolio-team-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ltnqls11/Portfolio-team-project/issues"
+  },
+  "homepage": "https://github.com/ltnqls11/Portfolio-team-project#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}

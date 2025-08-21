@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-background text-text-main font-sans antialiased;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.card {
+  @apply bg-white/80 backdrop-blur-xl rounded-xl shadow-sm p-6 border border-white/20;
+}

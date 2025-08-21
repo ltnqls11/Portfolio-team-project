@@ -1,0 +1,105 @@
+/* 설정 페이지 스타일 */
+.settings {
+  padding: 0;
+}
+
+.form-text {
+  font-size: 12px;
+  color: #6c757d;
+  margin-top: 4px;
+}
+
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #495057;
+  cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+  margin: 0;
+}
+
+.system-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.info-item:last-child {
+  border-bottom: none;
+}
+
+.info-item label {
+  font-size: 14px;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.info-item span {
+  font-size: 14px;
+  color: #212529;
+  font-weight: 600;
+}
+
+.status-online {
+  color: #198754 !important;
+}
+
+.help-section h4 {
+  color: #495057;
+  font-size: 16px;
+  margin: 20px 0 8px 0;
+}
+
+.help-section h4:first-child {
+  margin-top: 0;
+}
+
+.help-section p {
+  color: #6c757d;
+  margin-bottom: 8px;
+}
+
+.help-section code {
+  background: #f8f9fa;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #e83e8c;
+  border: 1px solid #e9ecef;
+}
+
+.help-section ol {
+  color: #6c757d;
+  padding-left: 20px;
+}
+
+.help-section ol li {
+  margin-bottom: 4px;
+}
+
+.help-section a {
+  color: #0d6efd;
+  text-decoration: none;
+}
+
+.help-section a:hover {
+  text-decoration: underline;
+}
