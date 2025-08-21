@@ -1,0 +1,30 @@
+{
+  "user_info": {
+    "conditions": [
+      "거북목"
+    ],
+    "purpose": "예방 (자세교정)",
+    "rest_interval": "25분마다"
+  },
+  "daily_routine": {
+    "morning": "목과 어깨 스트레칭 (5분)",
+    "lunch": "전신 스트레칭 (10분)",
+    "evening": "근력 강화 운동 (15분)"
+  },
+  "break_exercises": [
+    {
+      "name": "목 스트레칭",
+      "purpose": "목 근육 이완 및 자세 교정",
+      "method": "고개를 천천히 좌우로 돌리고, 앞뒤로 숙이기",
+      "reps": "각 방향 10초씩 3회",
+      "caution": "급격한 움직임 금지"
+    },
+    {
+      "name": "어깨 으쓱하기",
+      "purpose": "어깨 긴장 완화",
+      "method": "어깨를 귀 쪽으로 올렸다가 천천히 내리기",
+      "reps": "10회 3세트",
+      "caution": "천천히 부드럽게 실시"
+    }
+  ]
+}
