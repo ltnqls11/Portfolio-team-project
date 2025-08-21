@@ -1,0 +1,89 @@
+{
+  "name": "마케팅 연락 자동화",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "trigger"
+      },
+      "name": "캠페인 트리거 (Webhook)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "resource": "sql",
+        "sql": "SELECT * FROM campaigns WHERE id = {{ $json.body.campaign_id }};"
+      },
+      "name": "캠페인 정보 가져오기 (PostgreSQL)",
+      "type": "n8n-nodes-base.postgreSql",
+      "typeVersion": 1,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "resource": "sql",
+        "sql": "SELECT * FROM creators WHERE id = {{ $json.body.creator_id }};"
+      },
+      "name": "크리에이터 정보 가져오기 (PostgreSQL)",
+      "type": "n8n-nodes-base.postgreSql",
+      "typeVersion": 1,
+      "position": [650, 300]
+    },
+    {
+      "parameters": {
+        "fromEmail": "your-email@example.com",
+        "toEmail": "{{ $node[\"크리에이터 정보 가져오기 (PostgreSQL)\"].json[\"email\"] }}",
+        "subject": "안녕하세요, {{ $node[\"크리에이터 정보 가져오기 (PostgreSQL)\"].json[\"handle\"] }}님. 마케팅 협업 제안드립니다.",
+        "htmlBody": "<html><p>안녕하세요, {{ $node[\"크리에이터 정보 가져오기 (PostgreSQL)\"].json[\"handle\"] }}님.</p><p>저희 **{{ $node[\"캠페인 정보 가져오기 (PostgreSQL)\"].json[\"title\"] }}** 캠페인과 관련하여 협업을 제안드리고자 연락드렸습니다. </p><p>자세한 내용은 캠페인 링크를 참고해주세요: {{ $node[\"캠페인 정보 가져오기 (PostgreSQL)\"].json[\"reference_url\"] }}</p><p>감사합니다.</p></html>"
+      },
+      "name": "이메일 발송 (SMTP)",
+      "type": "n8n-nodes-base.smtp",
+      "typeVersion": 1,
+      "position": [850, 300]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "resource": "sql",
+        "sql": "UPDATE outreach SET status = 'sent' WHERE campaign_id = {{ $json.body.campaign_id }} AND creator_id = {{ $json.body.creator_id }};"
+      },
+      "name": "상태 업데이트 (PostgreSQL)",
+      "type": "n8n-nodes-base.postgreSql",
+      "typeVersion": 1,
+      "position": [1050, 300]
+  a  }
+  ],
+  "connections": {
+    "캠페인 트리거 (Webhook)": [
+      {
+        "node": "캠페인 정보 가져오기 (PostgreSQL)",
+        "type": "main"
+      }
+    ],
+    "캠페인 정보 가져오기 (PostgreSQL)": [
+      {
+        "node": "크리에이터 정보 가져오기 (PostgreSQL)",
+        "type": "main"
+      }
+    ],
+    "크리에이터 정보 가져오기 (PostgreSQL)": [
+      {
+        "node": "이메일 발송 (SMTP)",
+        "type": "main"
+      },
+      {
+        "node": "상태 업데이트 (PostgreSQL)",
+        "type": "main"
+      }
+    ],
+    "이메일 발송 (SMTP)": [
+      {
+        "node": "상태 업데이트 (PostgreSQL)",
+        "type": "main"
+      }
+    ]
+  }
+}
