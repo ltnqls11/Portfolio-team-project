@@ -1,0 +1,30 @@
+{
+  "user_info": {
+    "conditions": [
+      "라운드숄더"
+    ],
+    "purpose": "예방 (자세교정)",
+    "rest_interval": "30분마다"
+  },
+  "daily_routine": {
+    "morning": "목과 어깨 스트레칭 (5분)",
+    "lunch": "전신 스트레칭 (10분)",
+    "evening": "근력 강화 운동 (15분)"
+  },
+  "break_exercises": [
+    {
+      "name": "가슴 스트레칭",
+      "purpose": "가슴 근육 이완으로 어깨 교정",
+      "method": "벽에 손을 대고 몸을 앞으로 기울이기",
+      "reps": "30초씩 3회",
+      "caution": "무리하지 않는 범위에서"
+    },
+    {
+      "name": "어깨날개 모으기",
+      "purpose": "등 근육 강화",
+      "method": "양쪽 어깨날개를 등 중앙으로 모으기",
+      "reps": "10초씩 10회",
+      "caution": "어깨를 올리지 말고 실시"
+    }
+  ]
+}
