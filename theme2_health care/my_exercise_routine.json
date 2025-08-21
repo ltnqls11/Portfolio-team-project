@@ -1,9 +1,9 @@
 {
   "user_info": {
     "conditions": [
-      "라운드숄더"
+      "거북목"
     ],
-    "purpose": "운동 (근력 및 체력 증진)",
+    "purpose": "재활 (통증감소)",
     "rest_interval": "25분마다"
   },
   "daily_routine": {
@@ -13,11 +13,11 @@
   },
   "break_exercises": [
     {
-      "name": "등 근력 강화",
-      "purpose": "등 근육 강화로 자세 개선",
-      "method": "양팔을 뒤로 당기며 어깨날개 모으기",
-      "reps": "15회 3세트",
-      "caution": "천천히 정확한 자세로"
+      "name": "온찜질 후 스트레칭",
+      "purpose": "통증 완화 및 혈액순환 개선",
+      "method": "따뜻한 수건으로 목을 찜질 후 가벼운 스트레칭",
+      "reps": "15분 찜질 후 스트레칭",
+      "caution": "통증이 심할 때는 중단"
     }
   ]
 }
