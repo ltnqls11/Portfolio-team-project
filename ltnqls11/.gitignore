@@ -1,4 +1,32 @@
 # 깃허브에 올라가면 안되는 인증키 기록
 confidencial.json
 .env
-node_modules
+
+# Node.js dependencies
+node_modules/
+marketing-integration-platform/node_modules/
+
+# Build outputs
+marketing-integration-platform/build/
+marketing-integration-platform/dist/
+
+# Environment files
+marketing-integration-platform/.env
+marketing-integration-platform/.env.local
+marketing-integration-platform/.env.development.local
+marketing-integration-platform/.env.test.local
+marketing-integration-platform/.env.production.local
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+backend/__pycache__/
