@@ -8,6 +8,21 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import requests
 
+# 광고 모듈 import (개발자용)
+try:
+    from ads import show_adsense_banner, show_healthcare_product_recommendation, show_general_healthcare_products
+except ImportError:
+    # 모듈이 없을 경우 더미 함수로 대체
+    def show_adsense_banner():
+        st.markdown("<!-- Google AdSense 광고 위치 -->")
+        st.info("📢 광고 영역")
+    
+    def show_healthcare_product_recommendation(condition):
+        st.info("🛒 헬스케어 제품 추천 기능을 사용하려면 ads.py 모듈이 필요합니다.")
+    
+    def show_general_healthcare_products():
+        st.info("🛒 일반 헬스케어 제품 추천 기능을 사용하려면 ads.py 모듈이 필요합니다.")
+
 # 페이지 설정
 st.set_page_config(
     page_title="개발자 헬스케어 - VDT 증후군 관리",
@@ -487,6 +502,14 @@ def show_condition_selection():
             st.markdown("---")
         
         st.session_state.user_data['pain_scores'] = pain_scores
+        
+        # 증상 선택 후 관련 제품 추천
+        st.markdown("---")
+        st.subheader("💡 선택한 증상에 도움되는 제품들")
+        st.info("증상 개선에 도움이 될 수 있는 제품들을 추천해드려요!")
+        
+        for condition in selected:
+            show_healthcare_product_recommendation(condition)
     else:
         st.warning("최소 하나의 증상을 선택해주세요.")
 
@@ -581,6 +604,26 @@ def show_work_environment():
     }
     
     st.session_state.user_data.update(env_data)
+    
+    # 환경 개선 제품 추천
+    if env_score < 80:
+        st.markdown("---")
+        st.subheader("🛒 작업환경 개선 제품 추천")
+        st.warning("💡 작업환경 점수가 낮아서 개선이 필요합니다. 아래 제품들을 고려해보세요!")
+        
+        # 의자 관련 제품 추천
+        if chair_support in ["보통", "나쁨"]:
+            show_healthcare_product_recommendation("허리디스크")
+        
+        # 마우스 관련 제품 추천
+        if mouse_type == "일반":
+            show_healthcare_product_recommendation("손목터널증후군_오른쪽")
+        
+        # 모니터 높이 관련 제품 추천
+        if monitor_height != "눈높이와 같음":
+            show_healthcare_product_recommendation("거북목")
+    else:
+        st.success("🎉 우수한 작업환경입니다! 현재 환경을 유지하세요.")
 
 def show_exercise_recommendation():
     st.header("🏃‍♂️ 맞춤형 운동 추천")
@@ -626,6 +669,15 @@ def show_exercise_recommendation():
     # 올바른 자세 가이드
     st.subheader("💺 올바른 컴퓨터 작업 자세")
     show_posture_guide()
+    
+    # 헬스케어 제품 추천 (각 증상별로)
+    if st.session_state.selected_conditions:
+        st.markdown("---")
+        st.subheader("🛒 운동과 함께 사용하면 효과적인 제품들")
+        st.info("💪 운동 효과를 높이고 증상 개선에 도움되는 제품들을 추천해드려요!")
+        
+        for condition in st.session_state.selected_conditions:
+            show_healthcare_product_recommendation(condition)
     
     # 운동 루틴 생성
     if st.button("개인 맞춤 운동 루틴 생성"):
@@ -739,6 +791,10 @@ def main():
         show_exercise_recommendation()
     elif menu == "휴식 알리미 설정":
         show_notification_setup()
+    
+    # 광고 표시 (사이드바 하단)
+    st.sidebar.markdown("---")
+    show_adsense_banner()
 
 if __name__ == "__main__":
     main()

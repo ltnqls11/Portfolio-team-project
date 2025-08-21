@@ -32,6 +32,12 @@
 - 올바른 컴퓨터 작업 자세 가이드
 - 개인 맞춤 운동 루틴 생성
 
+### 6. 헬스케어 제품 추천 및 수익화
+- 증상별 맞춤 헬스케어 제품 추천
+- 작업환경 평가 기반 제품 추천
+- 쿠팡 파트너스 제휴 링크 자동 생성
+- Google AdSense 광고 배너 표시
+
 ## 🚀 설치 및 실행
 
 ### 1. 패키지 설치
@@ -81,6 +87,12 @@ start /B python notification_scheduler.py
 - 업무 시간 설정
 - 자동 휴식 알림 활성화
 
+### 6단계: 헬스케어 제품 추천
+- 증상별 맞춤 헬스케어 제품 추천
+- 작업환경 개선 제품 추천
+- 쿠팡 파트너스 제휴 링크로 구매 유도
+- 사이드바 Google AdSense 광고 표시
+
 ## 🔧 알림 설정 가이드
 
 ### Gmail 설정
@@ -109,6 +121,7 @@ start /B python notification_scheduler.py
 
 - `my_exercise_routine.json`: 개인 맞춤 운동 루틴
 - `notification_config.json`: 알림 설정 정보
+- `ads.py`: 광고 및 수익화 모듈 (신규)
 
 ## 🎯 운동 카테고리
 
