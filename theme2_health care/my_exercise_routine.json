@@ -1,0 +1,23 @@
+{
+  "user_info": {
+    "conditions": [
+      "라운드숄더"
+    ],
+    "purpose": "운동 (근력 및 체력 증진)",
+    "rest_interval": "25분마다"
+  },
+  "daily_routine": {
+    "morning": "목과 어깨 스트레칭 (5분)",
+    "lunch": "전신 스트레칭 (10분)",
+    "evening": "근력 강화 운동 (15분)"
+  },
+  "break_exercises": [
+    {
+      "name": "등 근력 강화",
+      "purpose": "등 근육 강화로 자세 개선",
+      "method": "양팔을 뒤로 당기며 어깨날개 모으기",
+      "reps": "15회 3세트",
+      "caution": "천천히 정확한 자세로"
+    }
+  ]
+}
