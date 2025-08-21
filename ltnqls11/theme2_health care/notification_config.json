@@ -1,0 +1,9 @@
+{
+  "type": "Slack",
+  "email": null,
+  "email_password": null,
+  "slack_webhook": "https://x-ycx1438.slack.com/archives/C09AB8Z421Y",
+  "work_start": "11:00",
+  "work_end": "18:00",
+  "interval": 25
+}

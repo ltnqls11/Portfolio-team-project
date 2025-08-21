@@ -221,34 +221,30 @@ def get_exercises_for_condition(condition, purpose):
     return exercises_db.get(condition, {}).get(purpose, [])
 
 def get_exercise_videos(condition):
-    """운동 영상 추천 (김계란 유튜브 포함)"""
+    """운동 영상 추천"""
     videos_db = {
         "거북목": [
             {"title": "거북목 교정 운동 5분", "url": "https://youtu.be/8hlp5u8m_Ao"},
-            {"title": "목 스트레칭 완벽 가이드", "url": "https://youtu.be/2NOJ1RKqvzI"},
-            {"title": "김계란 - 거북목 교정 루틴", "url": "https://youtu.be/4QhQZr6Qb6E"}
+            {"title": "목 스트레칭 완벽 가이드", "url": "https://youtu.be/2NOJ1RKqvzI"}
         ],
         "라운드숄더": [
             {"title": "라운드숄더 교정 운동", "url": "https://youtu.be/oLwTC-lAJws"},
-            {"title": "어깨 스트레칭 루틴", "url": "https://youtu.be/akgQbxhrhOc"},
-            {"title": "김계란 - 라운드숄더 교정법", "url": "https://youtu.be/4QhQZr6Qb6E"}
+            {"title": "어깨 스트레칭 루틴", "url": "https://youtu.be/akgQbxhrhOc"}
         ],
         "허리디스크": [
             {"title": "허리 강화 운동", "url": "https://youtu.be/4BOTvaRaDjI"},
-            {"title": "허리 디스크 예방 운동", "url": "https://youtu.be/DWmGArQBtFI"},
-            {"title": "김계란 - 허리 건강 루틴", "url": "https://youtu.be/4QhQZr6Qb6E"}
+            {"title": "허리 디스크 예방 운동", "url": "https://youtu.be/DWmGArQBtFI"}
         ],
         "손목터널증후군_왼쪽": [
             {"title": "손목터널증후군 스트레칭", "url": "https://youtu.be/EiRC80FJbHU"},
-            {"title": "손목 통증 완화 운동", "url": "https://youtu.be/wYGfDCGrJ4A"},
-            {"title": "김계란 - 손목 통증 운동", "url": "https://youtu.be/4QhQZr6Qb6E"}
+            {"title": "손목 통증 완화 운동", "url": "https://youtu.be/wYGfDCGrJ4A"}
         ],
         "손목터널증후군_오른쪽": [
             {"title": "손목터널증후군 스트레칭", "url": "https://youtu.be/EiRC80FJbHU"},
-            {"title": "손목 통증 완화 운동", "url": "https://youtu.be/wYGfDCGrJ4A"},
-            {"title": "김계란 - 손목 통증 운동", "url": "https://youtu.be/4QhQZr6Qb6E"}
+            {"title": "손목 통증 완화 운동", "url": "https://youtu.be/wYGfDCGrJ4A"}
         ]
     }
+    
     return videos_db.get(condition, [])
 
 def show_posture_guide():
@@ -718,7 +714,7 @@ def show_notification_setup():
             st.error(f"설정 저장 중 오류가 발생했습니다: {str(e)}")
 
 def main():
-    st.title("💻 개발자를 위한 VDT 증후군 관리 시스템")
+    st.title("💻 개발자를 위한 VDT 증후군 관리 시스템00")
     st.markdown("---")
     
     # 사이드바 메뉴
