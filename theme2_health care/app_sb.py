@@ -22,6 +22,14 @@ if 'selected_conditions' not in st.session_state:
     st.session_state.selected_conditions = []
 if 'assessment_complete' not in st.session_state:
     st.session_state.assessment_complete = False
+if 'current_step' not in st.session_state:
+    st.session_state.current_step = 0
+if 'steps_completed' not in st.session_state:
+    st.session_state.steps_completed = [False, False, False, False, False]
+if 'menu_selection' not in st.session_state:
+    st.session_state.menu_selection = "홈"
+if 'next_menu' not in st.session_state:
+    st.session_state.next_menu = None
 
 def calculate_rest_time(work_intensity):
     """Murrel의 공식을 적용한 휴식시간 계산"""
@@ -312,31 +320,75 @@ def create_exercise_routine(conditions, purpose, rest_time):
     
     return routine
 
-def calculate_environment_score(desk_height, chair_support, monitor_height, keyboard_type, mouse_type, lighting):
+def calculate_environment_score(
+    desk_height,
+    chair_support,
+    chair_sitting_style,
+    monitor_height,
+    keyboard_type,
+    mouse_type,
+    monitor_distance_level,
+):
     score = 0
-    
-    # 각 요소별 점수 계산
-    if desk_height == "적절함": score += 15
-    if chair_support in ["매우 좋음", "좋음"]: score += 20
-    if monitor_height == "눈높이와 같음": score += 15
-    if keyboard_type == "인체공학적": score += 15
-    elif keyboard_type == "기계식": score += 10
-    if mouse_type == "인체공학적": score += 15
-    elif mouse_type == "트랙볼": score += 10
-    if lighting == "적절함": score += 20
-    
+
+    # 책상 높이 (최대 20점)
+    if desk_height == "적절함":
+        score += 20
+
+    # 의자 허리 지지 (최대 20점)
+    if chair_support == "매우 좋음":
+        score += 20
+    elif chair_support == "좋음":
+        score += 15
+    elif chair_support == "보통":
+        score += 8
+
+    # 의자 앉는 방식 (최대 10점)
+    if chair_sitting_style == "등을 완전히 붙이고 앉음":
+        score += 10
+    elif chair_sitting_style == "등받이에 기대지 않음":
+        score += 4
+    elif chair_sitting_style in ["한쪽으로 기울어져 앉음", "다리를 꼬고 앉음"]:
+        score += 2
+
+    # 모니터 높이 (최대 20점)
+    if monitor_height == "눈높이와 같음":
+        score += 20
+    elif monitor_height == "눈높이보다 낮음":
+        score += 10
+
+    # 키보드 타입 (최대 15점)
+    if "인체공학" in keyboard_type:
+        score += 15
+    elif keyboard_type == "기계식":
+        score += 10
+
+    # 마우스 타입 (최대 15점)
+    if mouse_type == "인체공학적":
+        score += 15
+    elif mouse_type == "트랙볼":
+        score += 10
+
+    # 모니터 거리 (최대 10점)
+    if monitor_distance_level.startswith("적당하다"):
+        score += 10
+    elif monitor_distance_level.startswith("멀다"):
+        score += 6
+    elif monitor_distance_level.startswith("가깝다"):
+        score += 2
+
     return score
 
 def send_test_email(email, password):
     """테스트 이메일 발송"""
     try:
-        msg = MimeMultipart()
+        msg = MIMEMultipart()
         msg['From'] = email
         msg['To'] = email
         msg['Subject'] = "VDT 관리 시스템 - 테스트 메일"
         
         body = "휴식 알리미 테스트 메일입니다. 설정이 정상적으로 완료되었습니다!"
-        msg.attach(MimeText(body, 'plain', 'utf-8'))
+        msg.attach(MIMEText(body, 'plain', 'utf-8'))
         
         server = smtplib.SMTP('smtp.gmail.com', 587)
         server.starttls()
@@ -360,7 +412,7 @@ def send_test_slack(webhook_url):
         return response.status_code == 200
     except Exception as e:
         st.error(f"Slack 메시지 발송 실패: {str(e)}")
-        return Falsedef 
+        return False
 # show_home()
 # st.header("🏠 VDT 증후군이란?")
     
@@ -388,34 +440,47 @@ def send_test_slack(webhook_url):
 #     st.info("👈 왼쪽 메뉴에서 '증상 선택'부터 시작해주세요!")
 
 def show_home():
-    st.header("🏠 VDT 증후군이란?")
+    st.header("🏠 컴퓨터 작업으로 인한 건강 관리 시스템")
 
     col1, col2 = st.columns(2)
 
     with col1:
         st.subheader("📊 주요 증상")
         st.write("""
-        - **거북목 증후군**: 목이 앞으로 나온 자세로 인한 목과 어깨 통증
-        - **라운드 숄더**: 어깨가 앞으로 말린 자세로 인한 상체 불균형
-        - **허리 디스크**: 장시간 앉은 자세로 인한 허리 통증
-        - **손목터널 증후군**: 반복적인 키보드/마우스 사용으로 인한 손목 통증
+        - **목과 어깨 통증**: 장시간 모니터를 보며 생기는 목과 어깨 불편함
+        - **구부정한 자세**: 어깨가 앞으로 말리고 등이 굽는 자세 문제
+        - **허리 통증**: 오래 앉아있어서 생기는 허리와 등의 통증
+        - **손목 통증**: 키보드와 마우스 사용으로 인한 손목 불편함
         """)
 
     with col2:
         st.subheader("🎯 시스템 기능")
         st.write("""
-        - 개인 맞춤형 증상 평가
-        - 작업환경 분석
-        - 맞춤형 운동 루틴 제공
-        - 휴식시간 자동 알림
+        - 현재 증상 확인 및 평가
+        - 작업환경 점검
+        - 개인 맞춤 운동법 제공
+        - 정기 휴식 알림 설정
         - 운동 영상 추천
         """)
 
+    # 진행률 표시
+    steps = ["증상 선택", "개인정보 입력", "작업환경 평가", "운동 추천", "휴식 알리미 설정"]
+    completed_steps = sum(st.session_state.steps_completed)
+    
+    st.subheader(f"📈 진행률: {completed_steps}/{len(steps)} 단계 완료")
+    progress_bar = st.progress(completed_steps / len(steps))
+    
     st.info("👈 왼쪽 메뉴에서 '증상 선택'부터 시작해주세요!")
 
 def show_condition_selection():
     st.header("🔍 증상 선택")
     
+    # 진행률 표시
+    steps = ["증상 선택", "개인정보 입력", "작업환경 평가", "운동 추천", "휴식 알리미 설정"]
+    completed_steps = sum(st.session_state.steps_completed)
+    st.caption(f"진행률: {completed_steps}/{len(steps)} 단계")
+    st.progress(completed_steps / len(steps))
+
     st.subheader("현재 겪고 있는 증상을 선택해주세요")
     
     conditions = {
@@ -437,19 +502,17 @@ def show_condition_selection():
         st.success(f"선택된 증상: {', '.join([c.replace('_', ' - ') for c in selected])}")
         
         # VAS 통증 척도 입력
-        st.subheader("📊 통증 정도 평가 (VAS Scale)")
+        st.subheader("📊 통증 정도 평가")
         
         # VAS 척도 설명 표시
         st.markdown("""
-        **통증 집수표 VAS scale**
-        
         각 증상별로 현재 느끼는 통증의 정도를 선택해주세요:
-        - **0-1**: 통증 없음 😊 (No pain)
-        - **2-3**: 약간의 통증 🙂 (Mild pain) - 약간의 통증 혹은 불편감이 있으나 일상생활에 문제없음
-        - **4-5**: 보통 통증 😐 (Moderate pain) - 통증이 걱정을 야기할 정도이나 참을 수 있음 (TV, 독서, 대화 가능한 정도)
-        - **6-7**: 심한 통증 😟 (Severe pain) - 통증이 상당히 불편하여 집중이 어려움
-        - **8-9**: 매우 심한 통증 😣 (Very severe pain) - 통증이 심각하여 일상 생활에 지장
-        - **10**: 극심한 통증 😵 (Worst pain possible) - 참을 수 없는 극심한 통증
+        - **0-1**: 통증 없음 😊
+        - **2-3**: 약간의 통증 🙂 (일상생활에 큰 문제 없음)
+        - **4-5**: 보통 통증 😐 (관리 필요)
+        - **6-7**: 심한 통증 😣 (집중이 어려움)
+        - **8-9**: 매우 심한 통증 😫 (일상에 지장)
+        - **10**: 극심한 통증 🆘 (즉시 진료 권장)
         """)
         
         pain_scores = {}
@@ -459,9 +522,9 @@ def show_condition_selection():
             
             # 통증 정도별 색상과 이모지
             pain_colors = {
-                0: "🟢", 1: "🟢", 2: "🟡", 3: "🟡", 
-                4: "🟠", 5: "🟠", 6: "🔴", 7: "🔴", 
-                8: "🟣", 9: "🟣", 10: "⚫"
+                0: "🟢", 1: "🟢", 2: "🟡", 3: "🟡",
+                4: "🟠", 5: "🟠", 6: "🔴", 7: "🔴",
+                8: "🔴", 9: "🔴", 10: "⚫"
             }
             
             pain_level = st.slider(
@@ -487,6 +550,14 @@ def show_condition_selection():
             st.markdown("---")
         
         st.session_state.user_data['pain_scores'] = pain_scores
+        
+        # 다음 단계로 버튼
+        if st.button("✅ 저장하고 다음 단계로", key="condition_next"):
+            st.session_state.steps_completed[0] = True
+            st.session_state.current_step = 1
+            st.session_state.next_menu = "개인정보 입력"
+            st.success("증상 선택이 완료되었습니다! 다음 단계로 이동합니다.")
+            st.rerun()
     else:
         st.warning("최소 하나의 증상을 선택해주세요.")
 
@@ -497,6 +568,12 @@ def show_personal_info():
         st.warning("먼저 증상을 선택해주세요.")
         return
     
+    # 진행률 표시
+    steps = ["증상 선택", "개인정보 입력", "작업환경 평가", "운동 추천", "휴식 알리미 설정"]
+    completed_steps = sum(st.session_state.steps_completed)
+    st.caption(f"진행률: {completed_steps}/{len(steps)} 단계")
+    st.progress(completed_steps / len(steps))
+
     col1, col2 = st.columns(2)
     
     with col1:
@@ -505,6 +582,11 @@ def show_personal_info():
         gender = st.selectbox("성별", ["남성", "여성"])
         vision = st.selectbox("시력 상태", ["정상", "근시", "원시", "난시", "기타"])
         work_experience = st.number_input("개발 경력 (년)", min_value=0, max_value=30, value=3)
+        subject = st.text_input(
+            "사용자 소견 (subject)",
+            max_chars=100,
+            placeholder="어떤 증상으로 인해 방문하셨나요? (예: 장시간 컴퓨터 작업으로 인한 목 통증)"
+        )
         
     with col2:
         st.subheader("생활 습관")
@@ -523,17 +605,28 @@ def show_personal_info():
         'age': age, 'gender': gender, 'vision': vision, 'work_experience': work_experience,
         'exercise_habit': exercise_habit, 'smoking': smoking, 'drinking': drinking,
         'sleep_hours': sleep_hours, 'daily_work_hours': daily_work_hours,
-        'break_frequency': break_frequency, 'work_intensity': work_intensity
+        'break_frequency': break_frequency, 'work_intensity': work_intensity,
+        'subject': subject
     }
     
     st.session_state.user_data.update(personal_data)
     
-    if st.button("저장하고 다음 단계로"):
-        st.success("개인정보가 저장되었습니다!")
+    if st.button("✅ 저장하고 다음 단계로", key="personal_next"):
+        st.session_state.steps_completed[1] = True
+        st.session_state.current_step = 2
+        st.session_state.next_menu = "작업환경 평가"
+        st.success("개인정보가 저장되었습니다! 다음 단계로 이동합니다.")
+        st.rerun()
 
 def show_work_environment():
     st.header("🖥️ 작업환경 평가")
     
+    # 진행률 표시
+    steps = ["증상 선택", "개인정보 입력", "작업환경 평가", "운동 추천", "휴식 알리미 설정"]
+    completed_steps = sum(st.session_state.steps_completed)
+    st.caption(f"진행률: {completed_steps}/{len(steps)} 단계")
+    st.progress(completed_steps / len(steps))
+
     col1, col2 = st.columns(2)
     
     with col1:
@@ -541,27 +634,33 @@ def show_work_environment():
         desk_height = st.selectbox("책상 높이", ["너무 높음", "적절함", "너무 낮음"])
         chair_support = st.selectbox("의자 허리 지지", ["매우 좋음", "좋음", "보통", "나쁨"])
         chair_armrest = st.selectbox("팔걸이", ["있음", "없음"])
+        chair_sitting_style = st.selectbox(
+            "의자 앉는 방식",
+            ["등을 완전히 붙이고 앉음", "등받이에 기대지 않음", "한쪽으로 기울어져 앉음", "다리를 꼬고 앉음"],
+        )
         
         st.subheader("모니터 설정")
-        monitor_distance = st.slider("모니터 거리 (cm)", 30, 100, 60)
+        monitor_distance_level = st.selectbox(
+            "모니터 거리",
+            ["가깝다 (50cm 이내)", "적당하다 (50-70cm)", "멀다 (70cm 이상)"]
+        )
         monitor_height = st.selectbox("모니터 높이", ["눈높이보다 높음", "눈높이와 같음", "눈높이보다 낮음"])
-        monitor_size = st.number_input("모니터 크기 (인치)", 15, 35, 24)
     
     with col2:
         st.subheader("키보드 및 마우스")
         keyboard_type = st.selectbox("키보드 타입", ["일반", "인체공학적(vertical)", "기계식", "노트북"])
         mouse_type = st.selectbox("마우스 타입", ["일반", "인체공학적", "트랙볼", "터치패드"])
         wrist_support = st.selectbox("손목 받침대", ["있음", "없음"])
-        
-        st.subheader("환경 요인")
-        lighting = st.selectbox("조명", ["매우 밝음", "적절함", "어두움"])
-        temperature = st.slider("온도 (°C)", 15, 30, 22)
-        noise_level = st.selectbox("소음 수준", ["조용함", "보통", "시끄러움"])
     
     # 환경 점수 계산
     env_score = calculate_environment_score(
-        desk_height, chair_support, monitor_height, 
-        keyboard_type, mouse_type, lighting
+        desk_height,
+        chair_support,
+        chair_sitting_style,
+        monitor_height,
+        keyboard_type,
+        mouse_type,
+        monitor_distance_level,
     )
     
     st.subheader("📊 작업환경 평가 결과")
@@ -574,13 +673,27 @@ def show_work_environment():
     
     # 환경 데이터 저장
     env_data = {
-        'desk_height': desk_height, 'chair_support': chair_support,
-        'monitor_distance': monitor_distance, 'monitor_height': monitor_height,
-        'keyboard_type': keyboard_type, 'mouse_type': mouse_type,
-        'lighting': lighting, 'env_score': env_score
+        'desk_height': desk_height,
+        'chair_support': chair_support,
+        'chair_armrest': chair_armrest,
+        'chair_sitting_style': chair_sitting_style,
+        'monitor_distance': monitor_distance_level,
+        'monitor_height': monitor_height,
+        'keyboard_type': keyboard_type,
+        'mouse_type': mouse_type,
+        'wrist_support': wrist_support,
+        'env_score': env_score,
     }
     
     st.session_state.user_data.update(env_data)
+
+    # 다음 단계로 버튼
+    if st.button("✅ 저장하고 다음 단계로", key="env_next"):
+        st.session_state.steps_completed[2] = True
+        st.session_state.current_step = 3
+        st.session_state.next_menu = "운동 추천"
+        st.success("작업환경 평가가 저장되었습니다! 다음 단계로 이동합니다.")
+        st.rerun()
 
 def show_exercise_recommendation():
     st.header("🏃‍♂️ 맞춤형 운동 추천")
@@ -722,9 +835,16 @@ def main():
     st.markdown("---")
     
     # 사이드바 메뉴
+    options = ["홈", "증상 선택", "개인정보 입력", "작업환경 평가", "운동 추천", "휴식 알리미 설정"]
+    # 버튼 클릭으로 예약된 next_menu가 있으면, 위젯 생성 전에 반영
+    if st.session_state.next_menu:
+        st.session_state.menu_selection = st.session_state.next_menu
+        st.session_state.next_menu = None
     menu = st.sidebar.selectbox(
         "메뉴 선택",
-        ["홈", "증상 선택", "개인정보 입력", "작업환경 평가", "운동 추천", "휴식 알리미 설정"]
+        options,
+        index=options.index(st.session_state.menu_selection),
+        key="menu_selection",
     )
     
     if menu == "홈":
