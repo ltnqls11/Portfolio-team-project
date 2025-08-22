@@ -1,0 +1,251 @@
+{
+  "name": "VDT 증후군 관리 - 휴식시간 알리미",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 25
+            }
+          ]
+        }
+      },
+      "id": "cron-trigger",
+      "name": "휴식시간 알리미 (25분마다)",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "work-hours-check",
+              "leftValue": "={{ $now.toFormat('HH:mm') }}",
+              "rightValue": "09:00",
+              "operator": {
+                "type": "string",
+                "operation": "gte"
+              }
+            },
+            {
+              "id": "work-hours-check-2",
+              "leftValue": "={{ $now.toFormat('HH:mm') }}",
+              "rightValue": "18:00",
+              "operator": {
+                "type": "string",
+                "operation": "lte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "work-hours-filter",
+      "name": "업무시간 확인 (09:00-18:00)",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        460,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// 현재 시간과 사용자 정보를 기반으로 알림 메시지 생성\nconst now = new Date();\nconst currentHour = now.getHours();\n\n// 올바른 컴퓨터 작업 자세 가이드\nconst postureGuide = {\n  \"모니터 위치\": [\n    \"👁️ 눈높이와 같거나 약간 아래\",\n    \"📏 팔 길이만큼 거리 유지 (50-70cm)\",\n    \"🖥️ 화면 상단이 눈높이보다 낮게\"\n  ],\n  \"의자 자세\": [\n    \"🪑 등받이에 허리를 완전히 붙이기\",\n    \"🦶 발바닥 전체가 바닥에 닿게\",\n    \"🦵 무릎 각도 90도 유지\"\n  ],\n  \"키보드 & 마우스\": [\n    \"⌨️ 팔꿈치 각도 90도\",\n    \"✋ 손목은 일직선 유지\",\n    \"💪 어깨 힘 빼고 자연스럽게\"\n  ],\n  \"목과 어깨\": [\n    \"🧘 턱을 살짝 당기기\",\n    \"🤷 어깨는 자연스럽게 내리기\",\n    \"🦒 목을 앞으로 빼지 않기\"\n  ]\n};\n\n// VDT 증후군별 자세 교정 팁\nconst postureTips = {\n  \"거북목\": \"🐢 모니터 상단이 눈높이와 같도록 조절하고, 턱을 가볍게 당겨 목이 앞으로 나오지 않게 해주세요.\",\n  \"라운드숄더\": \"🧘 가슴을 펴고 어깨를 뒤로 젖히는 스트레칭을 해주세요.\",\n  \"허리디스크\": \"🪑 의자에 앉을 때는 허리를 등받이에 밀착시키고, 1시간마다 일어나서 가볍게 걸어주세요.\",\n  \"손목터널증후군\": \"✍️ 키보드와 마우스 사용 시 손목이 꺾이지 않도록 중립 위치를 유지하세요.\"\n};\n\n// 건강 팁 (시간대별)\nlet healthTip = \"\";\nif (currentHour < 12) {\n  healthTip = \"🌅 아침: 충분한 수분을 섭취하고 가벼운 스트레칭으로 하루를 시작하세요!\";\n} else if (currentHour < 15) {\n  healthTip = \"☀️ 점심: 건강한 점심 후 가벼운 산책이나 스트레칭을 권장합니다.\";\n} else {\n  healthTip = \"🌆 오후: 눈의 피로를 줄이기 위해 20-20-20 법칙을 실천하세요 (20분마다 20피트 거리의 물체를 20초간 바라보기).\";\n}\n\n// 메인 알림 메시지 생성\nconst mainMessage = `⏰ 휴식시간 알림 (${now.toFormat('HH:mm')})\n\n💻 장시간 컴퓨터 작업으로 인한 건강 관리가 필요합니다!\n\n${healthTip}\n\n🔍 현재 자세 점검:\n${postureGuide[\"목과 어깨\"].join('\\n')}\n${postureGuide[\"의자 자세\"].join('\\n')}\n\n💡 자세 교정 팁:\n${Object.values(postureTips).join('\\n')}\n\n🏃‍♂️ 간단한 스트레칭:\n• 목 좌우 돌리기 (10초씩 3회)\n• 어깨 으쓱하기 (10회)\n• 손목 돌리기 (각 방향 10회)\n• 허리 비틀기 (각 방향 15초)\n\n⏱️ 다음 휴식시간까지 25분 남았습니다.\n\n💪 건강한 개발자 되기, 지금 시작하세요!`;\n\n// Slack용 메시지 (줄바꿈 처리)\nconst slackMessage = mainMessage.replace(/\\n/g, '\\n');\n\n// Gmail용 메시지 (HTML 형식)\nconst htmlMessage = mainMessage.replace(/\\n/g, '<br>').replace(/💻/g, '💻').replace(/⏰/g, '⏰');\n\nreturn [\n  {\n    json: {\n      slackMessage: slackMessage,\n      emailSubject: \"VDT 증후군 관리 - 휴식시간 알림\",\n      emailBody: mainMessage,\n      emailHtmlBody: htmlMessage,\n      currentTime: now.toFormat('yyyy-MM-dd HH:mm:ss'),\n      nextBreak: \"25분 후\"\n    }\n  }\n];"
+      },
+      "id": "message-generator",
+      "name": "알림 메시지 생성",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        680,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "webhookUrl",
+        "webhookUrl": "={{ $json.slack_webhook_url }}",
+        "text": "={{ $json.slackMessage }}",
+        "otherOptions": {
+          "username": "VDT 건강 관리 봇",
+          "icon_emoji": ":computer:"
+        }
+      },
+      "id": "slack-notification",
+      "name": "Slack 알림 전송",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 1,
+      "position": [
+        900,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "fromEmail": "={{ $json.gmail_address }}",
+        "toEmail": "={{ $json.gmail_address }}",
+        "subject": "={{ $json.emailSubject }}",
+        "text": "={{ $json.emailBody }}",
+        "html": "={{ $json.emailHtmlBody }}",
+        "options": {}
+      },
+      "id": "gmail-notification",
+      "name": "Gmail 알림 전송",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 1,
+      "position": [
+        900,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// 알림 전송 결과 로깅\nconst slackResult = $input.all()[0].json;\nconst gmailResult = $input.all()[1].json;\n\nconst logMessage = `\\n📊 알림 전송 결과 (${new Date().toLocaleString('ko-KR')})\\n` +\n  `✅ Slack: ${slackResult.success ? '성공' : '실패'}\\n` +\n  `✅ Gmail: ${gmailResult.success ? '성공' : '실패'}\\n` +\n  `⏰ 다음 알림: 25분 후`;\n\nconsole.log(logMessage);\n\nreturn [\n  {\n    json: {\n      timestamp: new Date().toISOString(),\n      slackStatus: slackResult.success ? 'success' : 'failed',\n      gmailStatus: gmailResult.success ? 'success' : 'failed',\n      logMessage: logMessage\n    }\n  }\n];"
+      },
+      "id": "notification-logger",
+      "name": "알림 전송 결과 로깅",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// 설정 정보를 환경변수에서 가져오기\nconst config = {\n  slack_webhook_url: process.env.SLACK_WEBHOOK_URL || '',\n  gmail_address: process.env.GMAIL_ADDRESS || '',\n  work_start_time: process.env.WORK_START_TIME || '09:00',\n  work_end_time: process.env.WORK_END_TIME || '18:00',\n  rest_interval: process.env.REST_INTERVAL || '25'\n};\n\n// 필수 설정 확인\nif (!config.slack_webhook_url && !config.gmail_address) {\n  throw new Error('Slack Webhook URL 또는 Gmail 주소 중 하나는 반드시 설정해야 합니다.');\n}\n\nreturn [\n  {\n    json: config\n  }\n];"
+      },
+      "id": "config-loader",
+      "name": "설정 로더",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        680,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// 설정 정보를 메시지 생성 노드로 전달\nconst config = $input.all()[0].json;\nconst messageData = $input.all()[1].json;\n\n// 설정과 메시지 데이터를 합침\nreturn [\n  {\n    json: {\n      ...config,\n      ...messageData\n    }\n  }\n];"
+      },
+      "id": "data-merger",
+      "name": "데이터 병합",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        680,
+        700
+      ]
+    }
+  ],
+  "connections": {
+    "휴식시간 알리미 (25분마다)": {
+      "main": [
+        [
+          {
+            "node": "업무시간 확인 (09:00-18:00)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "업무시간 확인 (09:00-18:00)": {
+      "main": [
+        [
+          {
+            "node": "알림 메시지 생성",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "알림 메시지 생성": {
+      "main": [
+        [
+          {
+            "node": "데이터 병합",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "설정 로더": {
+      "main": [
+        [
+          {
+            "node": "데이터 병합",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "데이터 병합": {
+      "main": [
+        [
+          {
+            "node": "Slack 알림 전송",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Gmail 알림 전송",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Slack 알림 전송": {
+      "main": [
+        [
+          {
+            "node": "알림 전송 결과 로깅",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail 알림 전송": {
+      "main": [
+        [
+          {
+            "node": "알림 전송 결과 로깅",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2024-01-01T00:00:00.000Z",
+  "versionId": "1"
+}
