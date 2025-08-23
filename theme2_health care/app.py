@@ -32,8 +32,25 @@ try:
     import gspread
     from google.oauth2.service_account import Credentials
     GSPREAD_AVAILABLE = True
+    print("✅ GSpread 모듈 로드 성공")
 except ImportError:
     GSPREAD_AVAILABLE = False
+    print("❌ GSpread 모듈 로드 실패")
+
+# 광고 모듈 import 추가
+try:
+    from ads import (
+        show_healthcare_product_recommendation, 
+        show_general_healthcare_products,
+        show_personalized_product_recommendation,
+        show_adsense_ads,
+        show_hospital_recommendation
+    )
+    ADS_AVAILABLE = True
+    print("✅ 광고 모듈 로드 성공")
+except ImportError as e:
+    ADS_AVAILABLE = False
+    print(f"❌ 광고 모듈 로드 실패: {e}")
 
 # 페이지 설정
 st.set_page_config(
@@ -42,6 +59,230 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
+# 전문적인 색상 팔레트 CSS
+st.markdown("""
+<style>
+/* 깔끔하고 보기 좋은 컬러 팔레트 */
+:root {
+    --primary-blue: #3b82f6;
+    --primary-blue-hover: #2563eb;
+    --secondary-blue: #60a5fa;
+    --accent-green: #10b981;
+    --accent-green-hover: #059669;
+    --accent-orange: #f59e0b;
+    --accent-orange-hover: #d97706;
+    --accent-red: #ef4444;
+    --neutral-gray: #6b7280;
+    --bg-light: #ffffff;
+    --bg-gray: #f8fafc;
+    --white: #ffffff;
+    --text-dark: #1f2937;
+    --text-light: #6b7280;
+    --text-muted: #9ca3af;
+}
+
+/* 전체 앱 스타일 - 라이트 테마 */
+.main .block-container {
+    background-color: var(--bg-light);
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    color: var(--text-dark);
+}
+
+/* 헤더 스타일 - 높은 가독성 */
+.main h1 {
+    color: var(--primary-blue);
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+}
+
+.main h2 {
+    color: var(--text-dark);
+    font-weight: 600;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.main h3 {
+    color: var(--text-dark);
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    font-size: 1.25rem;
+}
+
+/* 버튼 스타일 - 깔끔한 파란색 */
+.stButton > button {
+    background-color: var(--primary-blue);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 2rem;
+    font-weight: 500;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.stButton > button:hover {
+    background-color: var(--primary-blue-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* 진행률 바 스타일 - 깔끔한 파란색 */
+.stProgress > div > div > div > div {
+    background-color: var(--primary-blue);
+    border-radius: 4px;
+}
+
+/* 메시지 스타일 - 높은 가독성 */
+.stSuccess {
+    background-color: rgba(16, 185, 129, 0.1);
+    border: 1px solid var(--accent-green);
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    color: var(--text-dark);
+    font-weight: 500;
+}
+
+.stError {
+    background-color: rgba(239, 68, 68, 0.1);
+    border: 1px solid var(--accent-red);
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    color: var(--text-dark);
+    font-weight: 500;
+}
+
+.stWarning {
+    background-color: rgba(245, 158, 11, 0.1);
+    border: 1px solid var(--accent-orange);
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    color: var(--text-dark);
+    font-weight: 500;
+}
+
+.stInfo {
+    background-color: rgba(59, 130, 246, 0.1);
+    border: 1px solid var(--primary-blue);
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    color: var(--text-dark);
+    font-weight: 500;
+}
+
+/* 사이드바 스타일 - 라이트 테마 */
+.sidebar .sidebar-content {
+    background-color: var(--bg-gray);
+    color: var(--text-dark);
+}
+
+/* 메트릭 카드 스타일 - 깔끔한 디자인 */
+[data-testid="metric-container"] {
+    background-color: var(--bg-light);
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    color: var(--text-dark);
+}
+
+/* 탭 스타일 - 깔끔한 디자인 */
+.stTabs [data-baseweb="tab-list"] {
+    gap: 8px;
+}
+
+.stTabs [data-baseweb="tab"] {
+    background-color: var(--bg-gray);
+    border-radius: 6px 6px 0 0;
+    color: var(--text-light);
+    font-weight: 500;
+    padding: 10px 16px;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.stTabs [aria-selected="true"] {
+    background-color: var(--primary-blue);
+    color: var(--white);
+    border-color: var(--primary-blue);
+}
+
+/* 체크박스 스타일 - 높은 가독성 */
+.stCheckbox > label {
+    color: var(--text-dark);
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+/* 슬라이더 스타일 - 깔끔한 디자인 */
+.stSlider > div > div > div > div {
+    background: var(--primary-blue);
+    border-radius: 4px;
+}
+
+/* 셀렉트박스 스타일 - 높은 가독성 */
+.stSelectbox > div > div {
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+}
+
+.stSelectbox > div > div:hover {
+    border-color: var(--primary-blue);
+}
+
+/* 텍스트 입력 스타일 */
+.stTextInput > div > div > input {
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    color: var(--text-dark);
+}
+
+.stTextInput > div > div > input:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+/* 확장기 스타일 */
+.stExpander > div > div {
+    background-color: var(--bg-light);
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    color: var(--text-dark);
+}
+
+/* 구분선 스타일 */
+hr {
+    border-color: #e5e7eb;
+    margin: 2rem 0;
+}
+
+/* 확장 패널 스타일 */
+.streamlit-expanderHeader {
+    background-color: var(--light-gray);
+    border-radius: 6px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+/* 구분선 스타일 */
+hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--neutral-gray), transparent);
+    margin: 2rem 0;
+}
+</style>
+""", unsafe_allow_html=True)
 
 # API 설정
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
@@ -73,7 +314,7 @@ if 'user_id' not in st.session_state:
 
 def init_google_sheets():
     try:
-        if not GSPREAD_AVAILABLE or not CREDENTIALS_EXISTS:
+        if not GSPREAD_AVAILABLE or not os.path.exists(GOOGLE_SHEETS_CREDENTIALS):
             return None
         scope = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
         creds = Credentials.from_service_account_file(GOOGLE_SHEETS_CREDENTIALS, scopes=scope)
@@ -84,7 +325,7 @@ def init_google_sheets():
 
 def save_to_sheets(data, sheet_name="vdt_data"):
     try:
-        if not GSPREAD_AVAILABLE or not SPREADSHEET_ID or not CREDENTIALS_EXISTS:
+        if not GSPREAD_AVAILABLE or not SPREADSHEET_ID or not os.path.exists(GOOGLE_SHEETS_CREDENTIALS):
             return False
         client = init_google_sheets()
         if not client:
@@ -239,9 +480,9 @@ def send_test_slack(webhook_url):
 
 def show_home():
     st.header("🏠 개발자를 위한 VDT 증후군 관리 시스템 v2.0")
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3, col4 = st.columns(4)
     with col1:
-        if YOUTUBE_SEARCH_AVAILABLE:
+        if YOUTUBE_SEARCH_AVAILABLE and os.getenv("YOUTUBE_API_KEY"):
             st.success("✅ YouTube 검색 활성화")
         else:
             st.error("❌ YouTube 검색 비활성화")
@@ -251,18 +492,47 @@ def show_home():
         else:
             st.error("❌ AI 추천 비활성화")
     with col3:
-        if SPREADSHEET_ID and CREDENTIALS_EXISTS:
+        # 데이터 저장 상태 확인 로직 수정
+        spreadsheet_id = os.getenv("SPREADSHEET_ID", "")
+        credentials_exists = os.path.exists("credentials.json")
+        if spreadsheet_id and credentials_exists and GSPREAD_AVAILABLE:
             st.success("✅ 데이터 저장 활성화")
         else:
             st.warning("⚠️ 데이터 저장 비활성화")
-    st.info("👈 **왼쪽 메뉴에서 '증상 선택'부터 시작해주세요!**")
+    with col4:
+        if ADS_AVAILABLE:
+            st.success("✅ 광고/제품 추천 활성화")
+        else:
+            st.warning("⚠️ 광고/제품 추천 비활성화")
+    
+    st.markdown("---")
+    
+    # 핵심 CTA - 새로운 색상 팔레트 적용
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        if st.button("🏃‍♂️ **증상 선택**하고 건강 관리 시작하기", key="quick_start", type="primary", use_container_width=True):
+            st.session_state.menu_selection = "증상 선택"
+            st.rerun()
 
 def show_condition_selection():
-    st.header("🔍 증상 선택 및 통증 평가")
+    st.header("증상 선택 및 통증 평가")
+    
+    # 개선된 진행률 시각화
     steps = ["증상 선택", "개인정보 입력", "작업환경 평가", "운동 추천", "휴식 알리미 설정"]
     completed_steps = sum(st.session_state.steps_completed)
-    st.caption(f"진행률: {completed_steps}/{len(steps)} 단계")
-    st.progress(completed_steps / len(steps))
+    
+    # 진행률 표시 개선
+    st.markdown("### 진행 상황")
+    col1, col2, col3 = st.columns([2, 1, 1])
+    with col1:
+        progress_percentage = (completed_steps / len(steps)) * 100
+        st.progress(progress_percentage / 100)
+    with col2:
+        st.metric("완료 단계", f"{completed_steps}/{len(steps)}")
+    with col3:
+        st.metric("진행률", f"{progress_percentage:.0f}%")
+    
+    st.markdown("---")
     
     conditions = {"거북목": "목이 앞으로 나오고 목, 어깨 통증이 있음", "라운드숄더": "어깨가 앞으로 말리고 상체가 구부정함", "허리디스크": "허리 통증, 다리 저림 등의 증상", "손목터널증후군": "손목, 손가락 저림 및 통증"}
     selected = []
@@ -277,6 +547,24 @@ def show_condition_selection():
     if selected:
         st.session_state.selected_conditions = selected
         st.success(f"✅ **선택된 증상**: {', '.join(selected)}")
+        
+        # 통증 정도 평가 추가
+        st.subheader("통증 정도 평가")
+        st.info("각 증상별로 현재 통증 정도를 평가해주세요 (0-10점)")
+        
+        pain_scores = {}
+        for condition in selected:
+            pain_level = st.slider(f"{condition} 통증 정도", 0, 10, 5, key=f"pain_{condition}")
+            pain_scores[condition] = pain_level
+        
+        st.session_state.user_data['pain_scores'] = pain_scores
+        
+        # 심각한 통증이 있는 경우 병원 추천
+        if ADS_AVAILABLE:
+            for condition in selected:
+                if pain_scores[condition] >= 7:  # 심각한 통증
+                    show_hospital_recommendation(condition, pain_scores[condition])
+        
         if st.button("✅ 저장하고 다음 단계로", key="condition_next", type="primary"):
             st.session_state.steps_completed[0] = True
             st.session_state.current_step = 1
@@ -287,14 +575,27 @@ def show_condition_selection():
         st.warning("⚠️ 최소 하나의 증상을 선택해주세요.")
 
 def show_personal_info():
-    st.header("👤 개인정보 입력")
+    st.header("개인정보 입력")
     if not st.session_state.selected_conditions:
-        st.warning("⚠️ 먼저 증상을 선택해주세요.")
+        st.warning("먼저 증상을 선택해주세요.")
         return
+    
+    # 개선된 진행률 시각화
     steps = ["증상 선택", "개인정보 입력", "작업환경 평가", "운동 추천", "휴식 알리미 설정"]
     completed_steps = sum(st.session_state.steps_completed)
-    st.caption(f"진행률: {completed_steps}/{len(steps)} 단계")
-    st.progress(completed_steps / len(steps))
+    
+    # 진행률 표시 개선
+    st.markdown("### 진행 상황")
+    col1, col2, col3 = st.columns([2, 1, 1])
+    with col1:
+        progress_percentage = (completed_steps / len(steps)) * 100
+        st.progress(progress_percentage / 100)
+    with col2:
+        st.metric("완료 단계", f"{completed_steps}/{len(steps)}")
+    with col3:
+        st.metric("진행률", f"{progress_percentage:.0f}%")
+    
+    st.markdown("---")
     
     col1, col2 = st.columns(2)
     with col1:
@@ -321,10 +622,23 @@ def show_personal_info():
 
 def show_work_environment():
     st.header("🖥️ 작업환경 평가")
+    
+    # 개선된 진행률 시각화
     steps = ["증상 선택", "개인정보 입력", "작업환경 평가", "운동 추천", "휴식 알리미 설정"]
     completed_steps = sum(st.session_state.steps_completed)
-    st.caption(f"진행률: {completed_steps}/{len(steps)} 단계")
-    st.progress(completed_steps / len(steps))
+    
+    # 진행률 표시 개선
+    st.markdown("### 📊 진행 상황")
+    col1, col2, col3 = st.columns([2, 1, 1])
+    with col1:
+        progress_percentage = (completed_steps / len(steps)) * 100
+        st.progress(progress_percentage / 100)
+    with col2:
+        st.metric("완료 단계", f"{completed_steps}/{len(steps)}")
+    with col3:
+        st.metric("진행률", f"{progress_percentage:.0f}%")
+    
+    st.markdown("---")
     
     col1, col2 = st.columns(2)
     with col1:
@@ -363,20 +677,34 @@ def show_work_environment():
         st.rerun()
 
 def show_exercise_recommendation():
-    st.header("🏃‍♂️ 맞춤형 운동 추천")
+    st.header("맞춤형 운동 추천")
     if not st.session_state.selected_conditions:
-        st.warning("⚠️ 먼저 증상을 선택해주세요.")
+        st.warning("먼저 증상을 선택해주세요.")
         return
+    
+    # 개선된 진행률 시각화
     steps = ["증상 선택", "개인정보 입력", "작업환경 평가", "운동 추천", "휴식 알리미 설정"]
     completed_steps = sum(st.session_state.steps_completed)
-    st.caption(f"진행률: {completed_steps}/{len(steps)} 단계")
-    st.progress(completed_steps / len(steps))
+    
+    # 진행률 표시 개선
+    st.markdown("### 진행 상황")
+    col1, col2, col3 = st.columns([2, 1, 1])
+    with col1:
+        progress_percentage = (completed_steps / len(steps)) * 100
+        st.progress(progress_percentage / 100)
+    with col2:
+        st.metric("완료 단계", f"{completed_steps}/{len(steps)}")
+    with col3:
+        st.metric("진행률", f"{progress_percentage:.0f}%")
+    
+    st.markdown("---")
     
     exercise_purpose = st.selectbox("주요 목적을 선택하세요", ["예방 (자세교정)", "운동 (근력 및 체력 증진)", "재활 (통증감소)"])
     rest_time = calculate_rest_time(st.session_state.user_data.get('work_intensity', '보통'))
     st.info(f"⏰ **권장 휴식시간**: {rest_time}분마다")
     
-    tab1, tab2, tab3 = st.tabs(["📋 기본 운동 추천", "📹 추천 영상", "🤖 AI 맞춤 운동 추천"])
+    # 개인화된 제품 추천 탭 추가
+    tab1, tab2, tab3, tab4 = st.tabs(["기본 운동 추천", "추천 영상", "AI 맞춤 운동 추천", "제품 추천"])
     
     with tab1:
         for condition in st.session_state.selected_conditions:
@@ -402,16 +730,24 @@ def show_exercise_recommendation():
                 st.caption(f"📺 {channel} | ⏱️ {duration}")
     
     with tab3:
-        st.subheader("🤖 AI 맞춤형 운동 추천")
-        if st.button("🚀 AI 운동 추천 받기", key="ai_recommendation", type="primary"):
+        st.subheader("AI 맞춤형 운동 추천")
+        if st.button("AI 운동 추천 받기", key="ai_recommendation", type="primary"):
             if not st.session_state.user_data:
-                st.warning("⚠️ 먼저 개인정보를 입력해주세요.")
+                st.warning("먼저 개인정보를 입력해주세요.")
                 return
-            with st.spinner("🤖 AI가 맞춤형 운동을 분석하고 있습니다..."):
+            with st.spinner("AI가 맞춤형 운동을 분석하고 있습니다..."):
                 pain_scores = st.session_state.user_data.get('pain_scores', {})
                 ai_recommendation = get_enhanced_ai_recommendation(st.session_state.user_data, st.session_state.selected_conditions, pain_scores)
-            st.subheader("🎯 AI 맞춤 운동 계획")
+            st.subheader("AI 맞춤 운동 계획")
             st.markdown(ai_recommendation)
+    
+    with tab4:
+        # 개인화된 제품 추천
+        if ADS_AVAILABLE:
+            pain_scores = st.session_state.user_data.get('pain_scores', {})
+            show_personalized_product_recommendation(st.session_state.user_data, st.session_state.selected_conditions, pain_scores)
+        else:
+            st.info("🛒 제품 추천 기능을 사용하려면 광고 모듈을 활성화하세요.")
     
     if st.button("✅ 운동 추천 완료 - 다음 단계로", key="exercise_next", type="primary"):
         st.session_state.steps_completed[3] = True
@@ -421,11 +757,24 @@ def show_exercise_recommendation():
         st.rerun()
 
 def show_notification_setup():
-    st.header("🔔 휴식 알리미 설정")
+    st.header("휴식 알리미 설정")
+    
+    # 개선된 진행률 시각화
     steps = ["증상 선택", "개인정보 입력", "작업환경 평가", "운동 추천", "휴식 알리미 설정"]
     completed_steps = sum(st.session_state.steps_completed)
-    st.caption(f"진행률: {completed_steps}/{len(steps)} 단계")
-    st.progress(completed_steps / len(steps))
+    
+    # 진행률 표시 개선
+    st.markdown("### 진행 상황")
+    col1, col2, col3 = st.columns([2, 1, 1])
+    with col1:
+        progress_percentage = (completed_steps / len(steps)) * 100
+        st.progress(progress_percentage / 100)
+    with col2:
+        st.metric("완료 단계", f"{completed_steps}/{len(steps)}")
+    with col3:
+        st.metric("진행률", f"{progress_percentage:.0f}%")
+    
+    st.markdown("---")
     
     notification_type = st.selectbox("알림 방식", ["이메일 (Gmail)", "Slack", "둘 다"])
     email = ""
@@ -461,7 +810,6 @@ def show_notification_setup():
     
     if st.session_state.steps_completed[4]:
         st.success("🎉 **모든 설정이 완료되었습니다!**")
-        st.balloons()
 
 def main():
     st.title("💻 개발자를 위한 VDT 증후군 관리 시스템 v2.0")
@@ -479,7 +827,7 @@ def main():
         current_index = 0
         st.session_state.menu_selection = options[0]
     
-    menu = st.sidebar.selectbox("📋 메뉴 선택", options, index=current_index)
+    menu = st.sidebar.selectbox("메뉴 선택", options, index=current_index)
     
     if menu != st.session_state.menu_selection:
         st.session_state.menu_selection = menu
@@ -487,20 +835,31 @@ def main():
     st.sidebar.markdown("---")
     st.sidebar.markdown("### ⚙️ 시스템 상태")
     
-    if YOUTUBE_SEARCH_AVAILABLE:
+    # YouTube 검색 상태
+    if YOUTUBE_SEARCH_AVAILABLE and os.getenv("YOUTUBE_API_KEY"):
         st.sidebar.success("✅ YouTube 검색 활성화")
     else:
         st.sidebar.error("❌ YouTube 검색 비활성화")
     
+    # AI 추천 상태
     if GEMINI_API_KEY and GEMINI_AVAILABLE:
         st.sidebar.success("✅ AI 추천 활성화")
     else:
         st.sidebar.error("❌ AI 추천 비활성화")
     
-    if SPREADSHEET_ID and CREDENTIALS_EXISTS and GSPREAD_AVAILABLE:
+    # 데이터 저장 상태 (Google Sheets)
+    spreadsheet_id = os.getenv("SPREADSHEET_ID", "")
+    credentials_exists = os.path.exists("credentials.json")
+    if spreadsheet_id and credentials_exists and GSPREAD_AVAILABLE:
         st.sidebar.success("✅ 데이터 저장 활성화")
     else:
         st.sidebar.warning("⚠️ 데이터 저장 비활성화")
+    
+    # 광고/제품 추천 상태
+    if ADS_AVAILABLE:
+        st.sidebar.success("✅ 광고/제품 추천 활성화")
+    else:
+        st.sidebar.warning("⚠️ 광고/제품 추천 비활성화")
     
     completed_steps = sum(st.session_state.steps_completed)
     progress_percentage = (completed_steps / len(st.session_state.steps_completed)) * 100

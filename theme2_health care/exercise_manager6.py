@@ -34,12 +34,11 @@ except ImportError:
 # --- Google Sheets 설정 ---
 GOOGLE_SHEETS_CREDENTIALS = "credentials.json"
 SPREADSHEET_ID = os.getenv("SPREADSHEET_ID", "")
-CREDENTIALS_EXISTS = os.path.exists(GOOGLE_SHEETS_CREDENTIALS)
 
 def init_google_sheets():
     """Google Sheets 초기화"""
     try:
-        if not GSPREAD_AVAILABLE or not CREDENTIALS_EXISTS:
+        if not GSPREAD_AVAILABLE or not os.path.exists(GOOGLE_SHEETS_CREDENTIALS):
             return None
             
         scope = [
@@ -102,7 +101,7 @@ def save_to_local_json(data, data_type, user_id):
 def save_to_google_sheets(data, sheet_name, user_id):
     """데이터를 Google Sheets에 저장 (하루에 한 번만 기록, 중복시 덮어쓰기)"""
     try:
-        if not GSPREAD_AVAILABLE or not CREDENTIALS_EXISTS:
+        if not GSPREAD_AVAILABLE or not os.path.exists(GOOGLE_SHEETS_CREDENTIALS):
             st.warning("Google Sheets 연동이 비활성화되어 로컬에만 저장됩니다.")
             return save_to_local_json(data, sheet_name, user_id)
 
@@ -620,7 +619,7 @@ def show_integrated_dashboard(user_id):
                         else:
                             exercise_df = sheet_exercise_df
                 except Exception as e:
-                    st.warning(f"Google Sheets exercise_log 로드 실패: {e}")
+                    st.info("💡 Google Sheets 연결을 건너뛰고 로컬 데이터를 사용합니다.")
                 
                 # pain_data 시트에서 데이터 로드
                 try:
@@ -642,10 +641,10 @@ def show_integrated_dashboard(user_id):
                         else:
                             pain_df = sheet_pain_df
                 except Exception as e:
-                    st.warning(f"Google Sheets pain_data 로드 실패: {e}")
+                    st.info("💡 Google Sheets 연결을 건너뛰고 로컬 데이터를 사용합니다.")
                     
         except Exception as e:
-            st.warning(f"Google Sheets 연결 실패: {e}")
+            st.info("💡 Google Sheets 연결을 건너뛰고 로컬 데이터를 사용합니다.")
     
     # 2. Google Sheets에서 데이터를 가져오지 못한 경우 로컬 JSON 파일에서 로드
     if exercise_df.empty and pain_df.empty:
