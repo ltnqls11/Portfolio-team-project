@@ -5,18 +5,12 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Supabase 설정
-SUPABASE_URL = os.getenv("SUPABASE_URL", "https://veobkxuaaunddbqzptdq.supabase.co")
-SUPABASE_ANON_KEY = os.getenv("SUPABASE_ANON_KEY", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZlb2JreHVhYXVuZGRicXpwdGRxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU3NTY2NjIsImV4cCI6MjA3MTMzMjY2Mn0.dQjJaiQgfpQY21-TfWY3o2Wh2L6bMIfOdlQY2w9XIEQ")
-SUPABASE_SERVICE_KEY = os.getenv("SUPABASE_SERVICE_KEY", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZlb2JreHVhYXVuZGRicXpwdGRxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NTc1NjY2MiwiZXhwIjoyMDcxMzMyNjYyfQ.lxoTT1hMJMj2UtnSz2SHHt_nXIbDr4cdNBjLzz8Pjcg")
 
 # YouTube Data API
-YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY", "AIzaSyDZ0kA3Vc62Ee4iNodDBSl9BSss-uxNmOc")
 
 # OpenAI API
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 
 # Google Gemini API
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "AIzaSyD42dEhbJtJxt4MO426DagLsbaEKoVnGd4")
 
 # 검색 키워드 설정
 SEARCH_KEYWORDS = [
