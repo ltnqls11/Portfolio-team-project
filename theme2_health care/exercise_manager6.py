@@ -19,6 +19,18 @@ try:
 except ImportError as e:
     YOUTUBE_SEARCH_AVAILABLE = False
 
+# Supabase 관련 라이브러리 추가
+try:
+    from supabase import create_client, Client
+    from config import SUPABASE_URL, SUPABASE_ANON_KEY
+    SUPABASE_AVAILABLE = True
+    if SUPABASE_URL and SUPABASE_ANON_KEY:
+        supabase: Client = create_client(SUPABASE_URL, SUPABASE_ANON_KEY)
+    else:
+        SUPABASE_AVAILABLE = False
+except ImportError as e:
+    SUPABASE_AVAILABLE = False
+
 # .env 파일에서 환경변수 로드
 load_dotenv()
 
@@ -34,6 +46,175 @@ except ImportError:
 # --- Google Sheets 설정 ---
 GOOGLE_SHEETS_CREDENTIALS = "credentials.json"
 SPREADSHEET_ID = os.getenv("SPREADSHEET_ID", "")
+
+def ensure_exercise_table_exists():
+    """exercise_management 테이블 존재 확인 (생성은 Supabase Dashboard에서)"""
+    if not SUPABASE_AVAILABLE:
+        return False
+    
+    try:
+        # 테이블 존재 여부 확인 - 간단한 SELECT 쿼리로 테스트
+        result = supabase.table('exercise_management').select('id').limit(1).execute()
+        return True
+    except Exception as e:
+        # 테이블이 없으면 안내 메시지
+        st.warning("""
+        ⚠️ Supabase에 'exercise_management' 테이블이 없습니다.
+        
+        다음 SQL을 Supabase Dashboard에서 실행해주세요:
+        ```sql
+        CREATE TABLE IF NOT EXISTS exercise_management (
+            id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+            data_type VARCHAR(50) NOT NULL,
+            user_email VARCHAR(255) NOT NULL,
+            date DATE NOT NULL,
+            value TEXT NOT NULL,
+            details JSONB,
+            created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+        );
+        ```
+        """)
+        return False
+
+def save_to_supabase(data_type, user_id, date, value):
+    """Supabase에 데이터 저장"""
+    if not SUPABASE_AVAILABLE:
+        return False
+    
+    try:
+        # exercise_management 테이블에 저장 시도
+        data = {
+            'data_type': data_type,
+            'user_email': user_id,
+            'date': str(date),
+            'value': str(value),
+            'details': json.dumps({
+                'timestamp': datetime.now().isoformat(),
+                'type': data_type
+            })
+        }
+        
+        # 먼저 테이블이 있는지 확인
+        try:
+            result = supabase.table('exercise_management').insert(data).execute()
+            return True
+        except Exception as table_error:
+            # 테이블이 없으면 customer_history 사용
+            if 'PGRST' in str(table_error):
+                st.info("📝 customer_history 테이블을 사용합니다...")
+                
+                # customer_history 테이블 구조에 맞게 저장
+                history_data = {
+                    'email': user_id,
+                    'user_data': json.dumps({
+                        'exercise_data': {
+                            'data_type': data_type,
+                            'date': str(date),
+                            'value': str(value)
+                        }
+                    }),
+                    'conditions': json.dumps([data_type]),
+                    'pain_scores': json.dumps({'value': str(value)}) if data_type == 'pain_data' else json.dumps({}),
+                    'created_at': datetime.now().isoformat()
+                }
+                
+                result = supabase.table('customer_history').insert(history_data).execute()
+                return True
+            else:
+                raise table_error
+                
+    except Exception as e:
+        st.warning(f"Supabase 저장 오류: {e}")
+        return False
+
+def load_from_supabase(user_id=None):
+    """Supabase에서 데이터 로드"""
+    if not SUPABASE_AVAILABLE:
+        return pd.DataFrame(), pd.DataFrame()
+    
+    exercise_df = pd.DataFrame()
+    pain_df = pd.DataFrame()
+    
+    # 1. exercise_management 테이블에서 로드 시도
+    try:
+        query = supabase.table('exercise_management').select('*')
+        if user_id:
+            query = query.eq('user_email', user_id)
+        
+        result = query.execute()
+        
+        if result.data:
+            df = pd.DataFrame(result.data)
+            
+            # 운동 데이터 필터링
+            exercise_data = df[df['data_type'] == 'exercise_log'].copy()
+            if not exercise_data.empty:
+                temp_df = exercise_data.copy()
+                temp_df['user_id'] = temp_df['user_email'] if 'user_email' in temp_df.columns else user_id
+                temp_df['date'] = pd.to_datetime(temp_df['date'])
+                temp_df['completed_count'] = pd.to_numeric(temp_df['value'], errors='coerce').fillna(0)
+                exercise_df = temp_df[['user_id', 'date', 'completed_count']].copy()
+            
+            # 통증 데이터 필터링  
+            pain_data = df[df['data_type'] == 'pain_data'].copy()
+            if not pain_data.empty:
+                temp_df = pain_data.copy()
+                temp_df['user_id'] = temp_df['user_email'] if 'user_email' in temp_df.columns else user_id
+                temp_df['date'] = pd.to_datetime(temp_df['date'])
+                temp_df['pain_level'] = pd.to_numeric(temp_df['value'], errors='coerce').fillna(0)
+                pain_df = temp_df[['user_id', 'date', 'pain_level']].copy()
+                
+    except Exception as e:
+        # exercise_management 테이블이 없으면 customer_history 사용
+        pass
+    
+    # 2. customer_history 테이블에서도 로드 시도
+    try:
+        query = supabase.table('customer_history').select('*')
+        if user_id:
+            query = query.eq('email', user_id)
+        
+        result = query.execute()
+        
+        if result.data:
+            for record in result.data:
+                try:
+                    user_data_str = record.get('user_data', '{}')
+                    if isinstance(user_data_str, str):
+                        user_data = json.loads(user_data_str)
+                    else:
+                        user_data = user_data_str
+                    
+                    # exercise_data 확인
+                    if 'exercise_data' in user_data:
+                        ex_data = user_data['exercise_data']
+                        if ex_data.get('data_type') == 'exercise_log':
+                            new_row = pd.DataFrame({
+                                'user_id': [record.get('email', user_id)],
+                                'date': [pd.to_datetime(ex_data.get('date'))],
+                                'completed_count': [pd.to_numeric(ex_data.get('value', 0), errors='coerce')]
+                            })
+                            exercise_df = pd.concat([exercise_df, new_row], ignore_index=True)
+                        elif ex_data.get('data_type') == 'pain_data':
+                            new_row = pd.DataFrame({
+                                'user_id': [record.get('email', user_id)],
+                                'date': [pd.to_datetime(ex_data.get('date'))],
+                                'pain_level': [pd.to_numeric(ex_data.get('value', 0), errors='coerce')]
+                            })
+                            pain_df = pd.concat([pain_df, new_row], ignore_index=True)
+                            
+                except Exception as parse_error:
+                    continue
+    except Exception as e:
+        pass
+    
+    # 중복 제거 및 정렬
+    if not exercise_df.empty:
+        exercise_df = exercise_df.drop_duplicates(subset=['date'], keep='last').sort_values('date')
+    if not pain_df.empty:
+        pain_df = pain_df.drop_duplicates(subset=['date'], keep='last').sort_values('date')
+    
+    return exercise_df, pain_df
 
 def init_google_sheets():
     """Google Sheets 초기화"""
@@ -395,13 +576,33 @@ def show_integrated_dashboard(user_id):
     
     today = str(date.today())
     
-    # 증상 선택
-    st.subheader("🔍 현재 겪고 있는 증상을 선택해주세요")
-    symptom_options = list(VDT_SYMPTOMS.keys())
-    selected_conditions = st.multiselect(
-        "증상을 선택해주세요:",
-        symptom_options
-    )
+    # 증상 선택 - 이미 선택된 증상 사용
+    st.subheader("🔍 현재 관리 중인 증상")
+    
+    # 세션에서 이미 선택된 증상 가져오기
+    if hasattr(st.session_state, 'selected_conditions') and st.session_state.selected_conditions:
+        selected_conditions = st.session_state.selected_conditions
+        st.success(f"✅ 선택된 증상: {', '.join(selected_conditions)}")
+        
+        # 추가 증상이 있는지 확인
+        symptom_options = list(VDT_SYMPTOMS.keys())
+        remaining_symptoms = [sym for sym in symptom_options if sym not in selected_conditions]
+        
+        if remaining_symptoms:
+            additional_conditions = st.multiselect(
+                "추가로 관리하고 싶은 증상이 있나요?",
+                remaining_symptoms
+            )
+            if additional_conditions:
+                selected_conditions.extend(additional_conditions)
+                st.info(f"📝 추가된 증상: {', '.join(additional_conditions)}")
+    else:
+        st.warning("⚠️ 먼저 '증상 선택' 메뉴에서 증상을 선택해주세요.")
+        symptom_options = list(VDT_SYMPTOMS.keys())
+        selected_conditions = st.multiselect(
+            "증상을 선택해주세요:",
+            symptom_options
+        )
     
     st.markdown("---")
     
@@ -477,8 +678,12 @@ def show_integrated_dashboard(user_id):
                             video_key = f"completed_video_{today}_{condition}_{video.get('title', '추천 영상')}"
                             if video_key not in st.session_state.checkbox_states:
                                 st.session_state.checkbox_states[video_key] = False
+                            # 체크박스 상태에 따라 라벨 동적 변경
+                            is_watched = st.session_state.checkbox_states[video_key]
+                            checkbox_label = f"**{video.get('title', '추천 영상')}** {'✅ 시청 완료' if is_watched else '▶️ 시청하기'}"
+                            
                             st.session_state.checkbox_states[video_key] = st.checkbox(
-                                f"**{video.get('title', '추천 영상')}** 영상 시청 완료",
+                                checkbox_label,
                                 value=st.session_state.checkbox_states[video_key],
                                 key=video_key
                             )
@@ -500,8 +705,12 @@ def show_integrated_dashboard(user_id):
                                 video_key = f"completed_video_{today}_{condition}_{video.get('title', '추천 영상')}"
                                 if video_key not in st.session_state.checkbox_states:
                                     st.session_state.checkbox_states[video_key] = False
+                                # 하드코딩된 영상도 동적 라벨 적용
+                                is_watched = st.session_state.checkbox_states[video_key]
+                                checkbox_label = f"**{video.get('title', '추천 영상')}** {'✅ 시청 완료' if is_watched else '▶️ 시청하기'}"
+                                
                                 st.session_state.checkbox_states[video_key] = st.checkbox(
-                                    f"**{video.get('title', '추천 영상')}** 영상 시청 완료",
+                                    checkbox_label,
                                     value=st.session_state.checkbox_states[video_key],
                                     key=video_key
                                 )
@@ -529,8 +738,48 @@ def show_integrated_dashboard(user_id):
         if total_completed > 0:
             st.session_state.exercise_log[today] = total_completed
             
-            # 데이터 저장
-            save_to_google_sheets(total_completed, 'exercise_log', user_id)
+            # 데이터 저장 - 이중 저장 시스템
+            # 1. Google Sheets 저장
+            google_saved = save_to_google_sheets(total_completed, 'exercise_log', user_id)
+            
+            # 2. Supabase 저장
+            supabase_saved = save_to_supabase('exercise_log', user_id, today, total_completed)
+            
+            # 저장 상태 표시
+            if google_saved and supabase_saved:
+                st.success("✅ 데이터가 Google Sheets와 Supabase에 모두 저장되었습니다!")
+            elif google_saved:
+                st.info("📊 데이터가 Google Sheets에 저장되었습니다.")
+            elif supabase_saved:
+                st.info("🗄️ 데이터가 Supabase에 저장되었습니다.")
+            else:
+                st.warning("⚠️ 데이터 저장에 실패했습니다. 로컬 저장을 시도합니다.")
+                # 로컬 백업 저장
+                try:
+                    backup_data = {
+                        'user_id': user_id,
+                        'date': today,
+                        'data_type': 'exercise_log',
+                        'value': total_completed,
+                        'timestamp': datetime.now().isoformat()
+                    }
+                    
+                    backup_file = "local_exercise_backup.json"
+                    existing_data = []
+                    if os.path.exists(backup_file):
+                        with open(backup_file, 'r', encoding='utf-8') as f:
+                            content = f.read().strip()
+                            if content:
+                                existing_data = json.loads(content)
+                    
+                    existing_data.append(backup_data)
+                    
+                    with open(backup_file, 'w', encoding='utf-8') as f:
+                        json.dump(existing_data, f, ensure_ascii=False, indent=2)
+                    
+                    st.success("💾 데이터가 로컬 백업 파일에 저장되었습니다.")
+                except Exception as e:
+                    st.error(f"로컬 백업 저장도 실패했습니다: {e}")
             
             st.success(f"✅ 운동 완료 기록이 저장되었습니다!")
             st.success(f"📊 완료 항목: 운동 {len(completed_exercises)}개 + 영상 시청 {len(completed_videos)}개 = 총 {total_completed}개")
@@ -561,8 +810,22 @@ def show_integrated_dashboard(user_id):
     if st.button("통증 기록 저장"):
         st.session_state.pain_data[today] = current_pain_level
         
-        # 데이터 저장
-        save_to_google_sheets(current_pain_level, 'pain_data', user_id)
+        # 데이터 저장 - 이중 저장 시스템
+        # 1. Google Sheets 저장
+        google_saved = save_to_google_sheets(current_pain_level, 'pain_data', user_id)
+        
+        # 2. Supabase 저장
+        supabase_saved = save_to_supabase('pain_data', user_id, today, current_pain_level)
+        
+        # 저장 상태 표시
+        if google_saved and supabase_saved:
+            st.success("✅ 통증 데이터가 Google Sheets와 Supabase에 모두 저장되었습니다!")
+        elif google_saved:
+            st.info("📊 통증 데이터가 Google Sheets에 저장되었습니다.")
+        elif supabase_saved:
+            st.info("🗄️ 통증 데이터가 Supabase에 저장되었습니다.")
+        else:
+            st.warning("⚠️ 통증 데이터 저장에 실패했습니다.")
         
         st.success(f"✅ 통증 기록이 저장되었습니다! (통증 점수: {current_pain_level}/15)")
         st.rerun()
@@ -592,7 +855,31 @@ def show_integrated_dashboard(user_id):
             'pain_level': [st.session_state.pain_data[today]]
         })
     
-    # 1. Google Sheets에서 데이터 로드 시도
+    # 1. Supabase에서 데이터 로드 시도
+    if SUPABASE_AVAILABLE:
+        try:
+            supabase_exercise_df, supabase_pain_df = load_from_supabase(user_id)
+            if not supabase_exercise_df.empty:
+                # 오늘 데이터가 아닌 것들만 추가
+                supabase_exercise_df = supabase_exercise_df[supabase_exercise_df['date'].dt.date != date.today()]
+                if not exercise_df.empty:
+                    exercise_df = pd.concat([exercise_df, supabase_exercise_df])
+                else:
+                    exercise_df = supabase_exercise_df
+            
+            if not supabase_pain_df.empty:
+                supabase_pain_df = supabase_pain_df[supabase_pain_df['date'].dt.date != date.today()]
+                if not pain_df.empty:
+                    pain_df = pd.concat([pain_df, supabase_pain_df])
+                else:
+                    pain_df = supabase_pain_df
+            
+            if not supabase_exercise_df.empty or not supabase_pain_df.empty:
+                st.info("🗄️ Supabase에서 데이터를 로드했습니다.")
+        except Exception as e:
+            st.info("💡 Supabase 연결을 건너뛰고 다른 방법을 시도합니다.")
+    
+    # 2. Google Sheets에서 데이터 로드 시도
     if GOOGLE_SHEETS_ENABLED:
         try:
             client = init_google_sheets()
@@ -646,13 +933,17 @@ def show_integrated_dashboard(user_id):
         except Exception as e:
             st.info("💡 Google Sheets 연결을 건너뛰고 로컬 데이터를 사용합니다.")
     
-    # 2. Google Sheets에서 데이터를 가져오지 못한 경우 로컬 JSON 파일에서 로드
+    # 3. Google Sheets에서 데이터를 가져오지 못한 경우 로컬 JSON 파일에서 로드
     if exercise_df.empty and pain_df.empty:
         json_file = "local_exercise_data.json"
         if os.path.exists(json_file):
             try:
                 with open(json_file, 'r', encoding='utf-8') as f:
-                    data = json.load(f)
+                    file_content = f.read().strip()
+                    if file_content:  # 파일이 비어있지 않은지 확인
+                        data = json.loads(file_content)
+                    else:
+                        data = []
                 
                 if data:
                     df = pd.DataFrame(data)
@@ -775,11 +1066,11 @@ def show_integrated_dashboard(user_id):
                 # 운동 횟수 차트 (바 차트)
                 if not exercise_data.empty:
                     bar_chart = alt.Chart(exercise_data).mark_bar(color='#26A69A', opacity=0.7).encode(
-                        x=alt.X('date:T', title='날짜', axis=alt.Axis(format="%m-%d")),
+                        x=alt.X('date:T', title='날짜', axis=alt.Axis(format="%m-%d", labelAngle=-45)),
                         y=alt.Y(
                             'completed_count:Q',
                             title='운동 횟수',
-                            axis=alt.Axis(labels=True, titleColor='#26A69A'),
+                            axis=alt.Axis(labels=True, titleColor='#26A69A', titlePadding=20),
                             scale=alt.Scale(domain=[0, max_count + 2])
                         ),
                         tooltip=[
@@ -793,11 +1084,11 @@ def show_integrated_dashboard(user_id):
                 # 통증 점수 차트 (선 + 점 차트)
                 if not pain_data.empty:
                     line_chart = alt.Chart(pain_data).mark_line(color='#FF5722', strokeWidth=3).encode(
-                        x=alt.X('date:T', title='날짜', axis=alt.Axis(format="%m-%d")),
+                        x=alt.X('date:T', title='날짜', axis=alt.Axis(format="%m-%d", labelAngle=-45)),
                         y=alt.Y(
                             'pain_level:Q',
                             title='통증 점수',
-                            axis=alt.Axis(labels=True, titleColor='#FF5722'),
+                            axis=alt.Axis(labels=True, titleColor='#FF5722', titlePadding=20),
                             scale=alt.Scale(domain=[0, 15])
                         ),
                         tooltip=[
@@ -811,11 +1102,11 @@ def show_integrated_dashboard(user_id):
                         size=80,
                         filled=True,
                     ).encode(
-                        x=alt.X('date:T', title='날짜', axis=alt.Axis(format="%m-%d")),
+                        x=alt.X('date:T', title='날짜', axis=alt.Axis(format="%m-%d", labelAngle=-45)),
                         y=alt.Y(
                             'pain_level:Q',
                             title='통증 점수',
-                            axis=alt.Axis(labels=True, titleColor='#FF5722'),
+                            axis=alt.Axis(labels=True, titleColor='#FF5722', titlePadding=20),
                             scale=alt.Scale(domain=[0, 15])
                         ),
                         tooltip=[
@@ -827,13 +1118,14 @@ def show_integrated_dashboard(user_id):
                     line_chart = alt.Chart(pd.DataFrame()).mark_line()
                     point_chart = alt.Chart(pd.DataFrame()).mark_point()
 
-                # 차트 결합
+                # 차트 결합 (패딩 추가로 라벨 잘림 방지)
                 combined_chart = alt.layer(bar_chart, line_chart, point_chart).resolve_scale(
                     y='independent'
                 ).properties(
                     title='운동 횟수와 통증 점수 변화',
                     width=600,
-                    height=400
+                    height=400,
+                    padding={'left': 80, 'right': 80, 'top': 40, 'bottom': 80}
                 ).interactive()
                 
                 st.altair_chart(combined_chart, use_container_width=True)
@@ -853,17 +1145,51 @@ def show_integrated_dashboard(user_id):
                 st.info("현재 사용자의 운동/통증 기록이 없습니다.")
         except Exception as e:
             st.error(f"차트 생성 중 오류가 발생했습니다: {e}")
-            st.info("데이터를 확인하고 다시 시도해주세요.")
-            # 디버깅을 위한 데이터 출력
-            st.write("디버깅 정보:")
-            st.write(f"exercise_df shape: {exercise_df.shape}")
-            st.write(f"pain_df shape: {pain_df.shape}")
-            if not exercise_df.empty:
-                st.write("exercise_df columns:", exercise_df.columns.tolist())
-                st.write("exercise_df head:", exercise_df.head())
-            if not pain_df.empty:
-                st.write("pain_df columns:", pain_df.columns.tolist())
-                st.write("pain_df head:", pain_df.head())
+            st.info("기본 차트를 표시합니다.")
+            
+            # 안전한 기본 차트 표시
+            try:
+                # 기본 데이터프레임 생성 (pain_level 컬럼 포함)
+                if pain_df.empty or 'pain_level' not in pain_df.columns:
+                    pain_df = pd.DataFrame({
+                        'user_id': [user_id],
+                        'date': [pd.to_datetime(today)],
+                        'pain_level': [0]
+                    })
+                
+                if exercise_df.empty or 'completed_count' not in exercise_df.columns:
+                    exercise_df = pd.DataFrame({
+                        'user_id': [user_id],
+                        'date': [pd.to_datetime(today)],
+                        'completed_count': [0]
+                    })
+                
+                # 기본 차트 표시
+                basic_df = pd.DataFrame({
+                    'date': [today],
+                    'completed_count': [exercise_df['completed_count'].sum() if not exercise_df.empty else 0],
+                    'pain_level': [pain_df['pain_level'].mean() if not pain_df.empty else 0]
+                })
+                
+                # 기본 차트 생성 (패딩 및 레이블 각도 적용)
+                bar_chart = alt.Chart(basic_df).mark_bar(color='#26A69A').encode(
+                    x=alt.X('date:T', title='날짜', axis=alt.Axis(labelAngle=-45)),
+                    y=alt.Y('completed_count:Q', title='운동 횟수', scale=alt.Scale(domain=[0, 10]), axis=alt.Axis(titlePadding=20))
+                )
+                
+                line_chart = alt.Chart(basic_df).mark_line(color='#FF5722').encode(
+                    x=alt.X('date:T', title='날짜', axis=alt.Axis(labelAngle=-45)),
+                    y=alt.Y('pain_level:Q', title='통증 점수', scale=alt.Scale(domain=[0, 15]), axis=alt.Axis(titlePadding=20))
+                )
+                
+                combined_chart = alt.layer(bar_chart, line_chart).resolve_scale(y='independent').properties(
+                    padding={'left': 80, 'right': 80, 'top': 40, 'bottom': 80}
+                )
+                st.altair_chart(combined_chart, use_container_width=True)
+                
+            except Exception as fallback_error:
+                st.warning(f"기본 차트도 표시할 수 없습니다: {fallback_error}")
+                st.info("데이터를 기록한 후 다시 확인해주세요.")
 
     else:
         st.info("운동 기록 및 통증 기록이 부족합니다. 루틴을 완료하고 통증을 기록해 보세요.")
@@ -879,16 +1205,16 @@ def show_integrated_dashboard(user_id):
             'pain_level': [0]
         })
         
-        # Altair를 사용한 이중 축 차트 생성
+        # Altair를 사용한 이중 축 차트 생성 (날짜 레이블 각도 추가)
         base = alt.Chart(basic_df).encode(
-            alt.X('date:T', title='날짜')
+            alt.X('date:T', title='날짜', axis=alt.Axis(labelAngle=-45))
         )
         
         bar_chart = base.mark_bar(color='#26A69A').encode(
             y=alt.Y(
                 'completed_count:Q',
                 title='운동 횟수',
-                axis=alt.Axis(labels=True, titleColor='#26A69A'),
+                axis=alt.Axis(labels=True, titleColor='#26A69A', titlePadding=20),
                 scale=alt.Scale(domain=[0, 10])
             )
         )
@@ -922,7 +1248,8 @@ def show_integrated_dashboard(user_id):
         combined_chart = alt.layer(bar_chart, line_chart, point_chart).resolve_scale(
             y='independent'
         ).properties(
-            title='운동 횟수와 통증 점수 변화 (기본 표시)'
+            title='운동 횟수와 통증 점수 변화 (기본 표시)',
+            padding={'left': 80, 'right': 80, 'top': 40, 'bottom': 80}
         )
         
         st.altair_chart(combined_chart, use_container_width=True)

@@ -1,10 +1,46 @@
 {
   "type": "이메일 (Gmail)",
-  "email": null,
-  "email_password": null,
+  "email": "b1234@gmail.com",
   "slack_webhook": null,
   "work_start": "09:00",
   "work_end": "18:00",
   "interval": 30,
-  "created_at": "2025-08-23T21:13:17.963058"
+  "user_data": {
+    "pain_scores": {
+      "허리디스크": 7
+    },
+    "subjective_status": "허리가 너무 끊어질 듯이 아픕니다. 조금만 앞 뒤로 움직여도 통증이 심해요.",
+    "email": "b1234@gmail.com",
+    "age": 30,
+    "gender": "남성",
+    "work_experience": 3,
+    "exercise_habit": "전혀 안함",
+    "smoking": "비흡연",
+    "drinking": "안함",
+    "sleep_hours": 7,
+    "daily_work_hours": 8,
+    "work_intensity": "가벼움",
+    "customer_history": {
+      "is_return_customer": false,
+      "previous_visit": null,
+      "visit_count": 0
+    },
+    "desk_height": "너무 높음",
+    "chair_support": "매우 좋음",
+    "chair_sitting_style": "등을 완전히 붙이고 앉음",
+    "monitor_distance": "적당하다 (50-70cm)",
+    "monitor_height": "눈높이와 같음",
+    "keyboard_type": "일반",
+    "mouse_type": "일반",
+    "wrist_support": "있음",
+    "lighting": "너무 밝음",
+    "env_score": 65
+  },
+  "conditions": [
+    "허리디스크"
+  ],
+  "pain_scores": {
+    "허리디스크": 7
+  },
+  "created_at": "2025-08-25T01:20:46.886097"
 }
