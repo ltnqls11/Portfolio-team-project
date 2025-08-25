@@ -1,0 +1,41 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python:*)",
+      "Bash(pip install:*)",
+      "Bash(streamlit run:*)",
+      "Bash(timeout:*)",
+      "mcp__playwright__playwright_navigate",
+      "mcp__playwright__playwright_screenshot",
+      "Read(/C:\\Users\\younj\\Downloads/**)",
+      "mcp__playwright__playwright_click",
+      "mcp__playwright__playwright_press_key",
+      "Read(/C:\\Users\\younj\\Downloads/**)",
+      "Read(/C:\\Users\\younj\\Downloads/**)",
+      "Read(/C:\\Users\\younj\\Downloads/**)",
+      "Read(/C:\\Users\\younj\\Downloads/**)",
+      "Read(/C:\\Users\\younj\\Downloads/**)",
+      "Read(/C:\\Users\\younj\\Downloads/**)",
+      "Read(/C:\\Users\\younj\\Downloads/**)",
+      "Read(/C:\\Users\\younj\\Downloads/**)",
+      "Read(/E:\\E\\Cording\\github\\team-project/**)",
+      "mcp__playwright__playwright_get_visible_text",
+      "mcp__playwright__playwright_close",
+      "Read(/C:\\Users\\younj\\Downloads/**)",
+      "Read(/C:\\Users\\younj\\Downloads/**)",
+      "Read(/C:\\Users\\younj\\Downloads/**)",
+      "Read(/C:\\Users\\younj\\Downloads/**)",
+      "Read(/C:\\Users\\younj\\Downloads/**)",
+      "Read(/C:\\Users\\younj\\Downloads/**)",
+      "Read(/C:\\Users\\younj\\Downloads/**)",
+      "Read(/C:\\Users\\younj\\Downloads/**)",
+      "Read(/C:\\Users\\younj\\Downloads/**)",
+      "mcp__playwright__playwright_fill"
+    ],
+    "deny": [],
+    "ask": [],
+    "additionalDirectories": [
+      "E:\\E\\Cording\\github\\team-project"
+    ]
+  }
+}

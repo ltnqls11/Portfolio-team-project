@@ -1,0 +1,33 @@
+# VDT 증후군 관리 시스템 환경 변수 설정
+
+# YouTube Data API v3 키 (필수 - 실시간 영상 검색용)
+YOUTUBE_API_KEY=AIzaSyDZ0kA3Vc62Ee4iNodDBSl9BSss-uxNmOc
+
+# Google Gemini AI API 키 (필수 - AI 운동 추천용)
+GEMINI_API_KEY=AIzaSyD42dEhbJtJxt4MO426DagLsbaEKoVnGd4
+
+# Supabase 데이터베이스 설정 (필수 - 영상 데이터 저장용)
+SUPABASE_URL=https://veobkxuaaunddbqzptdq.supabase.co
+SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZlb2JreHVhYXVuZGRicXpwdGRxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU3NTY2NjIsImV4cCI6MjA3MTMzMjY2Mn0.dQjJaiQgfpQY21-TfWY3o2Wh2L6bMIfOdlQY2w9XIEQ
+SUPABASE_SERVICE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZlb2JreHVhYXVuZGRicXpwdGRxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NTc1NjY2MiwiZXhwIjoyMDcxMzMyNjYyfQ.lxoTT1hMJMj2UtnSz2SHHt_nXIbDr4cdNBjLzz8Pjcg
+
+# Google Sheets 연동 설정 (선택 - 데이터 추적용)
+SPREADSHEET_ID="1HPVr2wjnJdfbRVDjknMSWGhzxS2Llkmbh1YGQT2Xa-o"
+
+# OpenAI API (현재 미사용, 향후 확장용)
+OPENAI_API_KEY=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
+
+# 로그 레벨 설정
+LOG_LEVEL=INFO
+
+# 개발/운영 모드 설정
+ENVIRONMENT=development
+
+# API 요청 제한 설정
+YOUTUBE_API_QUOTA_LIMIT=10000
+GEMINI_API_RATE_LIMIT=60
+
+# 알림 관련 설정
+DEFAULT_REST_INTERVAL=25
+DEFAULT_WORK_START=09:00
+DEFAULT_WORK_END=18:00
