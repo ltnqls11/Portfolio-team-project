@@ -1,0 +1,316 @@
+.exercise-survey {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.section-description {
+  color: var(--text-light);
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+
+.schedule-section {
+  margin-bottom: 2rem;
+}
+
+.schedule-section h2 {
+  color: var(--text-dark);
+  margin-bottom: 1rem;
+}
+
+.days-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.day-checkbox {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: var(--bg-light);
+}
+
+.day-checkbox:hover {
+  border-color: var(--primary-blue);
+  background-color: rgba(59, 130, 246, 0.05);
+}
+
+.day-checkbox input[type="checkbox"] {
+  margin-right: 0.5rem;
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.day-checkbox input[type="checkbox"]:checked + .day-label {
+  color: var(--primary-blue);
+  font-weight: 600;
+}
+
+.day-checkbox:has(input:checked) {
+  border-color: var(--primary-blue);
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+.day-label {
+  font-weight: 500;
+  color: var(--text-dark);
+  transition: all 0.2s ease;
+}
+
+.time-settings {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.slider {
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  background: #ddd;
+  outline: none;
+  -webkit-appearance: none;
+  margin: 0.5rem 0;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--primary-blue);
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.slider::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--primary-blue);
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  color: var(--text-light);
+  margin-top: 0.25rem;
+}
+
+.schedule-summary {
+  background-color: var(--bg-gray);
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid #e5e7eb;
+}
+
+.schedule-summary h4 {
+  color: var(--primary-blue);
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background-color: var(--bg-light);
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.summary-label {
+  color: var(--text-light);
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.summary-value {
+  color: var(--primary-blue);
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.goals-section {
+  margin-bottom: 2rem;
+}
+
+.goals-section h2 {
+  color: var(--text-dark);
+  margin-bottom: 1rem;
+}
+
+.goals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.75rem;
+}
+
+.goal-checkbox {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: var(--bg-light);
+}
+
+.goal-checkbox:hover {
+  border-color: var(--accent-green);
+  background-color: rgba(16, 185, 129, 0.05);
+}
+
+.goal-checkbox input[type="checkbox"] {
+  margin-right: 0.75rem;
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.goal-checkbox input[type="checkbox"]:checked + .goal-label {
+  color: var(--accent-green);
+  font-weight: 600;
+}
+
+.goal-checkbox:has(input:checked) {
+  border-color: var(--accent-green);
+  background-color: rgba(16, 185, 129, 0.1);
+}
+
+.goal-label {
+  font-weight: 500;
+  color: var(--text-dark);
+  transition: all 0.2s ease;
+}
+
+.fitness-section {
+  margin-bottom: 2rem;
+}
+
+.fitness-section h2 {
+  color: var(--text-dark);
+  margin-bottom: 1rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-dark);
+  font-size: 0.95rem;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background-color: var(--bg-light);
+  color: var(--text-dark);
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.form-actions .btn {
+  min-width: 200px;
+  font-size: 1rem;
+  padding: 0.875rem 2rem;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .days-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .time-settings {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .goals-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .form-actions .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .exercise-survey {
+    padding: 0 0.5rem;
+  }
+  
+  .days-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .day-checkbox,
+  .goal-checkbox {
+    padding: 0.75rem;
+  }
+  
+  .schedule-summary {
+    padding: 1rem;
+  }
+  
+  .summary-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+}

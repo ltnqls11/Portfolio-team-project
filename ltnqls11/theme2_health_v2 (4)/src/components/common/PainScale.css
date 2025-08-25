@@ -1,0 +1,123 @@
+.pain-scale-guide {
+  background-color: var(--bg-gray);
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+}
+
+.pain-scale-guide h4 {
+  color: var(--text-dark);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.pain-scale-subtitle {
+  color: var(--text-light);
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.pain-scale-container {
+  display: grid;
+  grid-template-columns: repeat(11, 1fr);
+  gap: 0.25rem;
+}
+
+.pain-scale-item {
+  text-align: center;
+  padding: 0.75rem 0.25rem;
+  border-radius: 8px;
+  transition: transform 0.2s ease;
+  cursor: default;
+}
+
+.pain-scale-item:hover {
+  transform: scale(1.05);
+}
+
+.pain-scale-emoji {
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.pain-scale-number {
+  font-weight: bold;
+  color: black;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.pain-scale-desc {
+  font-size: 0.6rem;
+  color: black;
+  font-weight: 500;
+  line-height: 1.2;
+  word-break: keep-all;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .pain-scale-container {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.5rem;
+  }
+  
+  .pain-scale-item {
+    padding: 0.5rem 0.25rem;
+  }
+  
+  .pain-scale-emoji {
+    font-size: 1.25rem;
+  }
+  
+  .pain-scale-number {
+    font-size: 0.9rem;
+  }
+  
+  .pain-scale-desc {
+    font-size: 0.55rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .pain-scale-container {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .pain-scale-item {
+    padding: 0.4rem 0.2rem;
+  }
+  
+  .pain-scale-emoji {
+    font-size: 1rem;
+  }
+  
+  .pain-scale-number {
+    font-size: 0.8rem;
+  }
+  
+  .pain-scale-desc {
+    font-size: 0.5rem;
+  }
+}
+
+/* 특정 통증 수준 강조 */
+.pain-scale-item.highlighted {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+  transform: scale(1.1);
+}
+
+/* 접근성 개선 */
+@media (prefers-reduced-motion: reduce) {
+  .pain-scale-item {
+    transition: none;
+  }
+  
+  .pain-scale-item:hover {
+    transform: none;
+  }
+}

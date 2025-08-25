@@ -1,0 +1,333 @@
+.app {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  margin-left: 300px;
+  padding: 2rem;
+  background-color: var(--bg-light);
+  transition: margin-left 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+    padding: 1rem;
+  }
+}
+
+/* 페이지 헤더 */
+.page-header {
+  margin-bottom: 2rem;
+}
+
+.page-title {
+  color: var(--primary-blue);
+  font-weight: 700;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.page-subtitle {
+  color: var(--text-light);
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+/* 진행률 표시 */
+.progress-section {
+  margin-bottom: 2rem;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.progress-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.progress-stats {
+  display: flex;
+  gap: 2rem;
+}
+
+.progress-stat {
+  text-align: center;
+}
+
+.progress-stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-blue);
+}
+
+.progress-stat-label {
+  font-size: 0.875rem;
+  color: var(--text-light);
+}
+
+/* 섹션 구분선 */
+.section-divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--neutral-gray), transparent);
+  margin: 2rem 0;
+}
+
+/* 탭 스타일 */
+.tabs {
+  display: flex;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 2rem;
+}
+
+.tab {
+  padding: 1rem 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--text-light);
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.tab:hover {
+  color: var(--primary-blue);
+}
+
+.tab.active {
+  color: var(--primary-blue);
+  border-bottom-color: var(--primary-blue);
+}
+
+/* 확장 패널 */
+.expandable {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.expandable-header {
+  padding: 1rem;
+  background-color: var(--bg-gray);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.expandable-content {
+  padding: 1rem;
+  background-color: var(--bg-light);
+}
+
+/* 메트릭 카드 */
+.metrics {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.metric-card {
+  flex: 1;
+  background-color: var(--bg-light);
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.metric-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary-blue);
+  margin-bottom: 0.5rem;
+}
+
+.metric-label {
+  font-size: 0.875rem;
+  color: var(--text-light);
+}
+
+/* 통증 척도 */
+.pain-scale {
+  display: flex;
+  gap: 0.25rem;
+  margin: 1rem 0;
+}
+
+.pain-scale-item {
+  flex: 1;
+  text-align: center;
+  padding: 0.5rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  color: black;
+  font-weight: 500;
+}
+
+.pain-scale-emoji {
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.pain-scale-number {
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+.pain-scale-desc {
+  font-size: 0.6rem;
+}
+
+/* 현재 통증 표시 */
+.current-pain {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.current-pain-indicator {
+  text-align: center;
+  padding: 1rem;
+  border-radius: 15px;
+  min-width: 80px;
+}
+
+.current-pain-emoji {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.current-pain-number {
+  font-weight: bold;
+  font-size: 1.25rem;
+  color: black;
+}
+
+.current-pain-info {
+  flex: 1;
+}
+
+.current-pain-info h4 {
+  margin-bottom: 0.5rem;
+  color: var(--text-dark);
+}
+
+.current-pain-info p {
+  color: var(--text-light);
+  margin-bottom: 0.25rem;
+}
+
+/* 비디오 카드 */
+.video-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: var(--bg-light);
+}
+
+.video-title {
+  font-weight: 600;
+  color: var(--primary-blue);
+  text-decoration: none;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.video-title:hover {
+  text-decoration: underline;
+}
+
+.video-meta {
+  font-size: 0.875rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+
+.video-repetition {
+  background-color: rgba(59, 130, 246, 0.1);
+  border: 1px solid var(--primary-blue);
+  border-radius: 6px;
+  padding: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text-dark);
+}
+
+/* 스트레칭 가이드 */
+.stretching-guide {
+  background-color: var(--bg-gray);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.stretching-guide h4 {
+  color: var(--text-dark);
+  margin-bottom: 0.5rem;
+}
+
+.stretching-guide ul {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.stretching-guide li {
+  margin-bottom: 0.25rem;
+  color: var(--text-dark);
+}
+
+/* 알림 설정 */
+.notification-preview {
+  background-color: var(--bg-gray);
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.notification-preview h4 {
+  color: var(--text-dark);
+  margin-bottom: 0.5rem;
+}
+
+.notification-preview p {
+  color: var(--text-light);
+  margin-bottom: 0.25rem;
+}
+
+/* 로딩 스피너 */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e5e7eb;
+  border-top: 4px solid var(--primary-blue);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
