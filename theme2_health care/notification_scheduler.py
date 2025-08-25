@@ -13,6 +13,10 @@ from email.mime.multipart import MIMEMultipart
 from datetime import datetime, timedelta
 import logging
 import os
+from dotenv import load_dotenv
+
+# .env 파일 로드
+load_dotenv()
 
 # 로깅 설정
 logging.basicConfig(
@@ -80,14 +84,22 @@ class NotificationScheduler:
     def send_email_notification(self):
         """이메일 알림 발송"""
         try:
-            if not self.config.get('email') or not self.config.get('email_password'):
-                logger.warning("이메일 설정이 없습니다.")
+            # .env 파일에서 Gmail 설정 로드
+            gmail_email = os.getenv("GMAIL_EMAIL", "")
+            gmail_password = os.getenv("GMAIL_APP_PASSWORD", "")
+            smtp_server = os.getenv("SMTP_SERVER", "smtp.gmail.com")
+            smtp_port = int(os.getenv("SMTP_PORT", "587"))
+            
+            recipient_email = self.config.get('email', '')
+            
+            if not gmail_email or not gmail_password or not recipient_email:
+                logger.warning("이메일 설정이 완료되지 않았습니다.")
                 return False
             
             # 이메일 메시지 생성
             msg = MIMEMultipart()
-            msg['From'] = self.config['email']
-            msg['To'] = self.config['email']
+            msg['From'] = gmail_email
+            msg['To'] = recipient_email
             msg['Subject'] = "🏃‍♂️ VDT 휴식 알리미"
             
             # 알림 메시지 생성
@@ -95,13 +107,13 @@ class NotificationScheduler:
             msg.attach(MIMEText(body, 'plain', 'utf-8'))
             
             # SMTP 서버 연결 및 발송
-            server = smtplib.SMTP('smtp.gmail.com', 587)
+            server = smtplib.SMTP(smtp_server, smtp_port)
             server.starttls()
-            server.login(self.config['email'], self.config['email_password'])
+            server.login(gmail_email, gmail_password)
             server.send_message(msg)
             server.quit()
             
-            logger.info("이메일 알림 발송 성공")
+            logger.info(f"이메일 알림 발송 성공: {recipient_email}")
             return True
             
         except Exception as e:

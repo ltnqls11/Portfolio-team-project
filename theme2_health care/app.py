@@ -29,6 +29,14 @@ except ImportError:
     GEMINI_AVAILABLE = False
 
 try:
+    import openai
+    OPENAI_AVAILABLE = True
+    print("OK: OpenAI module loaded")
+except ImportError:
+    OPENAI_AVAILABLE = False
+    print("ERROR: OpenAI module load failed")
+
+try:
     import gspread
     from google.oauth2.service_account import Credentials
     GSPREAD_AVAILABLE = True
@@ -54,7 +62,7 @@ except ImportError as e:
 
 # 페이지 설정
 st.set_page_config(
-    page_title="개발자 근무 환경 개선을 위한 맞춤형 운동 관리 시스템",
+    page_title="직장인 근무 환경 개선을 위한 맞춤형 운동 관리 시스템",
     page_icon="💻",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -284,10 +292,16 @@ hr {
 </style>
 """, unsafe_allow_html=True)
 
-# API 설정
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
+# AI API 설정
+from config import GEMINI_API_KEY, OPENAI_API_KEY
+
 if GEMINI_API_KEY and GEMINI_AVAILABLE:
     genai.configure(api_key=GEMINI_API_KEY)
+
+if OPENAI_API_KEY and OPENAI_AVAILABLE:
+    openai_client = openai.OpenAI(api_key=OPENAI_API_KEY)
+else:
+    openai_client = None
 
 # Google Sheets 설정
 GOOGLE_SHEETS_CREDENTIALS = "credentials.json"
@@ -815,26 +829,26 @@ def get_condition_specific_stretches(conditions, pain_scores):
     return stretches
 
 def check_customer_history(email):
-    """고객 이력 확인 (초진/재진 판별)"""
+    """고객 이력 확인 (초진/재진 판별) - 통합 데이터베이스 사용"""
     try:
-        from supabase import create_client
-        from config import SUPABASE_URL, SUPABASE_ANON_KEY
+        from customer_database import get_customer_data, get_visit_count, increment_visit_count
         
-        if not SUPABASE_URL or not SUPABASE_ANON_KEY:
-            return None
+        # 통합 데이터베이스에서 고객 정보 조회
+        existing_customer = get_customer_data(email)
         
-        supabase = create_client(SUPABASE_URL, SUPABASE_ANON_KEY)
-        
-        # customer_history 테이블에서 이메일로 검색
-        result = supabase.table('customer_history').select('*').eq('email', email).execute()
-        
-        if result.data:
-            # 기존 고객 - 가장 최근 기록 반환
-            latest_visit = sorted(result.data, key=lambda x: x.get('created_at', ''), reverse=True)[0]
+        if existing_customer:
+            # 기존 고객 - 실제 방문 횟수 조회
+            visit_count = get_visit_count(email)
+            
+            # 세션에 이미 방문 기록이 없으면 방문 횟수 증가
+            if 'visit_incremented' not in st.session_state:
+                visit_count = increment_visit_count(email)
+                st.session_state.visit_incremented = True
+            
             return {
                 'is_return_customer': True,
-                'previous_visit': latest_visit,
-                'visit_count': len(result.data)
+                'previous_visit': existing_customer,
+                'visit_count': visit_count
             }
         else:
             # 신규 고객
@@ -848,68 +862,65 @@ def check_customer_history(email):
         return None
 
 def save_customer_data(email, user_data, conditions, pain_scores):
-    """고객 데이터 저장"""
+    """통합 고객 데이터베이스에 저장"""
     try:
-        from supabase import create_client
-        from config import SUPABASE_URL, SUPABASE_ANON_KEY
-        import json
-        import os
-        from datetime import datetime
+        # 통합 데이터베이스 사용
+        from customer_database import save_customer_data as save_to_db, get_customer_data, get_visit_count
         
-        # 1. Supabase 시도
-        if SUPABASE_URL and SUPABASE_ANON_KEY:
-            try:
-                supabase = create_client(SUPABASE_URL, SUPABASE_ANON_KEY)
-                
-                customer_record = {
-                    'email': email,
-                    'user_data': json.dumps(user_data, ensure_ascii=False),
-                    'conditions': json.dumps(conditions, ensure_ascii=False),
-                    'pain_scores': json.dumps(pain_scores, ensure_ascii=False),
-                    'created_at': datetime.now().isoformat(),
-                    'age': user_data.get('age'),
-                    'gender': user_data.get('gender'),
-                    'work_experience': user_data.get('work_experience')
-                }
-                
-                result = supabase.table('customer_history').insert(customer_record).execute()
-                print(f"고객 데이터 Supabase에 저장 완료: {email}")
-                return True
-            except Exception as db_error:
-                print(f"Supabase 저장 실패 (로컬 파일로 저장): {db_error}")
+        # 기존 고객 확인
+        existing_customer = get_customer_data(email)
         
-        # 2. 로컬 파일 백업 시스템
-        local_db_file = "customer_history.json"
-        
-        # 기존 데이터 로드
-        if os.path.exists(local_db_file):
-            with open(local_db_file, 'r', encoding='utf-8') as f:
-                customer_data = json.load(f)
+        if existing_customer:
+            # 재방문 고객 - 실제 방문 횟수 조회
+            visit_count = get_visit_count(email)
+            st.session_state.user_data['customer_history'] = {
+                'is_return_customer': True,
+                'previous_visit': existing_customer,
+                'visit_count': visit_count
+            }
+            print(f"재방문 고객 확인: {email} (방문 {visit_count}회)")
         else:
-            customer_data = {}
+            # 신규 고객
+            st.session_state.user_data['customer_history'] = {
+                'is_return_customer': False,
+                'previous_visit': None,
+                'visit_count': 1
+            }
+            print(f"신규 고객 등록: {email}")
         
-        # 새 방문 기록 추가
-        if email not in customer_data:
-            customer_data[email] = []
+        # 통합 데이터베이스에 저장
+        success = save_to_db(email, user_data, conditions, pain_scores)
         
-        visit_record = {
-            'user_data': json.dumps(user_data, ensure_ascii=False),
-            'conditions': json.dumps(conditions, ensure_ascii=False),
-            'pain_scores': json.dumps(pain_scores, ensure_ascii=False),
-            'created_at': datetime.now().isoformat(),
-            'age': user_data.get('age'),
-            'gender': user_data.get('gender'),
-            'work_experience': user_data.get('work_experience')
-        }
-        
-        customer_data[email].append(visit_record)
-        
-        # 로컬 파일에 저장
-        with open(local_db_file, 'w', encoding='utf-8') as f:
-            json.dump(customer_data, f, ensure_ascii=False, indent=2)
-        
-        print(f"고객 데이터 로컬 파일에 저장 완료: {email}")
-        return True
+        if success:
+            print(f"통합 DB 저장 성공: {email}")
+            
+            # 백업: Google Sheets 저장
+            try:
+                from datetime import datetime
+                import json
+                sheets_data = {
+                    'timestamp': datetime.now().isoformat(),
+                    'user_id': email,
+                    'data_type': 'customer_survey',
+                    'conditions': ', '.join(conditions),
+                    'user_age': user_data.get('age'),
+                    'user_gender': user_data.get('gender'),
+                    'work_hours': user_data.get('daily_work_hours'),
+                    'exercise_purpose': user_data.get('exercise_purpose', ''),
+                    'ai_recommendation': user_data.get('ai_recommended_purpose', ''),
+                    'pain_scores': json.dumps(pain_scores, ensure_ascii=False),
+                    'work_intensity': user_data.get('work_intensity'),
+                    'env_score': user_data.get('env_score')
+                }
+                save_to_sheets(sheets_data)
+                print(f"Google Sheets 백업 완료: {email}")
+            except Exception as sheets_error:
+                print(f"Google Sheets 백업 실패: {sheets_error}")
+            
+            return True
+        else:
+            print(f"통합 DB 저장 실패: {email}")
+            return False
         
     except Exception as e:
         print(f"고객 데이터 저장 오류: {e}")
@@ -1162,17 +1173,36 @@ def calculate_environment_score(desk_height, chair_support, chair_sitting_style,
         score += 10
     return score
 
-def send_test_email(email, password):
+def send_test_email(sender_email, app_password, recipient_email=None):
     try:
+        from config import SMTP_SERVER, SMTP_PORT
+        
+        # 수신자 이메일이 지정되지 않으면 발신자 이메일로 설정
+        if not recipient_email:
+            recipient_email = sender_email
+            
         msg = MIMEMultipart()
-        msg['From'] = email
-        msg['To'] = email
-        msg['Subject'] = "VDT 관리 시스템 - 테스트 메일"
-        body = "휴식 알리미 테스트 메일입니다."
+        msg['From'] = sender_email
+        msg['To'] = recipient_email
+        msg['Subject'] = "🏃‍♂️ VDT 관리 시스템 - 휴식 알리미 테스트"
+        
+        body = f"""
+안녕하세요! VDT 증후군 관리 시스템입니다.
+
+휴식 알리미가 정상적으로 설정되었습니다.
+앞으로 설정하신 시간에 맞춰 맞춤 운동 알림을 보내드리겠습니다.
+
+건강한 개발 생활을 응원합니다! 💪
+
+---
+VDT 증후군 관리 시스템
+        """
+        
         msg.attach(MIMEText(body, 'plain', 'utf-8'))
-        server = smtplib.SMTP('smtp.gmail.com', 587)
+        
+        server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
         server.starttls()
-        server.login(email, password)
+        server.login(sender_email, app_password)
         server.send_message(msg)
         server.quit()
         return True
@@ -1190,7 +1220,7 @@ def send_test_slack(webhook_url):
         return False
 
 def show_home():
-    st.header("개발자들의 건강한 몸상태를 응원합니다.")
+    st.header("직장인들의 건강한 몸상태를 응원합니다.")
     
     st.markdown("---")
     
@@ -1397,7 +1427,7 @@ def show_personal_info():
         if customer_history and customer_history['is_return_customer']:
             # 재진 고객
             visit_count = customer_history['visit_count']
-            st.success(f"👋 다시 방문해주셨군요! (총 {visit_count + 1}번째 방문)")
+            st.success(f"👋 다시 방문해주셨군요! (총 {visit_count}번째 방문)")
             
             # 이전 방문 대비 증상 변화 분석
             previous_visit = customer_history['previous_visit']
@@ -1693,8 +1723,8 @@ def show_exercise_recommendation():
     rest_time = calculate_rest_time(st.session_state.user_data.get('work_intensity', '보통'))
     st.info(f"⏰ **권장 휴식시간**: {rest_time}분마다")
     
-    # 3개 탭 사용: 전문 AI 상담, 추천 영상, 맞춤 루틴
-    tab1, tab2, tab3 = st.tabs(["🤖 전문 AI와 상담하기", "📺 맞춤 운동 영상 추천", "🏃‍♀️ 맞춤형 운동 루틴 생성"])
+    # 4개 탭 사용: 전문 AI 상담, 추천 영상, 맞춤 루틴, 제품 추천
+    tab1, tab2, tab3, tab4 = st.tabs(["🤖 전문 AI와 상담하기", "📺 맞춤 운동 영상 추천", "🏃‍♀️ 맞춤형 운동 루틴 생성", "🛒 맞춤 제품 추천"])
     
     with tab1:
         st.subheader("👨‍⚕️ 재활의학과 전문의 챗봇과 실시간 상담")
@@ -1739,8 +1769,45 @@ def show_exercise_recommendation():
             with st.chat_message("user"):
                 st.write(prompt)
             
-            # AI 응답 생성
-            if GEMINI_AVAILABLE and GEMINI_API_KEY:
+            # AI 응답 생성 - OpenAI 우선 사용
+            if OPENAI_AVAILABLE and OPENAI_API_KEY and openai_client:
+                try:
+                    # 전문의 역할 프롬프트
+                    subjective_status = st.session_state.user_data.get('subjective_status', '')
+                    system_prompt = f"""당신은 VDT 증후군 전문 재활의학과 의사입니다.
+                    
+환자 정보:
+- 나이: {st.session_state.user_data.get('age', 'N/A')}세
+- 성별: {st.session_state.user_data.get('gender', 'N/A')}
+- 증상: {', '.join(st.session_state.selected_conditions)}
+- 통증 수준: {', '.join([f'{k}: {v}/10점' for k, v in pain_scores.items()])}
+- 작업환경 점수: {st.session_state.user_data.get('env_score', 'N/A')}/100점
+- 일일 작업시간: {st.session_state.user_data.get('daily_work_hours', 'N/A')}시간
+- 주관적 상태: {subjective_status if subjective_status else '없음'}
+
+친근하고 전문적인 의료 상담을 제공해주세요. 구체적이고 실용적인 조언을 해주세요."""
+                    
+                    with st.chat_message("assistant"):
+                        with st.spinner("전문의가 답변을 준비하고 있습니다..."):
+                            response = openai_client.chat.completions.create(
+                                model="gpt-3.5-turbo",
+                                messages=[
+                                    {"role": "system", "content": system_prompt},
+                                    {"role": "user", "content": prompt}
+                                ],
+                                max_tokens=1000,
+                                temperature=0.7
+                            )
+                            ai_response = response.choices[0].message.content
+                            st.write(ai_response)
+                    
+                    # AI 메시지 추가
+                    st.session_state.chat_messages.append({"role": "assistant", "content": ai_response})
+                    
+                except Exception as e:
+                    with st.chat_message("assistant"):
+                        st.error(f"죄송합니다. AI 상담 중 오류가 발생했습니다: {str(e)}")
+            elif GEMINI_AVAILABLE and GEMINI_API_KEY:
                 try:
                     model = genai.GenerativeModel('gemini-1.5-flash')
                     
@@ -1775,7 +1842,7 @@ def show_exercise_recommendation():
                         st.error(f"죄송합니다. AI 상담 중 오류가 발생했습니다: {str(e)}")
             else:
                 with st.chat_message("assistant"):
-                    st.warning("🤖 AI 상담 기능을 사용하려면 Gemini API 키를 설정해주세요.")
+                    st.warning("🤖 AI 상담 기능을 사용하려면 OpenAI 또는 Gemini API 키를 설정해주세요.")
         
         # 채팅 초기화 버튼
         if st.session_state.chat_messages:
@@ -1929,6 +1996,7 @@ def show_exercise_recommendation():
             if len(purposes_to_show) > 1 and purpose_type == "AI 추천":
                 st.markdown("---")
                 st.markdown("---")
+        
         
     
     with tab3:
@@ -2117,6 +2185,35 @@ def show_exercise_recommendation():
             st.session_state.next_menu = "휴식 알리미 설정"
             st.success("✅ 맞춤형 운동 루틴이 완료되었습니다!")
             st.rerun()
+    
+    with tab4:
+        st.subheader("🛒 맞춤 제품 추천")
+        
+        # AI 추천 운동 목적 확인
+        if not st.session_state.get('final_exercise_purpose'):
+            if not st.session_state.get('ai_recommended_purpose'):
+                st.warning("❗ 먼저 '전문 AI와 상담하기' 탭에서 상담을 진행해주세요.")
+                return
+        
+        # 개인화된 제품 추천만 표시
+        pain_scores = st.session_state.user_data.get('pain_scores', {})
+        try:
+            show_personalized_product_recommendation(
+                st.session_state.user_data,
+                st.session_state.selected_conditions,
+                pain_scores
+            )
+        except Exception as e:
+            st.info("💡 제품 추천 기능을 준비 중입니다.")
+        
+        # 제품 추천 완료 버튼
+        st.markdown("---")
+        if st.button("✅ 맞춤 제품 확인 완료 - 다음 단계로", key="product_complete", type="primary"):
+            st.session_state.steps_completed[4] = True
+            st.session_state.current_step = 5
+            st.session_state.next_menu = "휴식 알리미 설정"
+            st.success("✅ 맞춤 제품 추천이 완료되었습니다!")
+            st.rerun()
 
 def show_notification_setup():
     st.header("휴식 알리미 설정")
@@ -2179,43 +2276,73 @@ def show_notification_setup():
     """)
     
     if st.button("🚀 알리미 활성화", type="primary"):
-        notification_config = {
-            "type": notification_type, 
-            "email": user_email,
-            "slack_webhook": slack_webhook if slack_webhook else None, 
-            "work_start": work_start.strftime("%H:%M"), 
-            "work_end": work_end.strftime("%H:%M"), 
-            "interval": custom_interval, 
-            "user_data": st.session_state.user_data,
-            "conditions": st.session_state.selected_conditions,
-            "pain_scores": st.session_state.user_data.get('pain_scores', {}),
-            "created_at": datetime.now().isoformat()
-        }
+        # 설정 검증
+        valid_config = True
         
-        try:
-            with open("notification_config.json", "w", encoding="utf-8") as f:
-                json.dump(notification_config, f, ensure_ascii=False, indent=2, default=str)
+        if notification_type in ["이메일 (Gmail)", "둘 다"]:
+            from config import GMAIL_EMAIL, GMAIL_APP_PASSWORD
+            if not GMAIL_EMAIL or not GMAIL_APP_PASSWORD:
+                st.error("❌ Gmail 설정이 완료되지 않았습니다. .env 파일의 GMAIL_EMAIL과 GMAIL_APP_PASSWORD를 확인해주세요.")
+                valid_config = False
+            else:
+                # 테스트 이메일 발송
+                if send_test_email(GMAIL_EMAIL, GMAIL_APP_PASSWORD, user_email):
+                    st.success("✅ 이메일 알림 테스트 성공!")
+                else:
+                    valid_config = False
+        
+        if notification_type in ["Slack", "둘 다"]:
+            if not slack_webhook:
+                st.error("❌ Slack Webhook URL을 입력해주세요.")
+                valid_config = False
+            else:
+                # 테스트 슬랙 메시지 발송
+                if send_test_slack(slack_webhook):
+                    st.success("✅ Slack 알림 테스트 성공!")
+                else:
+                    valid_config = False
+        
+        if valid_config:
+            notification_config = {
+                "type": notification_type, 
+                "email": user_email,
+                "slack_webhook": slack_webhook if slack_webhook else None, 
+                "work_start": work_start.strftime("%H:%M"), 
+                "work_end": work_end.strftime("%H:%M"), 
+                "interval": custom_interval, 
+                "user_data": st.session_state.user_data,
+                "conditions": st.session_state.selected_conditions,
+                "pain_scores": st.session_state.user_data.get('pain_scores', {}),
+                "created_at": datetime.now().isoformat()
+            }
             
-            # 최종 고객 데이터 저장
-            save_customer_data(
-                user_email,
-                st.session_state.user_data,
-                st.session_state.selected_conditions,
-                st.session_state.user_data.get('pain_scores', {})
-            )
-            
-            st.success(f"✅ 알리미가 설정되었습니다!")
-            st.success(f"📧 {user_email}로 {custom_interval}분마다 맞춤 운동 알림을 보내드립니다!")
-            st.session_state.steps_completed[5] = True  # 6번째 단계 완료 (0부터 시작하므로 5)
-        except Exception as e:
-            st.error(f"❌ 설정 저장 중 오류가 발생했습니다: {str(e)}")
+            try:
+                with open("notification_config.json", "w", encoding="utf-8") as f:
+                    json.dump(notification_config, f, ensure_ascii=False, indent=2, default=str)
+                
+                # 최종 고객 데이터 저장
+                save_customer_data(
+                    user_email,
+                    st.session_state.user_data,
+                    st.session_state.selected_conditions,
+                    st.session_state.user_data.get('pain_scores', {})
+                )
+                
+                st.success(f"✅ 알리미가 설정되었습니다!")
+                st.success(f"📧 {user_email}로 {custom_interval}분마다 맞춤 운동 알림을 보내드립니다!")
+                st.session_state.steps_completed[5] = True  # 6번째 단계 완료 (0부터 시작하므로 5)
+            except Exception as e:
+                st.error(f"❌ 설정 저장 중 오류가 발생했습니다: {str(e)}")
     
     if st.session_state.steps_completed[5]:
         st.success("🎉 **모든 설정이 완료되었습니다!**")
-        st.balloons()
+        st.markdown("---")
+        if st.button("📊 운동기록 확인하기", type="primary", key="go_to_exercise_management"):
+            st.session_state.menu_selection = "운동 관리"
+            st.rerun()
 
 def main():
-    st.title("💻 개발자 근무 환경 개선을 위한 맞춤형 운동 관리 시스템")
+    st.title("💻 직장인 근무 환경 개선을 위한 맞춤형 운동 관리 시스템")
     st.markdown("---")
     
     options = ["홈", "증상 선택", "개인정보 입력", "작업환경 평가", "개인 운동 설문", "운동 추천", "휴식 알리미 설정","운동 관리"]
@@ -2293,9 +2420,10 @@ def main():
             em6 = importlib.util.module_from_spec(spec)
             assert spec and spec.loader
             spec.loader.exec_module(em6)
-            user_id = st.session_state.get('user_id', f'user_{datetime.now().strftime("%Y%m%d_%H%M%S")}')
+            # 개인정보 입력에서 저장된 이메일 확인
+            user_email = st.session_state.user_data.get('email') if 'user_data' in st.session_state else None
             if hasattr(em6, "show_integrated_dashboard"):
-                em6.show_integrated_dashboard(user_id)
+                em6.show_integrated_dashboard(user_email)
             else:
                 st.error("exercise_manager6.py에 'show_integrated_dashboard' 함수가 없습니다.")
         except Exception as e:

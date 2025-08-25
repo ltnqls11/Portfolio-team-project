@@ -406,59 +406,55 @@ VDT_SYMPTOMS = {
             {"title": "허리디스크 예방 스트레칭", "url": "https://www.youtube.com/watch?v=eYk2S9f2gI4"}
         ]
     },
-    "손목터널증후군_왼쪽": {
-        "증상": ["왼쪽 손목 통증", "왼쪽 손가락 저림", "왼쪽 손 근력 약화"],
-        "원인": ["반복적인 손목 사용", "부자연스러운 손목 각도"],
+    "손목터널증후군": {
+        "증상": ["손목 통증", "손가락 저림", "손 근력 약화", "밤에 심해지는 손목 통증"],
+        "원인": ["반복적인 손목 사용", "부자연스러운 손목 각도", "장시간 컴퓨터 사용"],
         "운동_추천": {
             "예방 (자세교정)": [
-                {"name": "왼쪽 손목 스트레칭", "purpose": "왼쪽 손목 근육 이완", "method": "왼쪽 손목을 위아래로 구부리기", "reps": "10회씩 3세트", "caution": "통증 시 중단"},
-                {"name": "왼쪽 손가락 펴기", "purpose": "왼쪽 손가락 근육 이완", "method": "왼쪽 손가락을 쭉 펴고 5초간 유지", "reps": "10회", "caution": "부드럽게 실시"}
+                {"name": "손목 스트레칭", "purpose": "손목 근육 이완", "method": "손목을 위아래로 구부리기 (양손)", "reps": "10회씩 3세트", "caution": "통증 시 중단"},
+                {"name": "손가락 펴기", "purpose": "손가락 근육 이완", "method": "손가락을 쭉 펴고 5초간 유지", "reps": "10회", "caution": "부드럽게 실시"},
+                {"name": "손목 측면 스트레칭", "purpose": "손목 측면 근육 이완", "method": "손목을 좌우로 젖히기", "reps": "각 방향 10초씩 3회", "caution": "서서히 진행"}
             ],
             "운동 (근력 및 체력 증진)": [
-                {"name": "왼쪽 손목 근력 강화", "purpose": "왼쪽 손목 주변 근육 강화", "method": "가벼운 무게로 왼쪽 손목 굽히기 운동", "reps": "15회 2세트", "caution": "무리하지 말 것"}
+                {"name": "손목 근력 강화", "purpose": "손목 주변 근육 강화", "method": "가벼운 무게로 손목 굽히기 운동", "reps": "15회 2세트", "caution": "무리하지 말 것"},
+                {"name": "손가락 운동", "purpose": "손가락 근력 강화", "method": "주먹 쥐었다 펴기 반복", "reps": "20회 2세트", "caution": "천천히 실시"}
             ],
             "재활 (통증감소)": [
-                {"name": "왼쪽 신경 활주 운동", "purpose": "왼쪽 신경 압박 완화", "method": "왼쪽 손목과 손가락을 천천히 펴고 구부리기", "reps": "10회씩 하루 3번", "caution": "저림이 심해지면 중단"}
+                {"name": "신경 활주 운동", "purpose": "신경 압박 완화", "method": "손목과 손가락을 천천히 펴고 구부리기", "reps": "10회씩 하루 3번", "caution": "저림이 심해지면 중단"},
+                {"name": "손목 마사지", "purpose": "혈액순환 개선", "method": "손목 부위를 부드럽게 마사지", "reps": "2-3분", "caution": "강하게 누르지 말 것"}
             ]
         },
         "유튜브_영상_링크": [
-            {"title": "왼쪽 손목 통증 스트레칭", "url": "https://www.youtube.com/watch?v=9D_r_z0i9pI"},
-            {"title": "왼쪽 손목터널 증후군 예방", "url": "https://www.youtube.com/watch?v=G96q6sL3FhY"}
-        ]
-    },
-    "손목터널증후군_오른쪽": {
-        "증상": ["오른쪽 손목 통증", "오른쪽 손가락 저림", "오른쪽 손 근력 약화"],
-        "원인": ["반복적인 손목 사용", "부자연스러운 손목 각도"],
-        "운동_추천": {
-            "예방 (자세교정)": [
-                {"name": "오른쪽 손목 스트레칭", "purpose": "오른쪽 손목 근육 이완", "method": "오른쪽 손목을 위아래로 구부리기", "reps": "10회씩 3세트", "caution": "통증 시 중단"},
-                {"name": "오른쪽 손가락 펴기", "purpose": "오른쪽 손가락 근육 이완", "method": "오른쪽 손가락을 쭉 펴고 5초간 유지", "reps": "10회", "caution": "부드럽게 실시"}
-            ],
-            "운동 (근력 및 체력 증진)": [
-                {"name": "오른쪽 손목 근력 강화", "purpose": "오른쪽 손목 주변 근육 강화", "method": "가벼운 무게로 오른쪽 손목 굽히기 운동", "reps": "15회 2세트", "caution": "무리하지 말 것"}
-            ],
-            "재활 (통증감소)": [
-                {"name": "오른쪽 신경 활주 운동", "purpose": "오른쪽 신경 압박 완화", "method": "오른쪽 손목과 손가락을 천천히 펴고 구부리기", "reps": "10회씩 하루 3번", "caution": "저림이 심해지면 중단"}
-            ]
-        },
-        "유튜브_영상_링크": [
-            {"title": "오른쪽 손목 통증 스트레칭", "url": "https://www.youtube.com/watch?v=9D_r_z0i9pI"},
-            {"title": "오른쪽 손목터널 증후군 예방", "url": "https://www.youtube.com/watch?v=G96q6sL3FhY"}
+            {"title": "손목터널증후군 스트레칭", "url": "https://www.youtube.com/watch?v=EiRC80FJbHU"},
+            {"title": "손목 통증 스트레칭", "url": "https://www.youtube.com/watch?v=9D_r_z0i9pI"},
+            {"title": "손목터널 증후군 예방", "url": "https://www.youtube.com/watch?v=G96q6sL3FhY"}
         ]
     }
 }
+
+def normalize_condition_name(condition):
+    """
+    증상명을 정규화합니다. 손목터널증후군의 좌/우 구분을 통일합니다.
+    """
+    if "손목터널증후군" in condition:
+        return "손목터널증후군"
+    return condition
 
 def get_exercises_for_condition(condition, purpose="예방 (자세교정)"):
     """
     특정 증상에 대한 운동 추천 목록을 반환합니다.
     """
-    return VDT_SYMPTOMS.get(condition, {}).get("운동_추천", {}).get(purpose, [])
+    # 증상명 정규화
+    normalized_condition = normalize_condition_name(condition)
+    return VDT_SYMPTOMS.get(normalized_condition, {}).get("운동_추천", {}).get(purpose, [])
 
 def get_exercise_videos(condition):
     """
     특정 증상에 대한 YouTube 영상 목록을 반환합니다.
     """
-    videos = VDT_SYMPTOMS.get(condition, {}).get("유튜브_영상_링크", [])
+    # 증상명 정규화
+    normalized_condition = normalize_condition_name(condition)
+    videos = VDT_SYMPTOMS.get(normalized_condition, {}).get("유튜브_영상_링크", [])
     if not videos:
         return []
 
@@ -517,12 +513,14 @@ def _fetch_videos_from_sheet(condition: str, purpose: str, limit: int):
 
 def get_videos_for_condition_enhanced(condition: str, purpose: str = "예방", limit: int = 3):
     """향상된 영상 추천 시스템: 데이터베이스 > Google Sheets > 하드코딩 순서로 시도"""
+    # 조건명 정규화
+    normalized_condition = normalize_condition_name(condition)
     videos = []
     
     # 1. 데이터베이스에서 영상 가져오기
     if YOUTUBE_SEARCH_AVAILABLE:
         try:
-            db_videos = get_videos_for_condition(condition)
+            db_videos = get_videos_for_condition(normalized_condition)
             if db_videos:
                 videos.extend(db_videos[:limit])
         except Exception:
@@ -531,7 +529,7 @@ def get_videos_for_condition_enhanced(condition: str, purpose: str = "예방", l
     # 2. Google Sheets에서 영상 가져오기
     if not videos and GOOGLE_SHEETS_ENABLED:
         try:
-            sheet_videos = _fetch_videos_from_sheet(condition, purpose, limit)
+            sheet_videos = _fetch_videos_from_sheet(normalized_condition, purpose, limit)
             if sheet_videos:
                 videos.extend(sheet_videos)
         except Exception:
@@ -540,7 +538,7 @@ def get_videos_for_condition_enhanced(condition: str, purpose: str = "예방", l
     # 3. 하드코딩된 영상으로 fallback
     if not videos:
         try:
-            hardcoded_videos = get_exercise_videos(condition)
+            hardcoded_videos = get_exercise_videos(normalized_condition)
             if hardcoded_videos:
                 videos.extend(hardcoded_videos)
         except Exception:
@@ -548,10 +546,27 @@ def get_videos_for_condition_enhanced(condition: str, purpose: str = "예방", l
     
     return videos[:limit]
 
-def show_integrated_dashboard(user_id):
-    """통합 대시보드 기능"""
+def show_integrated_dashboard(user_email=None):
+    """통합 대시보드 기능 - 이메일 기준 사용자 관리"""
     st.header("💻 통합 건강 대시보드")
+    
+    # 개인정보 입력 완료 여부 확인 (이메일 기준)
+    if not user_email:
+        st.warning("❗ 먼저 '개인정보 입력' 탭에서 정보를 입력해주세요.")
+        st.info("💡 개인정보가 입력된 후에 운동 관리 기능을 사용할 수 있습니다.")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("📝 개인정보 입력하러 가기", type="primary"):
+                st.session_state.menu_selection = "증상 선택"
+                st.rerun()
+        
+        return
+    
+    # 로그인된 사용자 표시
+    st.success(f"👤 환영합니다! {user_email}님의 운동 관리 페이지입니다.")
     st.markdown("오늘의 운동 루틴을 완료하고, 통증을 기록하며 건강을 관리하세요.")
+    st.markdown("---")
     
     if GOOGLE_SHEETS_ENABLED:
         st.info("📊 Google Sheets와 연결되어 데이터를 저장하고 불러옵니다.")
@@ -614,24 +629,27 @@ def show_integrated_dashboard(user_id):
         for condition in selected_conditions:
             st.markdown(f"**🔹 {condition}**")
             
+            # 조건명 정규화
+            normalized_condition = normalize_condition_name(condition)
+            
             # 증상과 원인 표시
-            if "증상" in VDT_SYMPTOMS[condition]:
+            if normalized_condition in VDT_SYMPTOMS and "증상" in VDT_SYMPTOMS[normalized_condition]:
                 st.markdown("**📋 주요 증상:**")
-                symptoms = VDT_SYMPTOMS[condition]["증상"]
+                symptoms = VDT_SYMPTOMS[normalized_condition]["증상"]
                 for symptom in symptoms:
                     st.markdown(f"• {symptom}")
             
-            if "원인" in VDT_SYMPTOMS[condition]:
+            if "원인" in VDT_SYMPTOMS[normalized_condition]:
                 st.markdown("**🔍 주요 원인:**")
-                causes = VDT_SYMPTOMS[condition]["원인"]
+                causes = VDT_SYMPTOMS[normalized_condition]["원인"]
                 for cause in causes:
                     st.markdown(f"• {cause}")
             
             st.markdown("---")
             
             # 운동 추천
-            if "운동_추천" in VDT_SYMPTOMS[condition]:
-                exercises = VDT_SYMPTOMS[condition]["운동_추천"]
+            if "운동_추천" in VDT_SYMPTOMS[normalized_condition]:
+                exercises = VDT_SYMPTOMS[normalized_condition]["운동_추천"]
                 for purpose, exercise_list in exercises.items():
                     st.markdown(f"**✨ {purpose} 운동**")
                     for exercise in exercise_list:
@@ -665,14 +683,14 @@ def show_integrated_dashboard(user_id):
             # 유튜브 영상 표시
             st.markdown("**📺 추천 영상**")
             try:
-                videos = get_videos_for_condition_enhanced(condition, "예방", 2)
+                videos = get_videos_for_condition_enhanced(normalized_condition, "예방", 2)
                 if videos:
                     for i, video in enumerate(videos):
                         if 'url' in video and video['url']:
-                            # YouTube URL에서 video ID 추출
-                            video_id = video['url'].split('v=')[-1].split('&')[0]
-                            st.markdown(f"**{video.get('title', '추천 영상')}**")
-                            st.video(f"https://www.youtube.com/watch?v={video_id}")
+                            # 하이퍼링크로만 표시 (썸네일 없음)
+                            video_title = video.get('title', '추천 영상')
+                            video_url = video['url']
+                            st.markdown(f"**[{video_title}]({video_url})**")
                             
                             # 유튜브 영상 완료 체크박스 추가
                             video_key = f"completed_video_{today}_{condition}_{video.get('title', '추천 영상')}"
@@ -697,9 +715,10 @@ def show_integrated_dashboard(user_id):
                     if fallback_videos:
                         for video in fallback_videos:
                             if 'url' in video and video['url']:
-                                video_id = video['url'].split('v=')[-1].split('&')[0]
-                                st.markdown(f"**{video.get('title', '추천 영상')}**")
-                                st.video(f"https://www.youtube.com/watch?v={video_id}")
+                                # 하이퍼링크로만 표시 (썸네일 없음)
+                                video_title = video.get('title', '추천 영상')
+                                video_url = video['url']
+                                st.markdown(f"**[{video_title}]({video_url})**")
                                 
                                 # 하드코딩된 영상도 체크박스 추가
                                 video_key = f"completed_video_{today}_{condition}_{video.get('title', '추천 영상')}"
@@ -738,26 +757,25 @@ def show_integrated_dashboard(user_id):
         if total_completed > 0:
             st.session_state.exercise_log[today] = total_completed
             
-            # 데이터 저장 - 이중 저장 시스템
-            # 1. Google Sheets 저장
-            google_saved = save_to_google_sheets(total_completed, 'exercise_log', user_id)
+            # 통합 데이터베이스에 저장
+            from customer_database import save_exercise_record
+            db_saved = save_exercise_record(user_email, 'exercise_log', total_completed, today)
             
-            # 2. Supabase 저장
-            supabase_saved = save_to_supabase('exercise_log', user_id, today, total_completed)
+            # 백업: Google Sheets와 로컬 저장
+            google_saved = save_to_google_sheets(total_completed, 'exercise_log', user_email)
+            local_saved = save_to_local_json(total_completed, 'exercise_log', user_email)
             
             # 저장 상태 표시
-            if google_saved and supabase_saved:
-                st.success("✅ 데이터가 Google Sheets와 Supabase에 모두 저장되었습니다!")
-            elif google_saved:
-                st.info("📊 데이터가 Google Sheets에 저장되었습니다.")
-            elif supabase_saved:
-                st.info("🗄️ 데이터가 Supabase에 저장되었습니다.")
+            if db_saved:
+                st.success("✅ 운동 기록이 데이터베이스에 저장되었습니다!")
+            elif google_saved or local_saved:
+                st.success("✅ 운동 기록이 백업 저장소에 저장되었습니다!")
             else:
                 st.warning("⚠️ 데이터 저장에 실패했습니다. 로컬 저장을 시도합니다.")
                 # 로컬 백업 저장
                 try:
                     backup_data = {
-                        'user_id': user_id,
+                        'user_id': user_email,
                         'date': today,
                         'data_type': 'exercise_log',
                         'value': total_completed,
@@ -807,23 +825,49 @@ def show_integrated_dashboard(user_id):
         "오늘의 통증 점수 (0: 없음, 15: 심함)",
         0, 15, key="pain_slider"
     )
+    
+    # 통증 단계별 이모지 표시
+    pain_emoji_map = {
+        0: "😊 없음",
+        1: "🙂 미미함", 2: "🙂 미미함", 3: "🙂 미미함",
+        4: "😐 약함", 5: "😐 약함", 6: "😐 약함",  
+        7: "😟 보통", 8: "😟 보통", 9: "😟 보통",
+        10: "😰 심함", 11: "😰 심함", 12: "😰 심함",
+        13: "😱 매우심함", 14: "😱 매우심함", 15: "😱 극심함"
+    }
+    
+    if current_pain_level in pain_emoji_map:
+        st.markdown(f"### {pain_emoji_map[current_pain_level]}")
+        
+        # 통증 정도별 설명
+        if current_pain_level == 0:
+            st.info("👍 통증이 없는 상태입니다.")
+        elif 1 <= current_pain_level <= 3:
+            st.info("💚 매우 경미한 통증입니다. 일상생활에 지장이 없습니다.")
+        elif 4 <= current_pain_level <= 6:
+            st.warning("💛 약한 통증입니다. 가벼운 운동을 권장합니다.")
+        elif 7 <= current_pain_level <= 9:
+            st.warning("🧡 보통 통증입니다. 휴식과 스트레칭이 필요합니다.")
+        elif 10 <= current_pain_level <= 12:
+            st.error("❤️ 심한 통증입니다. 전문의 상담을 권장합니다.")
+        else:  # 13-15
+            st.error("💔 극심한 통증입니다. 즉시 전문의 진료가 필요합니다.")
     if st.button("통증 기록 저장"):
         st.session_state.pain_data[today] = current_pain_level
         
-        # 데이터 저장 - 이중 저장 시스템
-        # 1. Google Sheets 저장
-        google_saved = save_to_google_sheets(current_pain_level, 'pain_data', user_id)
+        # 통합 데이터베이스에 저장
+        from customer_database import save_exercise_record
+        db_saved = save_exercise_record(user_email, 'pain_data', current_pain_level, today)
         
-        # 2. Supabase 저장
-        supabase_saved = save_to_supabase('pain_data', user_id, today, current_pain_level)
+        # 백업: Google Sheets와 로컬 저장
+        google_saved = save_to_google_sheets(current_pain_level, 'pain_data', user_email)
+        local_saved = save_to_local_json(current_pain_level, 'pain_data', user_email)
         
         # 저장 상태 표시
-        if google_saved and supabase_saved:
-            st.success("✅ 통증 데이터가 Google Sheets와 Supabase에 모두 저장되었습니다!")
-        elif google_saved:
-            st.info("📊 통증 데이터가 Google Sheets에 저장되었습니다.")
-        elif supabase_saved:
-            st.info("🗄️ 통증 데이터가 Supabase에 저장되었습니다.")
+        if db_saved:
+            st.success("✅ 통증 기록이 데이터베이스에 저장되었습니다!")
+        elif google_saved or local_saved:
+            st.success("✅ 통증 기록이 백업 저장소에 저장되었습니다!")
         else:
             st.warning("⚠️ 통증 데이터 저장에 실패했습니다.")
         
@@ -839,45 +883,61 @@ def show_integrated_dashboard(user_id):
     exercise_df = pd.DataFrame()
     pain_df = pd.DataFrame()
     
-    # 0. 세션 상태에서 오늘 데이터 즉시 추가 (실시간 반영)
+    # 0. 통합 데이터베이스에서 데이터 로드
+    try:
+        from customer_database import get_exercise_records
+        
+        # 운동 기록 로드
+        exercise_records = get_exercise_records(user_email, 'exercise_log', days=30)
+        if exercise_records:
+            db_exercise_df = pd.DataFrame(exercise_records)
+            db_exercise_df['date'] = pd.to_datetime(db_exercise_df['record_date'])
+            db_exercise_df['completed_count'] = pd.to_numeric(db_exercise_df['value'], errors='coerce').fillna(0)
+            db_exercise_df['user_id'] = user_email
+            exercise_df = db_exercise_df[['user_id', 'date', 'completed_count']].copy()
+        
+        # 통증 기록 로드
+        pain_records = get_exercise_records(user_email, 'pain_data', days=30)
+        if pain_records:
+            db_pain_df = pd.DataFrame(pain_records)
+            db_pain_df['date'] = pd.to_datetime(db_pain_df['record_date'])
+            db_pain_df['pain_level'] = pd.to_numeric(db_pain_df['value'], errors='coerce').fillna(0)
+            db_pain_df['user_id'] = user_email
+            pain_df = db_pain_df[['user_id', 'date', 'pain_level']].copy()
+        
+        if not exercise_df.empty or not pain_df.empty:
+            st.info("✅ 통합 데이터베이스에서 데이터를 로드했습니다.")
+            
+    except Exception as e:
+        st.info("💡 통합 데이터베이스 연결을 건너뛰고 백업 데이터를 사용합니다.")
+    
+    # 1. 세션 상태에서 오늘 데이터 추가 (실시간 반영)
     today = str(date.today())
     if today in st.session_state.exercise_log:
-        exercise_df = pd.DataFrame({
-            'user_id': [user_id],
+        today_exercise = pd.DataFrame({
+            'user_id': [user_email],
             'date': [pd.to_datetime(today)],
             'completed_count': [st.session_state.exercise_log[today]]
         })
+        if not exercise_df.empty:
+            # 오늘 데이터가 있으면 업데이트, 없으면 추가
+            exercise_df = exercise_df[exercise_df['date'].dt.date != date.today()]
+            exercise_df = pd.concat([exercise_df, today_exercise])
+        else:
+            exercise_df = today_exercise
     
     if today in st.session_state.pain_data:
-        pain_df = pd.DataFrame({
-            'user_id': [user_id],
+        today_pain = pd.DataFrame({
+            'user_id': [user_email],
             'date': [pd.to_datetime(today)],
             'pain_level': [st.session_state.pain_data[today]]
         })
-    
-    # 1. Supabase에서 데이터 로드 시도
-    if SUPABASE_AVAILABLE:
-        try:
-            supabase_exercise_df, supabase_pain_df = load_from_supabase(user_id)
-            if not supabase_exercise_df.empty:
-                # 오늘 데이터가 아닌 것들만 추가
-                supabase_exercise_df = supabase_exercise_df[supabase_exercise_df['date'].dt.date != date.today()]
-                if not exercise_df.empty:
-                    exercise_df = pd.concat([exercise_df, supabase_exercise_df])
-                else:
-                    exercise_df = supabase_exercise_df
-            
-            if not supabase_pain_df.empty:
-                supabase_pain_df = supabase_pain_df[supabase_pain_df['date'].dt.date != date.today()]
-                if not pain_df.empty:
-                    pain_df = pd.concat([pain_df, supabase_pain_df])
-                else:
-                    pain_df = supabase_pain_df
-            
-            if not supabase_exercise_df.empty or not supabase_pain_df.empty:
-                st.info("🗄️ Supabase에서 데이터를 로드했습니다.")
-        except Exception as e:
-            st.info("💡 Supabase 연결을 건너뛰고 다른 방법을 시도합니다.")
+        if not pain_df.empty:
+            # 오늘 데이터가 있으면 업데이트, 없으면 추가
+            pain_df = pain_df[pain_df['date'].dt.date != date.today()]
+            pain_df = pd.concat([pain_df, today_pain])
+        else:
+            pain_df = today_pain
     
     # 2. Google Sheets에서 데이터 로드 시도
     if GOOGLE_SHEETS_ENABLED:
@@ -983,42 +1043,26 @@ def show_integrated_dashboard(user_id):
     # 데이터 로드 상태 표시
     if not exercise_df.empty or not pain_df.empty:
         st.success("✅ 데이터를 성공적으로 로드했습니다!")
-        if not exercise_df.empty:
-            st.info(f"📊 운동 데이터: {len(exercise_df)}건")
-        if not pain_df.empty:
-            st.info(f"🏥 통증 데이터: {len(pain_df)}건")
     else:
         st.warning("⚠️ 로드할 데이터가 없습니다. 운동과 통증을 기록해보세요!")
-    
-    # 데이터 상태 표시
-    col1, col2 = st.columns(2)
-    with col1:
-        exercise_days = len(exercise_df) if not exercise_df.empty else 0
-        st.metric("운동 기록", f"{exercise_days}일")
-    with col2:
-        pain_days = len(pain_df) if not pain_df.empty else 0
-        st.metric("통증 기록", f"{pain_days}일")
-    
-    # 일별 기록 안내 메시지
-    st.info("💡 각 날짜별로 개별 기록이 표시됩니다. 같은 날에 다시 기록하면 기존 데이터가 새로운 데이터로 업데이트됩니다.")
     
     # 그래프 생성
     if not exercise_df.empty or not pain_df.empty:
         try:
-            # 사용자 데이터 필터링 (user_id가 정확히 일치하는 경우만)
+            # 사용자 데이터 필터링 (이메일 기준)
             if not exercise_df.empty:
-                user_exercise_df = exercise_df[exercise_df['user_id'] == user_id].copy()
+                user_exercise_df = exercise_df[exercise_df['user_id'] == user_email].copy()
                 if user_exercise_df.empty:
-                    # user_id가 정확히 일치하지 않으면 모든 데이터 사용
-                    user_exercise_df = exercise_df.copy()
+                    st.info("해당 이메일로 저장된 운동 기록이 없습니다.")
+                    user_exercise_df = pd.DataFrame()
             else:
                 user_exercise_df = pd.DataFrame()
 
             if not pain_df.empty:
-                user_pain_df = pain_df[pain_df['user_id'] == user_id].copy()
+                user_pain_df = pain_df[pain_df['user_id'] == user_email].copy()
                 if user_pain_df.empty:
-                    # user_id가 정확히 일치하지 않으면 모든 데이터 사용
-                    user_pain_df = pain_df.copy()
+                    st.info("해당 이메일로 저장된 통증 기록이 없습니다.")
+                    user_pain_df = pd.DataFrame()
             else:
                 user_pain_df = pd.DataFrame()
             
@@ -1055,92 +1099,108 @@ def show_integrated_dashboard(user_id):
                 # 데이터 정렬
                 combined_df = combined_df.sort_values('date')
 
-                # 운동 데이터와 통증 데이터를 분리 (실제 데이터가 있는 경우만)
-                exercise_data = combined_df[combined_df['completed_count'] > 0].copy()
-                pain_data = combined_df[combined_df['pain_level'] > 0].copy()
+                # 운동 데이터와 통증 데이터를 분리 (실제 기록된 데이터만)
+                # 같은 날짜의 데이터는 합계/평균 처리
+                if not user_exercise_df.empty:
+                    exercise_temp = user_exercise_df.reset_index()
+                    exercise_temp['date_only'] = exercise_temp['date'].dt.date
+                    # 같은 날 운동 횟수는 합계
+                    exercise_data = exercise_temp.groupby('date_only').agg({
+                        'completed_count': 'sum',
+                        'date': 'first'
+                    }).reset_index(drop=True)
+                else:
+                    exercise_data = pd.DataFrame()
+                
+                if not user_pain_df.empty:
+                    pain_temp = user_pain_df.reset_index()
+                    pain_temp['date_only'] = pain_temp['date'].dt.date
+                    # 같은 날 통증 점수는 평균
+                    pain_data = pain_temp.groupby('date_only').agg({
+                        'pain_level': 'mean',
+                        'date': 'first'
+                    }).reset_index(drop=True)
+                    # 평균을 정수로 반올림
+                    pain_data['pain_level'] = pain_data['pain_level'].round().astype(int)
+                else:
+                    pain_data = pd.DataFrame()
                 
                 # 안전한 최대값 계산
                 max_count = max(exercise_data['completed_count'].max() if not exercise_data.empty else 1, 1)
                 max_pain = max(pain_data['pain_level'].max() if not pain_data.empty else 1, 1)
 
-                # 운동 횟수 차트 (바 차트)
-                if not exercise_data.empty:
-                    bar_chart = alt.Chart(exercise_data).mark_bar(color='#26A69A', opacity=0.7).encode(
-                        x=alt.X('date:T', title='날짜', axis=alt.Axis(format="%m-%d", labelAngle=-45)),
-                        y=alt.Y(
-                            'completed_count:Q',
-                            title='운동 횟수',
-                            axis=alt.Axis(labels=True, titleColor='#26A69A', titlePadding=20),
-                            scale=alt.Scale(domain=[0, max_count + 2])
-                        ),
-                        tooltip=[
-                            alt.Tooltip('date:T', title='날짜', format="%Y-%m-%d"),
-                            alt.Tooltip('completed_count:Q', title='운동 횟수')
-                        ]
-                    )
-                else:
-                    bar_chart = alt.Chart(pd.DataFrame()).mark_bar()
-
-                # 통증 점수 차트 (선 + 점 차트)
-                if not pain_data.empty:
-                    line_chart = alt.Chart(pain_data).mark_line(color='#FF5722', strokeWidth=3).encode(
-                        x=alt.X('date:T', title='날짜', axis=alt.Axis(format="%m-%d", labelAngle=-45)),
-                        y=alt.Y(
-                            'pain_level:Q',
-                            title='통증 점수',
-                            axis=alt.Axis(labels=True, titleColor='#FF5722', titlePadding=20),
-                            scale=alt.Scale(domain=[0, 15])
-                        ),
-                        tooltip=[
-                            alt.Tooltip('date:T', title='날짜', format="%Y-%m-%d"),
-                            alt.Tooltip('pain_level:Q', title='통증 점수')
-                        ]
-                    )
-
-                    point_chart = alt.Chart(pain_data).mark_point(
-                        color='#FF5722',
-                        size=80,
-                        filled=True,
+                # 운동 횟수 차트 (바 차트) - 개선된 버전
+                if not exercise_data.empty and len(exercise_data) > 0:
+                    # 데이터 정리
+                    exercise_chart_data = exercise_data.copy()
+                    exercise_chart_data['date'] = pd.to_datetime(exercise_chart_data['date'])
+                    exercise_chart_data = exercise_chart_data.sort_values('date')
+                    
+                    bar_chart = alt.Chart(exercise_chart_data).mark_bar(
+                        color='#26A69A', 
+                        opacity=0.8,
+                        cornerRadiusTopLeft=3,
+                        cornerRadiusTopRight=3
                     ).encode(
-                        x=alt.X('date:T', title='날짜', axis=alt.Axis(format="%m-%d", labelAngle=-45)),
-                        y=alt.Y(
-                            'pain_level:Q',
-                            title='통증 점수',
-                            axis=alt.Axis(labels=True, titleColor='#FF5722', titlePadding=20),
-                            scale=alt.Scale(domain=[0, 15])
-                        ),
-                        tooltip=[
-                            alt.Tooltip('date:T', title='날짜', format="%Y-%m-%d"),
-                            alt.Tooltip('pain_level:Q', title='통증 점수')
-                        ]
+                        x=alt.X('date:T', 
+                               title='날짜', 
+                               axis=alt.Axis(format="%m/%d", labelAngle=-45, labelPadding=10)),
+                        y=alt.Y('completed_count:Q',
+                               title='운동 완료 횟수',
+                               scale=alt.Scale(domain=[0, max(exercise_chart_data['completed_count'].max() + 1, 5)])),
+                        tooltip=['date:T', 'completed_count:Q']
+                    ).properties(
+                        title=f'📊 운동 완료 횟수 (최근 {exercise_chart_data["date"].dt.date.nunique()}일)',
+                        height=250
                     )
+                    
+                    st.altair_chart(bar_chart, use_container_width=True)
                 else:
-                    line_chart = alt.Chart(pd.DataFrame()).mark_line()
-                    point_chart = alt.Chart(pd.DataFrame()).mark_point()
+                    st.info("📈 운동 기록이 없습니다. 운동을 완료하면 차트가 표시됩니다.")
 
-                # 차트 결합 (패딩 추가로 라벨 잘림 방지)
-                combined_chart = alt.layer(bar_chart, line_chart, point_chart).resolve_scale(
-                    y='independent'
-                ).properties(
-                    title='운동 횟수와 통증 점수 변화',
-                    width=600,
-                    height=400,
-                    padding={'left': 80, 'right': 80, 'top': 40, 'bottom': 80}
-                ).interactive()
-                
-                st.altair_chart(combined_chart, use_container_width=True)
+                # 통증 점수 차트 (선 + 점 차트) - 개선된 버전  
+                if not pain_data.empty and len(pain_data) > 0:
+                    # 데이터 정리
+                    pain_chart_data = pain_data.copy()
+                    pain_chart_data['date'] = pd.to_datetime(pain_chart_data['date'])
+                    pain_chart_data = pain_chart_data.sort_values('date')
+                    
+                    line_chart = alt.Chart(pain_chart_data).mark_line(
+                        color='#FF5722', 
+                        strokeWidth=3,
+                        point=alt.OverlayMarkDef(color='#FF5722', size=100)
+                    ).encode(
+                        x=alt.X('date:T', 
+                               title='날짜',
+                               axis=alt.Axis(format="%m/%d", labelAngle=-45, labelPadding=10)),
+                        y=alt.Y('pain_level:Q',
+                               title='통증 점수 (0-15)',
+                               scale=alt.Scale(domain=[0, 15])),
+                        tooltip=['date:T', 'pain_level:Q']
+                    ).properties(
+                        title=f'📉 통증 점수 변화 (최근 {pain_chart_data["date"].dt.date.nunique()}일)',
+                        height=250
+                    )
+                    
+                    st.altair_chart(line_chart, use_container_width=True)
+                else:
+                    st.info("📉 통증 기록이 없습니다. 통증을 기록하면 차트가 표시됩니다.")
                 
                 # 데이터 요약 표시
                 st.subheader("📊 데이터 요약")
                 col1, col2 = st.columns(2)
                 with col1:
-                    if not user_exercise_df.empty:
-                        st.metric("총 운동 횟수", f"{user_exercise_df['completed_count'].sum()}회")
-                        st.metric("평균 운동 횟수", f"{user_exercise_df['completed_count'].mean():.1f}회")
+                    if not exercise_data.empty:
+                        unique_exercise_days = exercise_data['date'].dt.date.nunique()
+                        st.metric("운동한 날", f"{unique_exercise_days}일")
+                        st.metric("총 운동 횟수", f"{int(exercise_data['completed_count'].sum())}회")
+                        st.metric("평균 운동 횟수", f"{exercise_data['completed_count'].mean():.1f}회/일")
                 with col2:
-                    if not user_pain_df.empty:
-                        st.metric("평균 통증 점수", f"{user_pain_df['pain_level'].mean():.1f}/15")
-                        st.metric("최고 통증 점수", f"{user_pain_df['pain_level'].max()}/15")
+                    if not pain_data.empty:
+                        unique_pain_days = pain_data['date'].dt.date.nunique()
+                        st.metric("기록한 날", f"{unique_pain_days}일")
+                        st.metric("평균 통증 점수", f"{pain_data['pain_level'].mean():.1f}/15")
+                        st.metric("최고 통증 점수", f"{int(pain_data['pain_level'].max())}/15")
             else:
                 st.info("현재 사용자의 운동/통증 기록이 없습니다.")
         except Exception as e:
@@ -1259,11 +1319,6 @@ def show_integrated_dashboard(user_id):
 
 # App Main Entry Point
 if __name__ == "__main__":
-    # Streamlit 앱으로 실행할 때는 user_id를 세션에서 가져오거나 생성
-    if 'user_id' not in st.session_state:
-        # 고정된 사용자 ID 사용 (하루에 한 번만 생성)
-        today = date.today().strftime("%Y%m%d")
-        st.session_state.user_id = f'user_{today}'
-    
-    user_id = st.session_state.user_id
-    show_integrated_dashboard(user_id)
+    # 개인정보 입력에서 설정된 이메일 사용
+    user_email = st.session_state.user_data.get('email', '') if hasattr(st.session_state, 'user_data') else ''
+    show_integrated_dashboard(user_email)

@@ -23,7 +23,7 @@ INSERT INTO users (
 -- ========================================
 -- 개발 중 테스트를 쉽게 하기 위해 외래키 제약 조건을 제거
 -- 운영 환경에서는 이 부분을 주석 처리하세요
-
+s
 ALTER TABLE exercise_management 
 DROP CONSTRAINT IF EXISTS exercise_management_user_email_fkey;
 

@@ -20,7 +20,17 @@
       "Read(/C:\\Users\\younj\\Downloads/**)",
       "Read(/E:\\E\\Cording\\github\\team-project/**)",
       "mcp__playwright__playwright_get_visible_text",
-      "mcp__playwright__playwright_close"
+      "mcp__playwright__playwright_close",
+      "Read(/C:\\Users\\younj\\Downloads/**)",
+      "Read(/C:\\Users\\younj\\Downloads/**)",
+      "Read(/C:\\Users\\younj\\Downloads/**)",
+      "Read(/C:\\Users\\younj\\Downloads/**)",
+      "Read(/C:\\Users\\younj\\Downloads/**)",
+      "Read(/C:\\Users\\younj\\Downloads/**)",
+      "Read(/C:\\Users\\younj\\Downloads/**)",
+      "Read(/C:\\Users\\younj\\Downloads/**)",
+      "Read(/C:\\Users\\younj\\Downloads/**)",
+      "mcp__playwright__playwright_fill"
     ],
     "deny": [],
     "ask": [],

@@ -108,7 +108,7 @@ def get_healthcare_products(condition):
                 "benefit": "허리를 지지하고 통증을 감소시킵니다"
             }
         ],
-        "손목터널증후군_왼쪽": [
+        "손목터널증후군": [
             {
                 "name": "인체공학적 마우스",
                 "description": "손목터널 증후군을 예방하는 인체공학적으로 설계된 마우스입니다",
@@ -124,27 +124,21 @@ def get_healthcare_products(condition):
                 "url": "https://www.coupang.com/vp/products/258369147",
                 "image": "🩹",
                 "benefit": "손목을 지지하고 통증을 감소시킵니다"
-            }
-        ],
-        "손목터널증후군_오른쪽": [
-            {
-                "name": "인체공학적 마우스",
-                "description": "손목터널 증후군을 예방하는 인체공학적으로 설계된 마우스입니다",
-                "price": "89,000원",
-                "url": "https://www.coupang.com/vp/products/147258369",
-                "image": "🖱️",
-                "benefit": "손목 부담을 줄이고 자연스러운 그립감을 제공합니다"
             },
             {
-                "name": "손목 보조대",
-                "description": "손목 통증 시 착용하여 통증을 완화하는 의료용 보조대입니다",
-                "price": "25,000원",
-                "url": "https://www.coupang.com/vp/products/258369147",
-                "image": "🩹",
-                "benefit": "손목을 지지하고 통증을 감소시킵니다"
+                "name": "키보드 손목받침",
+                "description": "타이핑 시 손목을 편안하게 받쳐주는 쿠션입니다",
+                "price": "35,000원",
+                "url": "https://www.coupang.com/vp/products/365478912",
+                "image": "⌨️",
+                "benefit": "장시간 타이핑 시 손목 부담을 줄여줍니다"
             }
         ]
     }
+    # 손목터널증후군 조건명 정규화
+    if "손목터널증후군" in condition:
+        condition = "손목터널증후군"
+    
     return products_db.get(condition, [])
 
 def show_healthcare_product_recommendation(condition):
@@ -173,9 +167,6 @@ def show_healthcare_product_recommendation(condition):
                 
                 # 바로 쿠팡 링크로 연결 (한 번 클릭)
                 st.markdown(f"[🛒 쿠팡에서 구매하기]({affiliate_link})")
-                
-                # 파트너스 수수료 안내
-                st.caption("💡 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.")
 
 def show_general_healthcare_products():
     """일반적인 헬스케어 제품 추천 (홈페이지용)"""
@@ -391,9 +382,6 @@ def show_personalized_product_recommendation(user_data, conditions, pain_scores)
     if not conditions:
         st.warning("⚠️ 먼저 증상을 선택해주세요.")
         return
-    
-    st.subheader("쇼핑 추천")
-    st.info("분석 결과를 바탕으로 당신에게 필요한 제품만 추천해드려요!")
 
     # 개인화된 제품 가져오기
     products = get_personalized_products(user_data, conditions, pain_scores)
@@ -401,20 +389,6 @@ def show_personalized_product_recommendation(user_data, conditions, pain_scores)
     if not products:
         st.info("ℹ️ 현재 상태에 맞는 특별한 제품 추천이 없습니다.")
         return
-    
-    # 사용자 분석 결과 요약
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        avg_pain = sum(pain_scores.values()) / len(pain_scores) if pain_scores else 0
-        st.metric("평균 통증", f"{avg_pain:.1f}/10점")
-    with col2:
-        env_score = user_data.get('env_score', 50)
-        st.metric("작업환경 점수", f"{env_score}/100점")
-    with col3:
-        age = user_data.get('age', 30)
-        st.metric("나이", f"{age}세")
-    
-    st.markdown("---")
     
     # 제품 추천 - 전문적인 UI/UX
     for i, product in enumerate(products, 1):
@@ -437,13 +411,8 @@ def show_personalized_product_recommendation(user_data, conditions, pain_scores)
             affiliate_link = show_coupang_affiliate_link(product['url'], product['name'])
             
             # 바로 쿠팡 링크로 연결 (한 번 클릭)
-            st.markdown(f"[쿠팡에서 구매하기]({affiliate_link})")
-            
-            # 파트너스 수수료 안내
-            st.caption("쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.")
+            st.markdown(f"[🛒 쿠팡에서 구매하기]({affiliate_link})")
     
-    # 추가 정보
-    st.info("**추천 기준**: 통증 정도, 작업환경, 나이, 운동습관, 선택한 증상을 종합 분석하여 추천했습니다.")
 
 def show_adsense_ads():
     """Google AdSense 광고 표시"""

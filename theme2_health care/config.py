@@ -10,6 +10,9 @@ YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY", "")
 # Gemini AI 설정
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 
+# OpenAI 설정
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
+
 # Supabase 데이터베이스 설정
 SUPABASE_URL = os.getenv("SUPABASE_URL", "")
 SUPABASE_ANON_KEY = os.getenv("SUPABASE_ANON_KEY", "")
@@ -22,7 +25,11 @@ SPREADSHEET_ID = os.getenv("SPREADSHEET_ID", "")
 SLACK_WEBHOOK_URL = os.getenv("SLACK_WEBHOOK_URL", "")
 
 # Gmail 설정
-GMAIL_ADDRESS = os.getenv("GMAIL_ADDRESS", "")
+GMAIL_EMAIL = os.getenv("GMAIL_EMAIL", "")
+GMAIL_APP_PASSWORD = os.getenv("GMAIL_APP_PASSWORD", "")
+SMTP_SERVER = os.getenv("SMTP_SERVER", "smtp.gmail.com")
+SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
+IMAP_SERVER = os.getenv("IMAP_SERVER", "imap.gmail.com")
 
 # 작업 시간 설정
 WORK_START_TIME = os.getenv("WORK_START_TIME", "09:00")
