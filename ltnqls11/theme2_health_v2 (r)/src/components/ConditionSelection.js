@@ -106,15 +106,23 @@ const ConditionSelection = ({ sessionState, updateSessionState, onNavigate, prog
         subjectiveStatus: subjectiveStatus
       });
       
-      // 약간의 지연 후 네비게이션 (상태 업데이트 완료 대기)
+      // 메뉴 상태 업데이트를 먼저 실행
+      onNavigate("개인정보 입력");
+      
+      // 상태 업데이트가 완료될 때까지 잠시 대기
+      await new Promise(resolve => setTimeout(resolve, 300));
+      
+      // 네비게이션 실행
+      console.log('네비게이션 시작: /personal-info');
+      navigate('/personal-info');
+      
+      // 네비게이션이 실패할 경우를 대비한 백업 방법
       setTimeout(() => {
-        // 메뉴 상태 업데이트
-        onNavigate("개인정보 입력");
-        
-        // 네비게이션
-        console.log('네비게이션 시작: /personal-info');
-        navigate('/personal-info');
-      }, 100);
+        if (window.location.pathname !== '/personal-info') {
+          console.log('네비게이션 실패, 백업 방법 사용');
+          window.location.href = '/personal-info';
+        }
+      }, 500);
       
     } catch (error) {
       console.error('handleNext 오류:', error);

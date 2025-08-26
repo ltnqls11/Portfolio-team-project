@@ -64,7 +64,7 @@ const ExerciseRecommendation = ({ sessionState, updateSessionState, onNavigate, 
 
   const generateAIRecommendation = async () => {
     setLoading(true);
-    
+
     // AI 추천 시뮬레이션 (실제로는 API 호출)
     setTimeout(() => {
       const mockRecommendation = `
@@ -74,18 +74,18 @@ const ExerciseRecommendation = ({ sessionState, updateSessionState, onNavigate, 
 **${sessionState.selectedConditions.join(', ')} 집중 관리**
 
 ${sessionState.selectedConditions.map(condition => {
-  const painLevel = sessionState.userData.painScores[condition] || 0;
-  if (condition === '거북목') {
-    return `- **거북목 교정**: 목 스트레칭과 심부 목 굴곡근 강화 운동 (통증 수준: ${painLevel}/10점)`;
-  } else if (condition === '라운드숄더') {
-    return `- **라운드숄더 개선**: 가슴 스트레칭과 상부 등 근육 강화 (통증 수준: ${painLevel}/10점)`;
-  } else if (condition === '허리디스크') {
-    return `- **허리 안정화**: 코어 강화와 허리 유연성 운동 (통증 수준: ${painLevel}/10점)`;
-  } else if (condition === '손목터널증후군') {
-    return `- **손목 관리**: 손목 스트레칭과 신경 활주 운동 (통증 수준: ${painLevel}/10점)`;
-  }
-  return `- **${condition}**: 맞춤형 운동 프로그램 (통증 수준: ${painLevel}/10점)`;
-}).join('\n')}
+        const painLevel = sessionState.userData.painScores[condition] || 0;
+        if (condition === '거북목') {
+          return `- **거북목 교정**: 목 스트레칭과 심부 목 굴곡근 강화 운동 (통증 수준: ${painLevel}/10점)`;
+        } else if (condition === '라운드숄더') {
+          return `- **라운드숄더 개선**: 가슴 스트레칭과 상부 등 근육 강화 (통증 수준: ${painLevel}/10점)`;
+        } else if (condition === '허리디스크') {
+          return `- **허리 안정화**: 코어 강화와 허리 유연성 운동 (통증 수준: ${painLevel}/10점)`;
+        } else if (condition === '손목터널증후군') {
+          return `- **손목 관리**: 손목 스트레칭과 신경 활주 운동 (통증 수준: ${painLevel}/10점)`;
+        }
+        return `- **${condition}**: 맞춤형 운동 프로그램 (통증 수준: ${painLevel}/10점)`;
+      }).join('\n')}
 
 ### 2. 운동 순서와 시간 배분
 - **워밍업 (5분)**: 가벼운 관절 운동과 스트레칭
@@ -107,7 +107,7 @@ ${sessionState.selectedConditions.map(condition => {
 - **4-6주**: 자세 개선 및 근력 향상
 - **8-12주**: 전반적인 VDT 증후군 증상 개선
       `;
-      
+
       setAiRecommendation(mockRecommendation);
       setLoading(false);
     }, 2000);
@@ -115,7 +115,7 @@ ${sessionState.selectedConditions.map(condition => {
 
   const handlePurposeSelection = (purpose) => {
     setFinalPurpose(purpose);
-    
+
     // 세션 상태 업데이트
     updateSessionState({
       finalExercisePurpose: purpose,
@@ -135,7 +135,7 @@ ${sessionState.selectedConditions.map(condition => {
       sessionState.exerciseSchedule,
       finalPurpose || recommendedPurpose?.purpose
     );
-    
+
     setWeeklyRoutine(routine);
   };
 
@@ -145,7 +145,7 @@ ${sessionState.selectedConditions.map(condition => {
     const difficultyLevel = schedule.difficultyLevel;
 
     const weeklyRoutine = {};
-    
+
     availableDays.forEach((day, index) => {
       const videoTime = Math.floor(dailyMinutes * 0.75);
       const stretchingTime = Math.floor(dailyMinutes * 0.15);
@@ -248,19 +248,19 @@ ${sessionState.selectedConditions.map(condition => {
       <hr className="section-divider" />
 
       <div className="tabs">
-        <button 
+        <button
           className={`tab ${activeTab === 'consultation' ? 'active' : ''}`}
           onClick={() => setActiveTab('consultation')}
         >
           👨‍⚕️ 재활의학과 전문의 챗봇과 실시간 상담
         </button>
-        <button 
+        <button
           className={`tab ${activeTab === 'routine' ? 'active' : ''}`}
           onClick={() => setActiveTab('routine')}
         >
           🏃‍♀️ 맞춤형 운동 루틴
         </button>
-        <button 
+        <button
           className={`tab ${activeTab === 'products' ? 'active' : ''}`}
           onClick={() => setActiveTab('products')}
         >
@@ -272,7 +272,7 @@ ${sessionState.selectedConditions.map(condition => {
         <div className="consultation-tab">
           <section className="doctor-consultation">
             <h2>👨‍⚕️ 재활의학과 전문의 챗봇과 실시간 상담</h2>
-            
+
             <div className="doctor-intro">
               <div className="doctor-card">
                 <div className="doctor-avatar">👨‍⚕️</div>
@@ -298,9 +298,9 @@ ${sessionState.selectedConditions.map(condition => {
                 <div className="summary-item">
                   <span className="label">평균 통증:</span>
                   <span className="value">
-                    {sessionState.userData?.painScores ? 
-                      (Object.values(sessionState.userData.painScores).reduce((a, b) => a + b, 0) / 
-                       Object.values(sessionState.userData.painScores).length).toFixed(1) + '점' : '정보없음'}
+                    {sessionState.userData?.painScores ?
+                      (Object.values(sessionState.userData.painScores).reduce((a, b) => a + b, 0) /
+                        Object.values(sessionState.userData.painScores).length).toFixed(1) + '점' : '정보없음'}
                   </span>
                 </div>
                 <div className="summary-item">
@@ -325,8 +325,8 @@ ${sessionState.selectedConditions.map(condition => {
                     <strong>소견:</strong> {recommendedPurpose.reason}
                   </div>
                   <div className={`confidence-level ${recommendedPurpose.confidence}`}>
-                    <strong>확신도:</strong> {recommendedPurpose.confidence === 'high' ? '높음' : 
-                             recommendedPurpose.confidence === 'medium' ? '보통' : '낮음'}
+                    <strong>확신도:</strong> {recommendedPurpose.confidence === 'high' ? '높음' :
+                      recommendedPurpose.confidence === 'medium' ? '보통' : '낮음'}
                   </div>
                 </div>
               </div>
@@ -335,7 +335,7 @@ ${sessionState.selectedConditions.map(condition => {
             <div className="treatment-selection">
               <h3>💊 치료 방향 선택</h3>
               <p>전문의 소견을 참고하여 치료 방향을 선택해주세요.</p>
-              
+
               <div className="treatment-options">
                 {['예방 (자세교정)', '운동 (근력 및 체력 증진)', '재활 (통증감소)'].map(purpose => (
                   <button
@@ -357,7 +357,7 @@ ${sessionState.selectedConditions.map(condition => {
 
             {finalPurpose && (
               <div className="consultation-actions">
-                <button 
+                <button
                   className="btn btn-primary"
                   onClick={generateAIRecommendation}
                   disabled={loading}
@@ -412,7 +412,7 @@ ${sessionState.selectedConditions.map(condition => {
         <div className="routine-tab">
           <section className="routine-generation">
             <h2>🏃‍♀️ 맞춤형 운동 루틴</h2>
-            
+
             {!finalPurpose && !recommendedPurpose && (
               <div className="alert alert-warning">
                 ❗ 먼저 '재활의학과 전문의 챗봇과 실시간 상담' 탭에서 상담을 진행해주세요.
@@ -441,7 +441,7 @@ ${sessionState.selectedConditions.map(condition => {
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="alert alert-success">
                     🎯 <strong>처방된 운동 목적</strong>: {finalPurpose || recommendedPurpose.purpose}
                   </div>
@@ -449,7 +449,7 @@ ${sessionState.selectedConditions.map(condition => {
 
                 {!weeklyRoutine && (
                   <div className="routine-actions">
-                    <button 
+                    <button
                       className="btn btn-primary"
                       onClick={generateWeeklyRoutine}
                     >
@@ -523,7 +523,7 @@ ${sessionState.selectedConditions.map(condition => {
                             <h4>📅 {day} - {routine.총_시간}분 루틴</h4>
                             <div className="routine-status">계획됨</div>
                           </div>
-                          
+
                           <div className="routine-timeline">
                             <div className="timeline-item">
                               <div className="timeline-icon">🔥</div>
@@ -536,7 +536,7 @@ ${sessionState.selectedConditions.map(condition => {
                                 </ul>
                               </div>
                             </div>
-                            
+
                             <div className="timeline-item">
                               <div className="timeline-icon">💪</div>
                               <div className="timeline-content">
@@ -551,7 +551,7 @@ ${sessionState.selectedConditions.map(condition => {
                                 </div>
                               </div>
                             </div>
-                            
+
                             <div className="timeline-item">
                               <div className="timeline-icon">🧘‍♀️</div>
                               <div className="timeline-content">
@@ -615,7 +615,7 @@ ${sessionState.selectedConditions.map(condition => {
         <div className="products-tab">
           <section className="product-recommendations">
             <h2>🛒 맞춤 제품 추천</h2>
-            
+
             {!finalPurpose && !recommendedPurpose && (
               <div className="alert alert-warning">
                 ❗ 먼저 '재활의학과 전문의 챗봇과 실시간 상담' 탭에서 상담을 진행해주세요.
@@ -636,7 +636,7 @@ ${sessionState.selectedConditions.map(condition => {
                   <div className="partner-notice">
                     <p>이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</p>
                   </div>
-                  
+
                   <div className="product-grid">
                     {sessionState.selectedConditions?.includes('거북목') && (
                       <div className="product-card coupang">
@@ -650,7 +650,7 @@ ${sessionState.selectedConditions.map(condition => {
                         </div>
                       </div>
                     )}
-                    
+
                     {sessionState.selectedConditions?.includes('라운드숄더') && (
                       <div className="product-card coupang">
                         <div className="product-image">💪</div>
@@ -663,7 +663,7 @@ ${sessionState.selectedConditions.map(condition => {
                         </div>
                       </div>
                     )}
-                    
+
                     <div className="product-card coupang">
                       <div className="product-image">🪑</div>
                       <div className="product-info">
@@ -674,7 +674,7 @@ ${sessionState.selectedConditions.map(condition => {
                         <button className="coupang-btn">쿠팡에서 보기</button>
                       </div>
                     </div>
-                    
+
                     <div className="product-card coupang">
                       <div className="product-image">⌨️</div>
                       <div className="product-info">
@@ -685,7 +685,7 @@ ${sessionState.selectedConditions.map(condition => {
                         <button className="coupang-btn">쿠팡에서 보기</button>
                       </div>
                     </div>
-                    
+
                     {sessionState.selectedConditions?.includes('손목터널증후군') && (
                       <div className="product-card coupang">
                         <div className="product-image">🖱️</div>
@@ -698,7 +698,7 @@ ${sessionState.selectedConditions.map(condition => {
                         </div>
                       </div>
                     )}
-                    
+
                     <div className="product-card coupang">
                       <div className="product-image">🖥️</div>
                       <div className="product-info">
@@ -723,7 +723,7 @@ ${sessionState.selectedConditions.map(condition => {
                         <p>📞 상담 예약: 1588-0000</p>
                       </div>
                     </div>
-                    
+
                     <div className="ad-placeholder">
                       <div className="ad-label">광고</div>
                       <div className="ad-content">
@@ -732,7 +732,7 @@ ${sessionState.selectedConditions.map(condition => {
                         <p>🎯 첫 달 50% 할인</p>
                       </div>
                     </div>
-                    
+
                     <div className="ad-placeholder">
                       <div className="ad-label">광고</div>
                       <div className="ad-content">
@@ -753,21 +753,21 @@ ${sessionState.selectedConditions.map(condition => {
                       <p>집에서 하는 스트레칭과 요가를 위한 전용 매트</p>
                       <div className="health-price">₩39,000</div>
                     </div>
-                    
+
                     <div className="health-card">
                       <div className="health-icon">🏃‍♂️</div>
                       <h4>운동 밴드 세트</h4>
                       <p>근력 강화를 위한 다양한 강도의 저항 밴드</p>
                       <div className="health-price">₩25,000</div>
                     </div>
-                    
+
                     <div className="health-card">
                       <div className="health-icon">🌡️</div>
                       <h4>온열 찜질팩</h4>
                       <p>목과 어깨 통증 완화를 위한 전기 온열팩</p>
                       <div className="health-price">₩45,000</div>
                     </div>
-                    
+
                     <div className="health-card">
                       <div className="health-icon">💆‍♀️</div>
                       <h4>마사지 볼</h4>
@@ -794,7 +794,7 @@ ${sessionState.selectedConditions.map(condition => {
 
       {(aiRecommendation || weeklyRoutine) && (
         <div className="form-actions">
-          <button 
+          <button
             className="btn btn-primary"
             onClick={handleNext}
           >

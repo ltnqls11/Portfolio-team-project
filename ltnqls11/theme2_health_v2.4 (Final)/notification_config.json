@@ -1,0 +1,698 @@
+{
+  "type": "둘 다",
+  "email": "younjc7450@gmail.com",
+  "slack_webhook": "https://the-vdt.slack.com/archives/C09BVQRB7BM",
+  "work_start": "09:00",
+  "work_end": "18:00",
+  "interval": 25,
+  "user_data": {
+    "pain_scores": {
+      "거북목": 7
+    },
+    "subjective_status": "",
+    "email": "younjc7450@gmail.com",
+    "age": 30,
+    "gender": "남성",
+    "work_experience": 3,
+    "exercise_habit": "전혀 안함",
+    "smoking": "비흡연",
+    "drinking": "안함",
+    "sleep_hours": 7,
+    "daily_work_hours": 8,
+    "work_intensity": "보통",
+    "customer_history": {
+      "is_return_customer": true,
+      "previous_visit": {
+        "email": "younjc7450@gmail.com",
+        "personal_info": {
+          "pain_scores": {
+            "라운드숄더": 7
+          },
+          "subjective_status": "양쪽 어깨가 계속 말리는 느낌이 듭니다. 목도 아파와요.",
+          "email": "younjc7450@gmail.com",
+          "age": 30,
+          "gender": "남성",
+          "work_experience": 3,
+          "exercise_habit": "전혀 안함",
+          "smoking": "비흡연",
+          "drinking": "안함",
+          "sleep_hours": 7,
+          "daily_work_hours": 8,
+          "work_intensity": "가벼움",
+          "customer_history": {
+            "is_return_customer": true,
+            "previous_visit": {
+              "email": "younjc7450@gmail.com",
+              "personal_info": {
+                "pain_scores": {
+                  "라운드숄더": 5
+                },
+                "subjective_status": "어깨가 계속 말려서 등과 목도 같이 아파오는 느낌이 듭니다.",
+                "email": "younjc7450@gmail.com",
+                "age": 30,
+                "gender": "남성",
+                "work_experience": 3,
+                "exercise_habit": "전혀 안함",
+                "smoking": "비흡연",
+                "drinking": "안함",
+                "sleep_hours": 7,
+                "daily_work_hours": 8,
+                "work_intensity": "가벼움",
+                "customer_history": {
+                  "is_return_customer": true,
+                  "previous_visit": {
+                    "email": "younjc7450@gmail.com",
+                    "personal_info": {
+                      "pain_scores": {
+                        "거북목": 7
+                      },
+                      "subjective_status": "목을 움직일 때마다 아픕니다. 두통이 같이 있어요.",
+                      "email": "younjc7450@gmail.com",
+                      "age": 30,
+                      "gender": "남성",
+                      "work_experience": 3,
+                      "exercise_habit": "전혀 안함",
+                      "smoking": "비흡연",
+                      "drinking": "안함",
+                      "sleep_hours": 7,
+                      "daily_work_hours": 8,
+                      "work_intensity": "보통",
+                      "customer_history": {
+                        "is_return_customer": true,
+                        "previous_visit": {
+                          "email": "younjc7450@gmail.com",
+                          "personal_info": {
+                            "pain_scores": {
+                              "라운드숄더": 6
+                            },
+                            "subjective_status": "오른쪽 어깨가 너무 많이 뭉칩니다.",
+                            "email": "younjc7450@gmail.com",
+                            "age": 30,
+                            "gender": "남성",
+                            "work_experience": 3,
+                            "exercise_habit": "전혀 안함",
+                            "smoking": "비흡연",
+                            "drinking": "안함",
+                            "sleep_hours": 7,
+                            "daily_work_hours": 10,
+                            "work_intensity": "보통",
+                            "customer_history": {
+                              "is_return_customer": true,
+                              "previous_visit": {
+                                "email": "younjc7450@gmail.com",
+                                "personal_info": {
+                                  "pain_scores": {
+                                    "거북목": 6,
+                                    "라운드숄더": 7
+                                  },
+                                  "subjective_status": "너무 아픕니다. 움직이지 못 해요.",
+                                  "email": "younjc7450@gmail.com",
+                                  "age": 30,
+                                  "gender": "남성",
+                                  "work_experience": 3,
+                                  "exercise_habit": "전혀 안함",
+                                  "smoking": "비흡연",
+                                  "drinking": "안함",
+                                  "sleep_hours": 7,
+                                  "daily_work_hours": 10,
+                                  "work_intensity": "가벼움",
+                                  "customer_history": {
+                                    "is_return_customer": true,
+                                    "previous_visit": {
+                                      "email": "younjc7450@gmail.com",
+                                      "personal_info": {
+                                        "pain_scores": {
+                                          "거북목": 6,
+                                          "라운드숄더": 7
+                                        },
+                                        "subjective_status": "너무 아픕니다. 움직이지 못 해요.",
+                                        "email": "younjc7450@gmail.com",
+                                        "age": 30,
+                                        "gender": "남성",
+                                        "work_experience": 3,
+                                        "exercise_habit": "전혀 안함",
+                                        "smoking": "비흡연",
+                                        "drinking": "안함",
+                                        "sleep_hours": 7,
+                                        "daily_work_hours": 10,
+                                        "work_intensity": "가벼움",
+                                        "customer_history": {
+                                          "is_return_customer": true,
+                                          "previous_visit": {
+                                            "email": "younjc7450@gmail.com",
+                                            "personal_info": {
+                                              "pain_scores": {
+                                                "라운드숄더": 7
+                                              },
+                                              "subjective_status": "어깨가 말리는 느낌이 들고 불편합니다.",
+                                              "email": "younjc7450@gmail.com",
+                                              "age": 30,
+                                              "gender": "남성",
+                                              "work_experience": 3,
+                                              "exercise_habit": "전혀 안함",
+                                              "smoking": "비흡연",
+                                              "drinking": "안함",
+                                              "sleep_hours": 7,
+                                              "daily_work_hours": 8,
+                                              "work_intensity": "보통",
+                                              "customer_history": {
+                                                "is_return_customer": true,
+                                                "previous_visit": {
+                                                  "email": "younjc7450@gmail.com",
+                                                  "personal_info": {
+                                                    "pain_scores": {
+                                                      "라운드숄더": 5
+                                                    },
+                                                    "subjective_status": "어깨가 오른족이 매우 불편합니다.",
+                                                    "email": "younjc7450@gmail.com",
+                                                    "age": 30,
+                                                    "gender": "남성",
+                                                    "work_experience": 3,
+                                                    "exercise_habit": "전혀 안함",
+                                                    "smoking": "비흡연",
+                                                    "drinking": "안함",
+                                                    "sleep_hours": 7,
+                                                    "daily_work_hours": 8,
+                                                    "work_intensity": "가벼움",
+                                                    "customer_history": {
+                                                      "is_return_customer": true,
+                                                      "previous_visit": {
+                                                        "email": "younjc7450@gmail.com",
+                                                        "personal_info": {
+                                                          "pain_scores": {
+                                                            "손목터널증후군": 5
+                                                          },
+                                                          "subjective_status": "손목이 불편해요. 돌릴 때마다 소리가 나요",
+                                                          "email": "younjc7450@gmail.com",
+                                                          "age": 30,
+                                                          "gender": "남성",
+                                                          "work_experience": 3,
+                                                          "exercise_habit": "전혀 안함",
+                                                          "smoking": "비흡연",
+                                                          "drinking": "안함",
+                                                          "sleep_hours": 7,
+                                                          "daily_work_hours": 8,
+                                                          "work_intensity": "가벼움",
+                                                          "customer_history": {
+                                                            "is_return_customer": true,
+                                                            "previous_visit": {
+                                                              "email": "younjc7450@gmail.com",
+                                                              "personal_info": {
+                                                                "pain_scores": {
+                                                                  "손목터널증후군": 5
+                                                                },
+                                                                "subjective_status": "손목이 불편해요. 돌릴 때마다 소리가 나요",
+                                                                "email": "younjc7450@gmail.com",
+                                                                "age": 30,
+                                                                "gender": "남성",
+                                                                "work_experience": 3,
+                                                                "exercise_habit": "전혀 안함",
+                                                                "smoking": "비흡연",
+                                                                "drinking": "안함",
+                                                                "sleep_hours": 7,
+                                                                "daily_work_hours": 8,
+                                                                "work_intensity": "가벼움",
+                                                                "customer_history": {
+                                                                  "is_return_customer": true,
+                                                                  "previous_visit": {
+                                                                    "email": "younjc7450@gmail.com",
+                                                                    "personal_info": {
+                                                                      "pain_scores": {
+                                                                        "라운드숄더": 7
+                                                                      },
+                                                                      "subjective_status": "어깨가 넘 불편해요",
+                                                                      "email": "younjc7450@gmail.com",
+                                                                      "age": 30,
+                                                                      "gender": "남성",
+                                                                      "work_experience": 3,
+                                                                      "exercise_habit": "전혀 안함",
+                                                                      "smoking": "비흡연",
+                                                                      "drinking": "안함",
+                                                                      "sleep_hours": 7,
+                                                                      "daily_work_hours": 8,
+                                                                      "work_intensity": "가벼움",
+                                                                      "customer_history": {
+                                                                        "is_return_customer": true,
+                                                                        "previous_visit": {
+                                                                          "email": "younjc7450@gmail.com",
+                                                                          "personal_info": {
+                                                                            "pain_scores": {
+                                                                              "라운드숄더": 7
+                                                                            },
+                                                                            "subjective_status": "어깨가 넘 불편해요",
+                                                                            "email": "younjc7450@gmail.com",
+                                                                            "age": 30,
+                                                                            "gender": "남성",
+                                                                            "work_experience": 3,
+                                                                            "exercise_habit": "전혀 안함",
+                                                                            "smoking": "비흡연",
+                                                                            "drinking": "안함",
+                                                                            "sleep_hours": 7,
+                                                                            "daily_work_hours": 8,
+                                                                            "work_intensity": "가벼움",
+                                                                            "customer_history": {
+                                                                              "is_return_customer": true,
+                                                                              "previous_visit": {
+                                                                                "email": "younjc7450@gmail.com",
+                                                                                "personal_info": {
+                                                                                  "pain_scores": {
+                                                                                    "손목터널증후군": 5
+                                                                                  },
+                                                                                  "subjective_status": "손목이 너무 불편해요.",
+                                                                                  "email": "younjc7450@gmail.com",
+                                                                                  "age": 30,
+                                                                                  "gender": "남성",
+                                                                                  "work_experience": 3,
+                                                                                  "exercise_habit": "전혀 안함",
+                                                                                  "smoking": "비흡연",
+                                                                                  "drinking": "안함",
+                                                                                  "sleep_hours": 7,
+                                                                                  "daily_work_hours": 8,
+                                                                                  "work_intensity": "가벼움",
+                                                                                  "customer_history": {
+                                                                                    "is_return_customer": true,
+                                                                                    "previous_visit": {
+                                                                                      "email": "younjc7450@gmail.com",
+                                                                                      "personal_info": {
+                                                                                        "pain_scores": {
+                                                                                          "허리디스크": 5
+                                                                                        },
+                                                                                        "subjective_status": "허리가 너무 끊어질 듯이 아픕니다. 조금만 앞 뒤로 움직여도 통증이 심해요.",
+                                                                                        "email": "younjc7450@gmail.com",
+                                                                                        "age": 30,
+                                                                                        "gender": "남성",
+                                                                                        "work_experience": 3,
+                                                                                        "exercise_habit": "전혀 안함",
+                                                                                        "smoking": "비흡연",
+                                                                                        "drinking": "안함",
+                                                                                        "sleep_hours": 7,
+                                                                                        "daily_work_hours": 8,
+                                                                                        "work_intensity": "가벼움",
+                                                                                        "customer_history": {
+                                                                                          "is_return_customer": true,
+                                                                                          "previous_visit": {
+                                                                                            "email": "younjc7450@gmail.com",
+                                                                                            "personal_info": {
+                                                                                              "pain_scores": {
+                                                                                                "손목터널증후군": 3
+                                                                                              },
+                                                                                              "subjective_status": "통증까진 아니지만 손목이 불편해요.",
+                                                                                              "email": "younjc7450@gmail.com",
+                                                                                              "age": 30,
+                                                                                              "gender": "남성",
+                                                                                              "work_experience": 3,
+                                                                                              "exercise_habit": "전혀 안함",
+                                                                                              "smoking": "비흡연",
+                                                                                              "drinking": "안함",
+                                                                                              "sleep_hours": 7,
+                                                                                              "daily_work_hours": 8,
+                                                                                              "work_intensity": "가벼움",
+                                                                                              "customer_history": {
+                                                                                                "is_return_customer": true,
+                                                                                                "previous_visit": {
+                                                                                                  "email": "younjc7450@gmail.com",
+                                                                                                  "personal_info": {
+                                                                                                    "pain_scores": {
+                                                                                                      "손목터널증후군": 3
+                                                                                                    },
+                                                                                                    "subjective_status": "통증까진 아니지만 손목이 불편해요.",
+                                                                                                    "email": "younjc7450@gmail.com",
+                                                                                                    "age": 30,
+                                                                                                    "gender": "남성",
+                                                                                                    "work_experience": 3,
+                                                                                                    "exercise_habit": "전혀 안함",
+                                                                                                    "smoking": "비흡연",
+                                                                                                    "drinking": "안함",
+                                                                                                    "sleep_hours": 7,
+                                                                                                    "daily_work_hours": 8,
+                                                                                                    "work_intensity": "가벼움",
+                                                                                                    "customer_history": {
+                                                                                                      "is_return_customer": true,
+                                                                                                      "previous_visit": {
+                                                                                                        "email": "younjc7450@gmail.com",
+                                                                                                        "personal_info": {
+                                                                                                          "pain_scores": {
+                                                                                                            "거북목": 7
+                                                                                                          },
+                                                                                                          "subjective_status": "오른쪽 어깨가 계속 뭉치고 등과 목에 통증이 지속적으로 발생합니다.",
+                                                                                                          "email": "younjc7450@gmail.com",
+                                                                                                          "age": 30,
+                                                                                                          "gender": "남성",
+                                                                                                          "work_experience": 3,
+                                                                                                          "exercise_habit": "전혀 안함",
+                                                                                                          "smoking": "비흡연",
+                                                                                                          "drinking": "안함",
+                                                                                                          "sleep_hours": 7,
+                                                                                                          "daily_work_hours": 8,
+                                                                                                          "work_intensity": "가벼움",
+                                                                                                          "customer_history": {
+                                                                                                            "is_return_customer": true,
+                                                                                                            "previous_visit": {
+                                                                                                              "email": "younjc7450@gmail.com",
+                                                                                                              "personal_info": {
+                                                                                                                "pain_scores": {
+                                                                                                                  "거북목": 7
+                                                                                                                },
+                                                                                                                "subjective_status": "오른쪽 어깨가 계속 뭉치고 등과 목에 통증이 지속적으로 발생합니다.",
+                                                                                                                "email": "younjc7450@gmail.com",
+                                                                                                                "age": 30,
+                                                                                                                "gender": "남성",
+                                                                                                                "work_experience": 3,
+                                                                                                                "exercise_habit": "전혀 안함",
+                                                                                                                "smoking": "비흡연",
+                                                                                                                "drinking": "안함",
+                                                                                                                "sleep_hours": 7,
+                                                                                                                "daily_work_hours": 8,
+                                                                                                                "work_intensity": "가벼움",
+                                                                                                                "customer_history": {
+                                                                                                                  "is_return_customer": true,
+                                                                                                                  "previous_visit": {
+                                                                                                                    "email": "younjc7450@gmail.com",
+                                                                                                                    "personal_info": {
+                                                                                                                      "age": 30,
+                                                                                                                      "gender": "남성",
+                                                                                                                      "email": "younjc7450@gmail.com",
+                                                                                                                      "work_experience": 3
+                                                                                                                    },
+                                                                                                                    "conditions": [
+                                                                                                                      "거북목",
+                                                                                                                      "어깨통증"
+                                                                                                                    ],
+                                                                                                                    "pain_scores": {
+                                                                                                                      "거북목": 8,
+                                                                                                                      "어깨통증": 6
+                                                                                                                    },
+                                                                                                                    "created_at": "2025-08-25T13:41:34.159359+00:00",
+                                                                                                                    "updated_at": "2025-08-25T13:41:34.159359+00:00"
+                                                                                                                  },
+                                                                                                                  "visit_count": 2
+                                                                                                                }
+                                                                                                              },
+                                                                                                              "conditions": [
+                                                                                                                "거북목"
+                                                                                                              ],
+                                                                                                              "pain_scores": {
+                                                                                                                "거북목": 7
+                                                                                                              },
+                                                                                                              "created_at": "2025-08-25T13:41:34.159359+00:00",
+                                                                                                              "updated_at": "2025-08-25T13:47:49.269208+00:00"
+                                                                                                            },
+                                                                                                            "visit_count": 2
+                                                                                                          },
+                                                                                                          "desk_height": "너무 높음",
+                                                                                                          "chair_support": "매우 좋음",
+                                                                                                          "chair_sitting_style": "등을 완전히 붙이고 앉음",
+                                                                                                          "monitor_distance": "가깝다 (50cm 이내)",
+                                                                                                          "monitor_height": "눈높이와 같음",
+                                                                                                          "keyboard_type": "일반",
+                                                                                                          "mouse_type": "일반",
+                                                                                                          "wrist_support": "있음",
+                                                                                                          "lighting": "너무 밝음",
+                                                                                                          "env_score": 55
+                                                                                                        },
+                                                                                                        "conditions": [
+                                                                                                          "거북목"
+                                                                                                        ],
+                                                                                                        "pain_scores": {
+                                                                                                          "거북목": 7
+                                                                                                        },
+                                                                                                        "created_at": "2025-08-25T13:41:34.159359+00:00",
+                                                                                                        "updated_at": "2025-08-25T13:48:48.435937+00:00"
+                                                                                                      },
+                                                                                                      "visit_count": 2
+                                                                                                    }
+                                                                                                  },
+                                                                                                  "conditions": [
+                                                                                                    "손목터널증후군"
+                                                                                                  ],
+                                                                                                  "pain_scores": {
+                                                                                                    "손목터널증후군": 3
+                                                                                                  },
+                                                                                                  "created_at": "2025-08-25T13:41:34.159359+00:00",
+                                                                                                  "updated_at": "2025-08-25T14:25:22.979597+00:00"
+                                                                                                },
+                                                                                                "visit_count": 2
+                                                                                              },
+                                                                                              "desk_height": "너무 높음",
+                                                                                              "chair_support": "매우 좋음",
+                                                                                              "chair_sitting_style": "등을 완전히 붙이고 앉음",
+                                                                                              "monitor_distance": "가깝다 (50cm 이내)",
+                                                                                              "monitor_height": "눈높이와 같음",
+                                                                                              "keyboard_type": "일반",
+                                                                                              "mouse_type": "일반",
+                                                                                              "wrist_support": "있음",
+                                                                                              "lighting": "너무 밝음",
+                                                                                              "env_score": 55
+                                                                                            },
+                                                                                            "conditions": [
+                                                                                              "손목터널증후군"
+                                                                                            ],
+                                                                                            "pain_scores": {
+                                                                                              "손목터널증후군": 3
+                                                                                            },
+                                                                                            "created_at": "2025-08-25T13:41:34.159359+00:00",
+                                                                                            "updated_at": "2025-08-25T14:26:58.781776+00:00"
+                                                                                          },
+                                                                                          "visit_count": 2
+                                                                                        }
+                                                                                      },
+                                                                                      "conditions": [
+                                                                                        "허리디스크"
+                                                                                      ],
+                                                                                      "pain_scores": {
+                                                                                        "허리디스크": 5
+                                                                                      },
+                                                                                      "created_at": "2025-08-25T13:41:34.159359+00:00",
+                                                                                      "updated_at": "2025-08-25T14:32:17.841534+00:00"
+                                                                                    },
+                                                                                    "visit_count": 2
+                                                                                  },
+                                                                                  "desk_height": "너무 높음",
+                                                                                  "chair_support": "매우 좋음",
+                                                                                  "chair_sitting_style": "등을 완전히 붙이고 앉음",
+                                                                                  "monitor_distance": "가깝다 (50cm 이내)",
+                                                                                  "monitor_height": "눈높이보다 높음",
+                                                                                  "keyboard_type": "일반",
+                                                                                  "mouse_type": "일반",
+                                                                                  "wrist_support": "있음",
+                                                                                  "lighting": "너무 밝음",
+                                                                                  "env_score": 35
+                                                                                },
+                                                                                "conditions": [
+                                                                                  "손목터널증후군"
+                                                                                ],
+                                                                                "pain_scores": {
+                                                                                  "손목터널증후군": 5
+                                                                                },
+                                                                                "created_at": "2025-08-25T13:41:34.159359+00:00",
+                                                                                "updated_at": "2025-08-25T14:33:00.922036+00:00"
+                                                                              },
+                                                                              "visit_count": 2
+                                                                            }
+                                                                          },
+                                                                          "conditions": [
+                                                                            "라운드숄더"
+                                                                          ],
+                                                                          "pain_scores": {
+                                                                            "라운드숄더": 7
+                                                                          },
+                                                                          "created_at": "2025-08-25T13:41:34.159359+00:00",
+                                                                          "updated_at": "2025-08-25T14:39:29.404418+00:00"
+                                                                        },
+                                                                        "visit_count": 2
+                                                                      },
+                                                                      "visit_count": 2,
+                                                                      "last_visit": "2025-08-25T14:48:35.128699"
+                                                                    },
+                                                                    "conditions": [
+                                                                      "라운드숄더"
+                                                                    ],
+                                                                    "pain_scores": {
+                                                                      "라운드숄더": 7
+                                                                    },
+                                                                    "created_at": "2025-08-25T13:41:34.159359+00:00",
+                                                                    "updated_at": "2025-08-25T14:48:35.128699+00:00"
+                                                                  },
+                                                                  "visit_count": 2
+                                                                }
+                                                              },
+                                                              "conditions": [
+                                                                "손목터널증후군"
+                                                              ],
+                                                              "pain_scores": {
+                                                                "손목터널증후군": 5
+                                                              },
+                                                              "created_at": "2025-08-25T13:41:34.159359+00:00",
+                                                              "updated_at": "2025-08-25T14:48:35.287746+00:00"
+                                                            },
+                                                            "visit_count": 1
+                                                          },
+                                                          "desk_height": "너무 높음",
+                                                          "chair_support": "매우 좋음",
+                                                          "chair_sitting_style": "등을 완전히 붙이고 앉음",
+                                                          "monitor_distance": "가깝다 (50cm 이내)",
+                                                          "monitor_height": "눈높이보다 높음",
+                                                          "keyboard_type": "일반",
+                                                          "mouse_type": "일반",
+                                                          "wrist_support": "있음",
+                                                          "lighting": "너무 밝음",
+                                                          "env_score": 35,
+                                                          "visit_count": 2,
+                                                          "last_visit": "2025-08-25T14:49:21.890021"
+                                                        },
+                                                        "conditions": [
+                                                          "손목터널증후군"
+                                                        ],
+                                                        "pain_scores": {
+                                                          "손목터널증후군": 5
+                                                        },
+                                                        "created_at": "2025-08-25T13:41:34.159359+00:00",
+                                                        "updated_at": "2025-08-25T14:49:21.890021+00:00"
+                                                      },
+                                                      "visit_count": 2
+                                                    },
+                                                    "visit_count": 5,
+                                                    "last_visit": "2025-08-26T11:12:05.116583"
+                                                  },
+                                                  "conditions": [
+                                                    "라운드숄더"
+                                                  ],
+                                                  "pain_scores": {
+                                                    "라운드숄더": 5
+                                                  },
+                                                  "created_at": "2025-08-25T13:41:34.159359+00:00",
+                                                  "updated_at": "2025-08-26T11:12:05.116583+00:00"
+                                                },
+                                                "visit_count": 5
+                                              },
+                                              "visit_count": 2,
+                                              "last_visit": "2025-08-26T11:30:15.862716"
+                                            },
+                                            "conditions": [
+                                              "라운드숄더"
+                                            ],
+                                            "pain_scores": {
+                                              "라운드숄더": 7
+                                            },
+                                            "created_at": "2025-08-25T13:41:34.159359+00:00",
+                                            "updated_at": "2025-08-26T11:30:15.862716+00:00"
+                                          },
+                                          "visit_count": 2
+                                        }
+                                      },
+                                      "conditions": [
+                                        "거북목",
+                                        "라운드숄더"
+                                      ],
+                                      "pain_scores": {
+                                        "거북목": 6,
+                                        "라운드숄더": 7
+                                      },
+                                      "created_at": "2025-08-25T13:41:34.159359+00:00",
+                                      "updated_at": "2025-08-26T11:30:30.59678+00:00"
+                                    },
+                                    "visit_count": 1
+                                  },
+                                  "desk_height": "너무 높음",
+                                  "chair_support": "매우 좋음",
+                                  "chair_sitting_style": "등을 완전히 붙이고 앉음",
+                                  "monitor_distance": "가깝다 (50cm 이내)",
+                                  "monitor_height": "눈높이와 같음",
+                                  "keyboard_type": "일반",
+                                  "mouse_type": "일반",
+                                  "wrist_support": "있음",
+                                  "lighting": "너무 밝음",
+                                  "env_score": 55,
+                                  "visit_count": 2,
+                                  "last_visit": "2025-08-26T12:36:06.323992"
+                                },
+                                "conditions": [
+                                  "거북목",
+                                  "라운드숄더"
+                                ],
+                                "pain_scores": {
+                                  "거북목": 6,
+                                  "라운드숄더": 7
+                                },
+                                "created_at": "2025-08-25T13:41:34.159359+00:00",
+                                "updated_at": "2025-08-26T12:36:06.323992+00:00"
+                              },
+                              "visit_count": 2
+                            },
+                            "visit_count": 2,
+                            "last_visit": "2025-08-26T12:38:31.266256"
+                          },
+                          "conditions": [
+                            "라운드숄더"
+                          ],
+                          "pain_scores": {
+                            "라운드숄더": 6
+                          },
+                          "created_at": "2025-08-25T13:41:34.159359+00:00",
+                          "updated_at": "2025-08-26T12:38:31.267286+00:00"
+                        },
+                        "visit_count": 2
+                      },
+                      "visit_count": 2,
+                      "last_visit": "2025-08-26T12:44:31.572438"
+                    },
+                    "conditions": [
+                      "거북목"
+                    ],
+                    "pain_scores": {
+                      "거북목": 7
+                    },
+                    "created_at": "2025-08-25T13:41:34.159359+00:00",
+                    "updated_at": "2025-08-26T12:44:31.573438+00:00"
+                  },
+                  "visit_count": 2
+                },
+                "visit_count": 2,
+                "last_visit": "2025-08-26T12:47:16.219379"
+              },
+              "conditions": [
+                "라운드숄더"
+              ],
+              "pain_scores": {
+                "라운드숄더": 5
+              },
+              "created_at": "2025-08-25T13:41:34.159359+00:00",
+              "updated_at": "2025-08-26T12:47:16.219379+00:00"
+            },
+            "visit_count": 2
+          },
+          "visit_count": 4,
+          "last_visit": "2025-08-26T13:13:47.246651"
+        },
+        "conditions": [
+          "라운드숄더"
+        ],
+        "pain_scores": {
+          "라운드숄더": 7
+        },
+        "created_at": "2025-08-25T13:41:34.159359+00:00",
+        "updated_at": "2025-08-26T13:13:47.246651+00:00"
+      },
+      "visit_count": 4
+    },
+    "visit_count": 4,
+    "last_visit": "2025-08-26T13:13:47.246651",
+    "desk_height": "너무 높음",
+    "chair_support": "매우 좋음",
+    "chair_sitting_style": "등을 완전히 붙이고 앉음",
+    "monitor_distance": "가깝다 (50cm 이내)",
+    "monitor_height": "눈높이와 같음",
+    "keyboard_type": "일반",
+    "mouse_type": "일반",
+    "wrist_support": "있음",
+    "lighting": "너무 밝음",
+    "env_score": 55
+  },
+  "conditions": [
+    "거북목"
+  ],
+  "pain_scores": {
+    "거북목": 7
+  },
+  "created_at": "2025-08-26T13:18:59.149045"
+}

@@ -1,0 +1,20 @@
+{
+  "type": "이메일 (Gmail)",
+  "email": "ltnqls11@gmail.com",
+  "slack_webhook": null,
+  "work_start": "11:50",
+  "work_end": "14:00",
+  "interval": 1,
+  "user_data": {
+    "name": "테스트 사용자",
+    "work_intensity": "높음"
+  },
+  "conditions": [
+    "목 어깨 통증"
+  ],
+  "pain_scores": {
+    "목": 7,
+    "어깨": 5
+  },
+  "created_at": "2025-08-25T12:00:21.002259"
+}

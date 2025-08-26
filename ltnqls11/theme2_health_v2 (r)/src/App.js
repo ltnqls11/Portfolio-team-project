@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Home from './components/Home';
 import ConditionSelection from './components/ConditionSelection';
@@ -10,6 +10,17 @@ import ExerciseRecommendation from './components/ExerciseRecommendation';
 import NotificationSetup from './components/NotificationSetup';
 import ExerciseManagement from './components/ExerciseManagement';
 import './App.css';
+
+// 라우트 변경 감지를 위한 컴포넌트
+function RouteChangeHandler({ onRouteChange }) {
+  const location = useLocation();
+  
+  useEffect(() => {
+    onRouteChange(location.pathname);
+  }, [location, onRouteChange]);
+  
+  return null;
+}
 
 function App() {
   // localStorage에서 세션 상태 복원
@@ -74,8 +85,44 @@ function App() {
 
   // 다음 메뉴로 이동
   const navigateToMenu = (menu) => {
+    console.log('메뉴 이동:', menu);
     setCurrentMenu(menu);
     updateSessionState({ menuSelection: menu });
+    
+    // 메뉴에 따른 라우팅 처리
+    const menuRoutes = {
+      "홈": "/home",
+      "증상 선택": "/condition-selection",
+      "개인정보 입력": "/personal-info",
+      "작업환경 평가": "/work-environment",
+      "개인 운동 설문": "/exercise-survey",
+      "운동 추천": "/exercise-recommendation",
+      "휴식 알리미 설정": "/notification-setup",
+      "운동 관리": "/exercise-management"
+    };
+    
+    if (menuRoutes[menu]) {
+      window.history.pushState(null, '', menuRoutes[menu]);
+    }
+  };
+
+  // 라우트 변경 시 메뉴 상태 업데이트
+  const handleRouteChange = (pathname) => {
+    const routeToMenu = {
+      "/home": "홈",
+      "/condition-selection": "증상 선택",
+      "/personal-info": "개인정보 입력",
+      "/work-environment": "작업환경 평가",
+      "/exercise-survey": "개인 운동 설문",
+      "/exercise-recommendation": "운동 추천",
+      "/notification-setup": "휴식 알리미 설정",
+      "/exercise-management": "운동 관리"
+    };
+    
+    if (routeToMenu[pathname]) {
+      setCurrentMenu(routeToMenu[pathname]);
+      updateSessionState({ menuSelection: routeToMenu[pathname] });
+    }
   };
 
   // 진행률 계산
@@ -101,6 +148,7 @@ function App() {
   return (
     <Router>
       <div className="app">
+        <RouteChangeHandler onRouteChange={handleRouteChange} />
         <Sidebar 
           currentMenu={currentMenu}
           menuOptions={menuOptions}

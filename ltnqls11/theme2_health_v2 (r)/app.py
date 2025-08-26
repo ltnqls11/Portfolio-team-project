@@ -1391,103 +1391,42 @@ def show_condition_selection():
             st.rerun()
     else:
         st.warning("⚠️ 최소 하나의 증상을 선택해주세요.")
+        # 증상을 선택하지 않아도 다음 단계로 넘어갈 수 있도록 버튼 추가
+        if st.button("✅ 저장하고 다음 단계로", key="condition_next_empty", type="primary"):
+            st.session_state.selected_conditions = []  # 빈 리스트로 설정
+            st.session_state.steps_completed[0] = True
+            st.session_state.current_step = 1
+            st.session_state.next_menu = "개인정보 입력"
+            st.info("증상을 선택하지 않고 다음 단계로 진행합니다.")
+            st.rerun()
 
 def show_personal_info():
-    st.header("개인정보 입력")
+    st.header("📧 이메일 주소")
     if not st.session_state.selected_conditions:
-        st.warning("먼저 증상을 선택해주세요.")
-        return
+        st.info("💡 증상을 선택하지 않고 진행하고 있습니다. 필요시 언제든 '증상 선택' 탭에서 증상을 추가할 수 있습니다.")
     
-    # 개선된 진행률 시각화 - 6단계로 수정
-    steps = ["증상 선택", "개인정보 입력", "작업환경 평가", "개인 운동 설문", "운동 추천", "휴식 알리미 설정"]
-    completed_steps = sum(st.session_state.steps_completed[:6])
-    
-    # 진행률 표시 개선
-    st.markdown("### 진행 상황")
-    col1, col2, col3 = st.columns([2, 1, 1])
-    with col1:
-        progress_percentage = (completed_steps / len(steps)) * 100
-        st.progress(progress_percentage / 100)
-    with col2:
-        st.metric("완료 단계", f"{completed_steps}/{len(steps)}")
-    with col3:
-        st.metric("진행률", f"{progress_percentage:.0f}%")
-    
-    st.markdown("---")
-    
-    # Gmail 입력 및 고객 이력 확인
-    st.subheader("📧 이메일 주소")
+    # 이메일 입력
     email = st.text_input("Gmail 주소", placeholder="example@gmail.com", key="user_email")
     
-    # 이메일 입력 시 고객 이력 확인
-    customer_history = None
-    if email and "@" in email:
-        customer_history = check_customer_history(email)
-        
-        if customer_history and customer_history['is_return_customer']:
-            # 재진 고객
-            visit_count = customer_history['visit_count']
-            st.success(f"👋 다시 방문해주셨군요! (총 {visit_count}번째 방문)")
-            
-            # 이전 방문 대비 증상 변화 분석
-            previous_visit = customer_history['previous_visit']
-            pain_scores = st.session_state.user_data.get('pain_scores', {})
-            
-            if pain_scores:  # 현재 통증 점수가 있을 때만 분석
-                condition_changes = analyze_condition_changes(
-                    st.session_state.selected_conditions,
-                    pain_scores,
-                    previous_visit
-                )
-                
-                if condition_changes:
-                    st.subheader("📊 이전 방문 대비 상태 변화")
-                    
-                    # 전체 상태 변화
-                    if condition_changes['overall_status'] == 'improved':
-                        st.success("✅ 전체적으로 호전되었습니다!")
-                    elif condition_changes['overall_status'] == 'worsened':
-                        st.error("⚠️ 전체적으로 악화되었습니다.")
-                    else:
-                        st.info("📍 전체적으로 비슷한 상태입니다.")
-                    
-                    # 새로 생긴 증상
-                    if condition_changes['new_conditions']:
-                        st.warning(f"🆕 새로 생긴 증상: {', '.join(condition_changes['new_conditions'])}")
-                    
-                    # 해결된 증상
-                    if condition_changes['resolved_conditions']:
-                        st.success(f"✅ 해결된 증상: {', '.join(condition_changes['resolved_conditions'])}")
-                    
-                    # 각 증상별 통증 변화
-                    if condition_changes['pain_changes']:
-                        st.markdown("**증상별 통증 변화:**")
-                        for condition, change_type in condition_changes['pain_changes'].items():
-                            if change_type == 'increased':
-                                st.markdown(f"  - {condition}: 🔴 악화")
-                            elif change_type == 'decreased':
-                                st.markdown(f"  - {condition}: 🟢 호전")
-                            else:
-                                st.markdown(f"  - {condition}: 🟡 유지")
-        else:
-            # 초진 고객
-            st.info("🆕 처음 방문해주셨네요! 환영합니다.")
-    
     st.markdown("---")
     
+    # 개인정보 입력 - 2열 레이아웃
     col1, col2 = st.columns(2)
+    
     with col1:
         age = st.number_input("나이", min_value=20, max_value=70, value=30)
         gender = st.selectbox("성별", ["남성", "여성"])
         work_experience = st.number_input("개발 경력 (년)", min_value=0, max_value=30, value=3)
-        daily_work_hours = st.slider("일일 컴퓨터 작업시간", 4, 16, 8)
+        daily_work_hours = st.slider("일일 컴퓨터 작업시간", 4, 16, 4)
         work_intensity = st.selectbox("작업 강도", ["가벼움", "보통", "높음", "매우 높음"])
+    
     with col2:
         exercise_habit = st.selectbox("운동 습관", ["전혀 안함", "주 1-2회", "주 3-4회", "주 5회 이상"])
         smoking = st.selectbox("흡연", ["비흡연", "과거 흡연", "현재 흡연"])
         drinking = st.selectbox("음주", ["안함", "주 1-2회", "주 3-4회", "거의 매일"])
-        sleep_hours = st.slider("평균 수면시간", 4, 12, 7)
+        sleep_hours = st.slider("평균 수면시간", 4, 12, 4)
     
+    # 데이터 저장
     personal_data = {
         'email': email,
         'age': age, 
@@ -1498,24 +1437,15 @@ def show_personal_info():
         'drinking': drinking, 
         'sleep_hours': sleep_hours, 
         'daily_work_hours': daily_work_hours, 
-        'work_intensity': work_intensity,
-        'customer_history': customer_history
+        'work_intensity': work_intensity
     }
     st.session_state.user_data.update(personal_data)
     
+    # 저장 버튼
     if st.button("✅ 저장하고 다음 단계로", key="personal_next", type="primary"):
         if not email or "@" not in email:
             st.error("올바른 이메일 주소를 입력해주세요.")
         else:
-            # 고객 데이터 저장 (이미 완료된 설문 정보가 있는 경우)
-            if st.session_state.selected_conditions and st.session_state.user_data.get('pain_scores'):
-                save_customer_data(
-                    email,
-                    st.session_state.user_data,
-                    st.session_state.selected_conditions,
-                    st.session_state.user_data.get('pain_scores', {})
-                )
-            
             st.session_state.steps_completed[1] = True
             st.session_state.current_step = 2
             st.session_state.next_menu = "작업환경 평가"
@@ -1523,40 +1453,27 @@ def show_personal_info():
             st.rerun()
 
 def show_work_environment():
-    st.header("🖥️ 작업환경 평가")
-    
-    # 개선된 진행률 시각화 - 6단계로 수정
-    steps = ["증상 선택", "개인정보 입력", "작업환경 평가", "개인 운동 설문", "운동 추천", "휴식 알리미 설정"]
-    completed_steps = sum(st.session_state.steps_completed[:6])
-    
-    # 진행률 표시 개선
-    st.markdown("### 📊 진행 상황")
-    col1, col2, col3 = st.columns([2, 1, 1])
-    with col1:
-        progress_percentage = (completed_steps / len(steps)) * 100
-        st.progress(progress_percentage / 100)
-    with col2:
-        st.metric("완료 단계", f"{completed_steps}/{len(steps)}")
-    with col3:
-        st.metric("진행률", f"{progress_percentage:.0f}%")
-    
-    st.markdown("---")
-    
+    # 2열 레이아웃
     col1, col2 = st.columns(2)
+    
     with col1:
         st.subheader("🪑 책상 및 의자")
+        
         desk_height = st.selectbox("책상 높이", ["너무 높음", "적절함", "너무 낮음"])
         chair_support = st.selectbox("의자 허리 지지", ["매우 좋음", "좋음", "보통", "나쁨"])
         chair_sitting_style = st.selectbox("평소 앉는 방식", ["등을 완전히 붙이고 앉음", "등받이에 기대지 않음", "한쪽으로 기울어져 앉음", "다리를 꼬고 앉음"])
         monitor_distance_level = st.selectbox("모니터 거리", ["가깝다 (50cm 이내)", "적당하다 (50-70cm)", "멀다 (70cm 이상)"])
         monitor_height = st.selectbox("모니터 높이", ["눈높이보다 높음", "눈높이와 같음", "눈높이보다 낮음"])
+    
     with col2:
         st.subheader("⌨️ 키보드 및 마우스")
+        
         keyboard_type = st.selectbox("키보드 타입", ["일반", "인체공학적", "기계식", "노트북 내장"])
         mouse_type = st.selectbox("마우스 타입", ["일반", "인체공학적", "트랙볼", "터치패드"])
         wrist_support = st.selectbox("손목 받침대", ["있음", "없음"])
         lighting = st.selectbox("조명 상태", ["너무 밝음", "적절함", "너무 어두움", "반사광 있음"])
     
+    # 작업환경 점수 계산
     env_score = calculate_environment_score(desk_height, chair_support, chair_sitting_style, monitor_height, keyboard_type, mouse_type, monitor_distance_level)
     additional_score = 0
     if lighting == "적절함":
@@ -1565,16 +1482,31 @@ def show_work_environment():
         additional_score += 5
     total_env_score = min(env_score + additional_score, 100)
     
+    # 작업환경 평가 결과
     st.subheader("📊 작업환경 평가 결과")
-    st.metric("종합 점수", f"{total_env_score}/100점")
+    st.markdown(f"**종합 점수**")
+    st.markdown(f"## {total_env_score}/100점")
     
-    env_data = {'desk_height': desk_height, 'chair_support': chair_support, 'chair_sitting_style': chair_sitting_style, 'monitor_distance': monitor_distance_level, 'monitor_height': monitor_height, 'keyboard_type': keyboard_type, 'mouse_type': mouse_type, 'wrist_support': wrist_support, 'lighting': lighting, 'env_score': total_env_score}
+    # 데이터 저장
+    env_data = {
+        'desk_height': desk_height, 
+        'chair_support': chair_support, 
+        'chair_sitting_style': chair_sitting_style, 
+        'monitor_distance': monitor_distance_level, 
+        'monitor_height': monitor_height, 
+        'keyboard_type': keyboard_type, 
+        'mouse_type': mouse_type, 
+        'wrist_support': wrist_support, 
+        'lighting': lighting, 
+        'env_score': total_env_score
+    }
     st.session_state.user_data.update(env_data)
     
+    # 저장 버튼
     if st.button("✅ 저장하고 다음 단계로", key="env_next", type="primary"):
         st.session_state.steps_completed[2] = True
         st.session_state.current_step = 3
-        st.session_state.next_menu = "개인 운동 설문"  # 다음 단계를 개인 운동 설문으로 변경
+        st.session_state.next_menu = "개인 운동 설문"
         st.success("✅ 작업환경 평가가 저장되었습니다!")
         st.rerun()
 
@@ -1583,8 +1515,7 @@ def show_exercise_survey():
     st.header("🏃‍♂️ 개인 운동 설문조사")
     
     if not st.session_state.selected_conditions:
-        st.warning("먼저 증상을 선택해주세요.")
-        return
+        st.info("💡 증상을 선택하지 않고 진행하고 있습니다. 필요시 언제든 '증상 선택' 탭에서 증상을 추가할 수 있습니다.")
     
     # 개선된 진행률 시각화 - 6단계로 수정
     steps = ["증상 선택", "개인정보 입력", "작업환경 평가", "개인 운동 설문", "운동 추천", "휴식 알리미 설정"]
@@ -1676,8 +1607,7 @@ def show_exercise_survey():
 def show_exercise_recommendation():
     st.header("🩺 맞춤형 운동 상담")
     if not st.session_state.selected_conditions:
-        st.warning("먼저 증상을 선택해주세요.")
-        return
+        st.info("💡 증상을 선택하지 않고 진행하고 있습니다. 일반적인 VDT 증후군 예방 운동을 추천해드립니다.")
     
     # 개선된 진행률 시각화 - 6단계로 수정
     steps = ["증상 선택", "개인정보 입력", "작업환경 평가", "개인 운동 설문", "운동 상담", "휴식 알리미 설정"]

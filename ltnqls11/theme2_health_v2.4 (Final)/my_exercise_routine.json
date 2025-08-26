@@ -1,0 +1,23 @@
+{
+  "user_info": {
+    "conditions": [
+      "거북목"
+    ],
+    "purpose": "재활 (통증감소)",
+    "rest_interval": "25분마다"
+  },
+  "daily_routine": {
+    "morning": "목과 어깨 스트레칭 (5분)",
+    "lunch": "전신 스트레칭 (10분)",
+    "evening": "근력 강화 운동 (15분)"
+  },
+  "break_exercises": [
+    {
+      "name": "온찜질 후 스트레칭",
+      "purpose": "통증 완화 및 혈액순환 개선",
+      "method": "따뜻한 수건으로 목을 찜질 후 가벼운 스트레칭",
+      "reps": "15분 찜질 후 스트레칭",
+      "caution": "통증이 심할 때는 중단"
+    }
+  ]
+}

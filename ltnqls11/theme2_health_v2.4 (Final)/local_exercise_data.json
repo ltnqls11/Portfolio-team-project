@@ -1,0 +1,366 @@
+[
+  {
+    "timestamp": "2025-08-24 23:24:51",
+    "user_id": "user_20250824_232036",
+    "data_type": "exercise_log",
+    "date": "2025-08-24",
+    "value": 1
+  },
+  {
+    "timestamp": "2025-08-24 23:50:00",
+    "user_id": "user_20250824_234618",
+    "data_type": "pain_data",
+    "date": "2025-08-24",
+    "value": 7
+  },
+  {
+    "timestamp": "2025-08-24 23:50:14",
+    "user_id": "user_20250824_234618",
+    "data_type": "pain_data",
+    "date": "2025-08-24",
+    "value": 6
+  },
+  {
+    "timestamp": "2025-08-25 00:03:57",
+    "user_id": "user_20250825_000256",
+    "data_type": "pain_data",
+    "date": "2025-08-25",
+    "value": 8
+  },
+  {
+    "timestamp": "2025-08-25 00:04:05",
+    "user_id": "user_20250825_000256",
+    "data_type": "pain_data",
+    "date": "2025-08-25",
+    "value": 8
+  },
+  {
+    "timestamp": "2025-08-25 00:04:10",
+    "user_id": "user_20250825_000256",
+    "data_type": "pain_data",
+    "date": "2025-08-25",
+    "value": 8
+  },
+  {
+    "timestamp": "2025-08-25 00:27:03",
+    "user_id": "user_20250825_002522",
+    "data_type": "exercise_log",
+    "date": "2025-08-25",
+    "value": 4
+  },
+  {
+    "timestamp": "2025-08-25 00:27:05",
+    "user_id": "user_20250825_002522",
+    "data_type": "exercise_log",
+    "date": "2025-08-25",
+    "value": 4
+  },
+  {
+    "timestamp": "2025-08-25 00:27:07",
+    "user_id": "user_20250825_002522",
+    "data_type": "exercise_log",
+    "date": "2025-08-25",
+    "value": 4
+  },
+  {
+    "timestamp": "2025-08-25 00:27:08",
+    "user_id": "user_20250825_002522",
+    "data_type": "exercise_log",
+    "date": "2025-08-25",
+    "value": 4
+  },
+  {
+    "timestamp": "2025-08-25 00:27:09",
+    "user_id": "user_20250825_002522",
+    "data_type": "exercise_log",
+    "date": "2025-08-25",
+    "value": 4
+  },
+  {
+    "timestamp": "2025-08-25 00:27:57",
+    "user_id": "user_20250825_002522",
+    "data_type": "pain_data",
+    "date": "2025-08-25",
+    "value": 8
+  },
+  {
+    "timestamp": "2025-08-25 00:27:59",
+    "user_id": "user_20250825_002522",
+    "data_type": "pain_data",
+    "date": "2025-08-25",
+    "value": 8
+  },
+  {
+    "timestamp": "2025-08-25 00:28:23",
+    "user_id": "user_20250825_002522",
+    "data_type": "exercise_log",
+    "date": "2025-08-25",
+    "value": 4
+  },
+  {
+    "timestamp": "2025-08-25 00:28:26",
+    "user_id": "user_20250825_002522",
+    "data_type": "exercise_log",
+    "date": "2025-08-25",
+    "value": 4
+  },
+  {
+    "timestamp": "2025-08-25 00:28:31",
+    "user_id": "user_20250825_002522",
+    "data_type": "exercise_log",
+    "date": "2025-08-25",
+    "value": 4
+  },
+  {
+    "timestamp": "2025-08-25 00:28:34",
+    "user_id": "user_20250825_002522",
+    "data_type": "exercise_log",
+    "date": "2025-08-25",
+    "value": 4
+  },
+  {
+    "timestamp": "2025-08-25 00:28:40",
+    "user_id": "user_20250825_002522",
+    "data_type": "exercise_log",
+    "date": "2025-08-25",
+    "value": 4
+  },
+  {
+    "timestamp": "2025-08-25 00:29:13",
+    "user_id": "user_20250825_002522",
+    "data_type": "pain_data",
+    "date": "2025-08-25",
+    "value": 8
+  },
+  {
+    "timestamp": "2025-08-25 00:29:15",
+    "user_id": "user_20250825_002522",
+    "data_type": "exercise_log",
+    "date": "2025-08-25",
+    "value": 4
+  },
+  {
+    "timestamp": "2025-08-25 00:29:19",
+    "user_id": "user_20250825_002522",
+    "data_type": "pain_data",
+    "date": "2025-08-25",
+    "value": 8
+  },
+  {
+    "timestamp": "2025-08-25 01:21:16",
+    "user_id": "user_20250825_011717",
+    "data_type": "exercise_log",
+    "date": "2025-08-25",
+    "value": 1
+  },
+  {
+    "timestamp": "2025-08-25 01:21:19",
+    "user_id": "user_20250825_011717",
+    "data_type": "exercise_log",
+    "date": "2025-08-25",
+    "value": 1
+  },
+  {
+    "timestamp": "2025-08-25 01:21:29",
+    "user_id": "user_20250825_011717",
+    "data_type": "pain_data",
+    "date": "2025-08-25",
+    "value": 7
+  },
+  {
+    "timestamp": "2025-08-25 11:08:19",
+    "user_id": "user_20250825_110243",
+    "data_type": "pain_data",
+    "date": "2025-08-25",
+    "value": 8
+  },
+  {
+    "timestamp": "2025-08-25 13:19:35",
+    "user_id": "test@example.com",
+    "data_type": "exercise_log",
+    "date": "2025-08-25",
+    "value": 3
+  },
+  {
+    "timestamp": "2025-08-25 13:19:36",
+    "user_id": "test@example.com",
+    "data_type": "pain_data",
+    "date": "2025-08-25",
+    "value": 5
+  },
+  {
+    "timestamp": "2025-08-25 13:34:08",
+    "user_id": "younjc7450@gmail.com",
+    "data_type": "exercise_log",
+    "date": "2025-08-25",
+    "value": 4
+  },
+  {
+    "timestamp": "2025-08-25 13:34:28",
+    "user_id": "younjc7450@gmail.com",
+    "data_type": "pain_data",
+    "date": "2025-08-25",
+    "value": 8
+  },
+  {
+    "timestamp": "2025-08-25 13:39:06",
+    "user_id": "younjc7450@gmail.com",
+    "data_type": "exercise_log",
+    "date": "2025-08-25",
+    "value": 3
+  },
+  {
+    "timestamp": "2025-08-25 13:39:12",
+    "user_id": "younjc7450@gmail.com",
+    "data_type": "pain_data",
+    "date": "2025-08-25",
+    "value": 6
+  },
+  {
+    "timestamp": "2025-08-25 13:49:00",
+    "user_id": "younjc7450@gmail.com",
+    "data_type": "exercise_log",
+    "date": "2025-08-25",
+    "value": 3
+  },
+  {
+    "timestamp": "2025-08-25 13:49:06",
+    "user_id": "younjc7450@gmail.com",
+    "data_type": "pain_data",
+    "date": "2025-08-25",
+    "value": 9
+  },
+  {
+    "timestamp": "2025-08-25 13:49:39",
+    "user_id": "younjc7450@gmail.com",
+    "data_type": "exercise_log",
+    "date": "2025-08-25",
+    "value": 3
+  },
+  {
+    "timestamp": "2025-08-25 13:49:43",
+    "user_id": "younjc7450@gmail.com",
+    "data_type": "pain_data",
+    "date": "2025-08-25",
+    "value": 9
+  },
+  {
+    "timestamp": "2025-08-24 09:30:00",
+    "user_id": "younjc7450@gmail.com",
+    "data_type": "exercise_log",
+    "date": "2025-08-24",
+    "value": 5
+  },
+  {
+    "timestamp": "2025-08-24 09:35:00",
+    "user_id": "younjc7450@gmail.com",
+    "data_type": "pain_data",
+    "date": "2025-08-24",
+    "value": 8
+  },
+  {
+    "timestamp": "2025-08-23 14:20:00",
+    "user_id": "younjc7450@gmail.com",
+    "data_type": "exercise_log",
+    "date": "2025-08-23",
+    "value": 2
+  },
+  {
+    "timestamp": "2025-08-23 14:25:00",
+    "user_id": "younjc7450@gmail.com",
+    "data_type": "pain_data",
+    "date": "2025-08-23",
+    "value": 10
+  },
+  {
+    "timestamp": "2025-08-22 16:45:00",
+    "user_id": "younjc7450@gmail.com",
+    "data_type": "exercise_log",
+    "date": "2025-08-22",
+    "value": 4
+  },
+  {
+    "timestamp": "2025-08-22 16:50:00",
+    "user_id": "younjc7450@gmail.com",
+    "data_type": "pain_data",
+    "date": "2025-08-22",
+    "value": 7
+  },
+  {
+    "timestamp": "2025-08-21 11:10:00",
+    "user_id": "younjc7450@gmail.com",
+    "data_type": "exercise_log",
+    "date": "2025-08-21",
+    "value": 6
+  },
+  {
+    "timestamp": "2025-08-21 11:15:00",
+    "user_id": "younjc7450@gmail.com",
+    "data_type": "pain_data",
+    "date": "2025-08-21",
+    "value": 6
+  },
+  {
+    "timestamp": "2025-08-25 14:27:13",
+    "user_id": "younjc7450@gmail.com",
+    "data_type": "exercise_log",
+    "date": "2025-08-25",
+    "value": 2
+  },
+  {
+    "timestamp": "2025-08-25 14:27:18",
+    "user_id": "younjc7450@gmail.com",
+    "data_type": "pain_data",
+    "date": "2025-08-25",
+    "value": 8
+  },
+  {
+    "timestamp": "2025-08-25 14:33:47",
+    "user_id": "younjc7450@gmail.com",
+    "data_type": "exercise_log",
+    "date": "2025-08-25",
+    "value": 2
+  },
+  {
+    "timestamp": "2025-08-25 14:33:54",
+    "user_id": "younjc7450@gmail.com",
+    "data_type": "pain_data",
+    "date": "2025-08-25",
+    "value": 8
+  },
+  {
+    "timestamp": "2025-08-25 14:50:45",
+    "user_id": "younjc7450@gmail.com",
+    "data_type": "pain_data",
+    "date": "2025-08-25",
+    "value": 7
+  },
+  {
+    "timestamp": "2025-08-26 12:49:02",
+    "user_id": "younjc7450@gmail.com",
+    "data_type": "pain_data",
+    "date": "2025-08-26",
+    "value": 8
+  },
+  {
+    "timestamp": "2025-08-26 13:20:10",
+    "user_id": "younjc7450@gmail.com",
+    "data_type": "pain_data",
+    "date": "2025-08-26",
+    "value": 8
+  },
+  {
+    "timestamp": "2025-08-26 14:24:58",
+    "user_id": "younjc7450@gmail.com",
+    "data_type": "exercise_log",
+    "date": "2025-08-26",
+    "value": 4
+  },
+  {
+    "timestamp": "2025-08-26 14:25:03",
+    "user_id": "younjc7450@gmail.com",
+    "data_type": "pain_data",
+    "date": "2025-08-26",
+    "value": 9
+  }
+]

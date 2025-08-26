@@ -1,0 +1,113 @@
+{
+  "name": "VDT 휴식 알리미",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 25
+            }
+          ]
+        }
+      },
+      "id": "cron-trigger",
+      "name": "25분마다 실행",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const now = new Date();\nconst currentHour = now.getHours();\nconst currentTime = now.toFormat('HH:mm');\n\n// 업무시간 체크 (09:00-18:00)\nif (currentHour < 9 || currentHour >= 18) {\n  return [];\n}\n\n// 시간대별 건강 팁\nlet healthTip = \"\";\nif (currentHour < 12) {\n  healthTip = \"🌅 아침: 충분한 수분을 섭취하고 가벼운 스트레칭으로 하루를 시작하세요!\";\n} else if (currentHour < 15) {\n  healthTip = \"☀️ 점심: 건강한 점심 후 가벼운 산책이나 스트레칭을 권장합니다.\";\n} else {\n  healthTip = \"🌆 오후: 눈의 피로를 줄이기 위해 20-20-20 법칙을 실천하세요.\";\n}\n\nconst message = `⏰ 휴식시간 알림 (${currentTime})\n\n💻 장시간 컴퓨터 작업으로 인한 건강 관리가 필요합니다!\n\n${healthTip}\n\n🔍 올바른 자세 점검:\n🧘 턱을 살짝 당기기\n🤷 어깨는 자연스럽게 내리기\n🦒 목을 앞으로 빼지 않기\n🪑 등받이에 허리를 완전히 붙이기\n🦶 발바닥 전체가 바닥에 닿게\n🦵 무릎 각도 90도 유지\n\n💡 자세 교정 팁:\n🐢 모니터 상단이 눈높이와 같도록 조절하세요\n🧘 가슴을 펴고 어깨를 뒤로 젖히는 스트레칭을 하세요\n🪑 1시간마다 일어나서 가볍게 걸어주세요\n✍️ 손목이 꺾이지 않도록 중립 위치를 유지하세요\n\n🏃‍♂️ 간단한 스트레칭:\n• 목 좌우 돌리기 (10초씩 3회)\n• 어깨 으쓱하기 (10회)\n• 손목 돌리기 (각 방향 10회)\n• 허리 비틀기 (각 방향 15초)\n\n⏱️ 다음 휴식시간까지 25분 남았습니다.\n\n💪 건강한 개발자 되기, 지금 시작하세요!`;\n\nreturn [{\n  json: {\n    message: message,\n    currentTime: currentTime\n  }\n}];"
+      },
+      "id": "message-generator",
+      "name": "메시지 생성",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        460,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "webhookUrl",
+        "webhookUrl": "={{ $env.SLACK_WEBHOOK_URL }}",
+        "text": "={{ $json.message }}",
+        "otherOptions": {
+          "username": "VDT 건강 관리 봇"
+        }
+      },
+      "id": "slack-notification",
+      "name": "Slack 알림",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 1,
+      "position": [
+        680,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "fromEmail": "={{ $env.GMAIL_ADDRESS }}",
+        "toEmail": "={{ $env.GMAIL_ADDRESS }}",
+        "subject": "VDT 증후군 관리 - 휴식시간 알림",
+        "text": "={{ $json.message }}"
+      },
+      "id": "gmail-notification",
+      "name": "Gmail 알림",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 1,
+      "position": [
+        680,
+        400
+      ]
+    }
+  ],
+  "connections": {
+    "25분마다 실행": {
+      "main": [
+        [
+          {
+            "node": "메시지 생성",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "메시지 생성": {
+      "main": [
+        [
+          {
+            "node": "Slack 알림",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Gmail 알림",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2024-01-01T00:00:00.000Z",
+  "versionId": "1"
+}
